@@ -7,13 +7,20 @@ const groups = ref({});
 const route = useRoute();
 
 onMounted(async () => {
-    groups.value = (await axios.get(`/api/courses/${route.params.id}/groups`)).data;
+    groups.value = (await axios.get(`/api/groups/${route.params.id}`)).data;
 });
 </script>
 
 <template>
     <div class="container my-4">
-        <h2>Группы курса </h2>
+        <div class="row">
+            <div class="col-8">
+                <h3 class="mb-2">Course groups</h3>
+            </div>
+            <div class="col-4 text-end">
+                <router-link :to="{name: 'group_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Group</router-link>
+            </div>
+        </div>
         <div class="card-group" v-for="group in groups?.data">
             <div class="card my-3">
                 <div class="card-body text-secondary">

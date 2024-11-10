@@ -1,18 +1,31 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
+    // Courses
     {
         path: "/",
         name: "courses_page_url",
         component: () => import("../pages/Сourse.vue"),
     },
     {
-        path: "/courses/:id/groups",
+        path: "/course/store",
+        name: "course_create_page_url",
+        component: () => import("../pages/CourseCreate.vue"),
+    },
+    // Groups
+    {
+        path: "/course/:id/groups",
         name: "course_groups_page_url",
         component: () => import("../pages/СourseGroups.vue"),
     },
     {
-        path: "/courses/:id/lessons",
+        path: "/course/:id/group/store",
+        name: "group_create_page_url",
+        component: () => import("../pages/GroupCreate.vue"),
+    },
+    // Lessons
+    {
+        path: "/course/:id/lessons",
         name: "course_lessons_page_url",
         component: () => import("../pages/СourseLessons.vue"),
     },
@@ -22,7 +35,7 @@ const routes = [
         component: () => import("../pages/StudentList.vue"),
     },
     {
-        path: "/students/store",
+        path: "/student/store",
         name: "student_create_page_url",
         component: () => import("../pages/StudentCreate.vue"),
     },
@@ -32,7 +45,7 @@ const routes = [
         component: () => import("../pages/TeacherList.vue"),
     },
     {
-        path: "/teachers/store",
+        path: "/teacher/store",
         name: "teacher_create_page_url",
         component: () => import("../pages/TeacherCreate.vue"),
     },

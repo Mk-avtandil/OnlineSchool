@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CourseCreateRequest;
 use App\Http\Resources\CourseCollection;
-use App\Http\Resources\GroupCollection;
-use App\Http\Resources\LessonCollection;
 use App\Models\Course;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CourseController extends Controller
 {
@@ -17,18 +17,18 @@ class CourseController extends Controller
         return new CourseCollection($courses);
     }
 
-    public function getCourseGroups(Course $course)
+    public function store(CourseCreateRequest $request): JsonResponse
     {
-        $groups = $course->groups()->with(['students', 'teachers'])->get();
-
-        return new GroupCollection($groups);
-    }
-
-    public function getCourseLessons(Course $course)
-    {
-        $groups = $course->lessons()->with(['materials', 'homeworks'])->get();
-
-        return new LessonCollection($groups);
+        try {
+            Course::create([
+                'title' => $request->get('title'),
+                'description' => $request->get('description'),
+                'price' => $request->get('price'),
+            ]);
+            return response()->json(['message' => 'Course created successfully'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to create course', 'error' => $e->getMessage()], 500);
+        }
     }
 }
 

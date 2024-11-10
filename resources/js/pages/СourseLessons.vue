@@ -7,7 +7,7 @@ const lessons = ref({});
 const route = useRoute();
 
 onMounted(async () => {
-    lessons.value = (await axios.get(`/api/courses/${route.params.id}/lessons`)).data;
+    lessons.value = (await axios.get(`/api/lessons/${route.params.id}`)).data;
 });
 </script>
 
