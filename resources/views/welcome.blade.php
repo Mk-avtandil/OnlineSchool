@@ -3,5 +3,7 @@
 </head>
 
 <body>
-<div id="app"></div>
+<div id="app">
+    <navbar></navbar>
+</div>
 </body>

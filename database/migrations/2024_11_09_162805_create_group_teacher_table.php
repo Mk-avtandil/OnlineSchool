@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Group;
-use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('group_teacher', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Group::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Student::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Teacher::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
