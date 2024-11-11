@@ -5,6 +5,7 @@ import {useRoute} from "vue-router";
 
 const errors = ref({});
 const students = ref([]);
+const teachers = ref([]);
 const successMessage = ref('');
 const route = useRoute();
 const data = ref({
@@ -13,10 +14,12 @@ const data = ref({
     start_time: '',
     end_time: '',
     students: [],
+    teachers: [],
 });
 
 onMounted(async () => {
     await fetchStudents();
+    await fetchTeachers();
 });
 
 const fetchStudents = async () => {
@@ -25,6 +28,15 @@ const fetchStudents = async () => {
         students.value = response.data;
     } catch (error) {
         console.error('Failed to fetch students', error);
+    }
+};
+
+const fetchTeachers = async () => {
+    try {
+        const response = await axios.get('/api/teachers');
+        teachers.value = response.data;
+    } catch (error) {
+        console.error('Failed to fetch teachers', error);
     }
 };
 
@@ -43,6 +55,7 @@ const saveGroup = async () => {
                 start_time: '',
                 end_time: '',
                 students: [],
+                teachers: [],
             };
         }, 1000);
     } catch (error) {
@@ -62,7 +75,7 @@ const saveGroup = async () => {
             {{ successMessage }}
         </div>
         <form @submit.prevent="saveGroup">
-            <div class="form-group">
+            <div class="form-group my-2">
                 <label>Title</label>
                 <input v-model="data.title" type="text" class="form-control">
             </div>
@@ -70,7 +83,7 @@ const saveGroup = async () => {
                 {{ errors.title[0] }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <label>Description</label>
                 <input v-model="data.description" type="text" class="form-control">
             </div>
@@ -78,7 +91,7 @@ const saveGroup = async () => {
                 {{ errors.description[0] }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <label>Start time</label>
                 <input v-model="data.start_time" type="time" class="form-control">
             </div>
@@ -86,7 +99,7 @@ const saveGroup = async () => {
                 {{ errors.start_time[0] }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <label>End time</label>
                 <input v-model="data.end_time" type="time" class="form-control">
             </div>
@@ -94,7 +107,7 @@ const saveGroup = async () => {
                 {{ errors.end_time[0] }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <label for="students">Select Students</label>
                 <select v-model="data.students" id="students" class="form-select" multiple>
                     <option v-for="student in students?.data" :key="student.id" :value="student.id">
@@ -104,6 +117,18 @@ const saveGroup = async () => {
             </div>
             <div v-if="errors.students" class="alert alert-danger my-1">
                 {{ errors.students[0] }}
+            </div>
+
+            <div class="form-group my-2">
+                <label for="students">Select Mentors</label>
+                <select v-model="data.teachers" id="teachers" class="form-select" multiple>
+                    <option v-for="teacher in teachers?.data" :key="teacher.id" :value="teacher.id">
+                        {{ teacher.first_name }} {{ teacher.last_name }}
+                    </option>
+                </select>
+            </div>
+            <div v-if="errors.teachers" class="alert alert-danger my-1">
+                {{ errors.teachers[0] }}
             </div>
 
             <div class="form-group my-3">

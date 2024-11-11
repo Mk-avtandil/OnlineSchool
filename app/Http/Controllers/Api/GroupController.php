@@ -7,11 +7,12 @@ use App\Http\Requests\GroupCreateRequest;
 use App\Http\Resources\GroupCollection;
 use App\Models\Group;
 use App\Models\Student;
+use App\Models\Teacher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class GroupController extends Controller
 {
-    public function index($courseId)
+    public function index($courseId): GroupCollection
     {
         $groups = Group::where('course_id', $courseId)->with(['students', 'teachers'])->get();
 
@@ -32,6 +33,11 @@ class GroupController extends Controller
             if ($request->has('students') && count($request->get('students')) > 0) {
                 $students = Student::find($request->get('students'));
                 $group->students()->sync($students);
+            }
+
+            if ($request->has('teachers') && count($request->get('teachers')) > 0) {
+                $teachers = Teacher::find($request->get('teachers'));
+                $group->teachers()->sync($teachers);
             }
 
             return response()->json(['message' => 'Group created successfully', 'group' => $group], 201);

@@ -25,6 +25,7 @@ Route::prefix('lessons')
     ->name('lesson.')
     ->group(function () {
         Route::get('/{courseId}', [LessonController::class, 'index'])->name('index');
+        Route::post('/{courseId}/store', [LessonController::class, 'store'])->name('store');
     });
 
 Route::prefix('students')

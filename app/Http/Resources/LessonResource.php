@@ -19,7 +19,7 @@ class LessonResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'materials' => $this->materials,
-            'homework' => $this->homework,
+//            'homework' => $this->homework,
         ];
     }
 }

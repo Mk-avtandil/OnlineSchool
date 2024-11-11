@@ -24,7 +24,7 @@ class GroupSeeder extends Seeder
         Group::create([
             'id' => 2,
             'course_id' => 1,
-            'title' => 'Toefl',
+            'title' => 'C1 level',
             'Description' => 'Test description',
             'start_time' => '10:00',
             'end_time' => '12:00',
@@ -42,7 +42,7 @@ class GroupSeeder extends Seeder
         Group::create([
             'id' => 4,
             'course_id' => 2,
-            'title' => 'New level for men',
+            'title' => 'New group for men',
             'Description' => 'Test description',
             'start_time' => '10:00',
             'end_time' => '12:00',
@@ -51,7 +51,7 @@ class GroupSeeder extends Seeder
         Group::create([
             'id' => 5,
             'course_id' => 3,
-            'title' => 'PHP',
+            'title' => 'Morning group',
             'Description' => 'English group',
             'start_time' => '10:00',
             'end_time' => '12:00',
@@ -60,7 +60,7 @@ class GroupSeeder extends Seeder
         Group::create([
             'id' => 6,
             'course_id' => 3,
-            'title' => 'Java',
+            'title' => 'Night group',
             'Description' => 'with OOP',
             'start_time' => '10:00',
             'end_time' => '12:00',

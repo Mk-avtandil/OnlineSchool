@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CourseController extends Controller
 {
-    public function index()
+    public function index(): CourseCollection
     {
         $courses = Course::with("groups")->paginate(3);
 

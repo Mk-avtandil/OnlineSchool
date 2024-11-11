@@ -30,6 +30,11 @@ const routes = [
         component: () => import("../pages/СourseLessons.vue"),
     },
     {
+        path: "/course/:id/lesson/store",
+        name: "lesson_create_page_url",
+        component: () => import("../pages/LessonCreate.vue"),
+    },
+    {
         path: "/students",
         name: "student_list_page_url",
         component: () => import("../pages/StudentList.vue"),

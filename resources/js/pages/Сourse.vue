@@ -46,11 +46,11 @@ console.log(pagination);
                     <p class="card-text">{{course.description}}</p>
 
                     <div class="btn-group">
-                        <router-link :to="{name: 'course_groups_page_url', params: {id: course.id}}" class="btn btn-outline-success">Группы</router-link>
+                        <router-link :to="{name: 'course_groups_page_url', params: {id: course.id}}" class="btn btn-outline-success">Groups</router-link>
                     </div>
 
                     <div class="btn-group mx-1">
-                        <router-link :to="{name: 'course_lessons_page_url', params: {id: course.id}}" class="btn btn-outline-success">Уроки</router-link>
+                        <router-link :to="{name: 'course_lessons_page_url', params: {id: course.id}}" class="btn btn-outline-success">Lessons</router-link>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -59,8 +59,8 @@ console.log(pagination);
             </div>
         </div>
         <div class="pagination my-2">
-            <button class="btn btn-success text-light" @click.prevent="getCourses(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Предыдущая</button>
-            <button class="btn btn-success mx-2" @click.prevent="getCourses(pagination.next_page_url)" :disabled="!pagination.next_page_url">Cледующая</button>
+            <button class="btn btn-success text-light" @click.prevent="getCourses(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+            <button class="btn btn-success mx-2" @click.prevent="getCourses(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
         </div>
     </div>
 </template>

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\GroupStudent;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TeacherSeeder::class);
         $this->call(StudentSeeder::class);
         $this->call(LessonSeeder::class);
+        $this->call(GroupStudentSeeder::class);
     }
 }
