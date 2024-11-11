@@ -7,8 +7,29 @@ const lessons = ref({});
 const route = useRoute();
 
 onMounted(async () => {
-    lessons.value = (await axios.get(`/api/lessons/${route.params.id}`)).data;
+    await getLessons();
 });
+
+const getLessons = async (url = `/api/lessons/${route.params.id}`) => {
+    try {
+        const response = await axios.get(url);
+        lessons.value = response.data;
+    } catch (error) {
+        console.error('Error fetching lessons:', error);
+    }
+}
+
+const deleteLesson = async (lessonId) => {
+    try {
+        await axios.delete(`/api/lessons/${lessonId}`);
+        await getLessons();
+        successMessage.value = 'Lesson deleted successfully!';
+    } catch (error) {
+        console.error('Failed to delete lesson:', error);
+    }
+};
+
+
 </script>
 
 <template>
@@ -24,7 +45,28 @@ onMounted(async () => {
         <div class="card-group" v-for="lesson in lessons?.data">
             <div class="card my-3">
                 <div class="card-body text-secondary">
-                    <h5 class="card-title">{{lesson.title}}</h5>
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 class="card-title text-dark">{{lesson.title}}</h5>
+                        </div>
+                        <div class="col-4 text-end align-top">
+                            <div class="btn-group">
+                                <router-link data-bs-toggle="dropdown" >
+                                    <div id="nav-icon">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                </router-link>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-sm-end">
+                                    <li>
+                                        <router-link :to="{name: 'lesson_edit_page_url', params: {id: lesson.id}}" class="dropdown-item">Edit</router-link>
+                                    </li>
+                                    <button @click.prevent="deleteLesson(lesson.id)" class="dropdown-item" type="submit">Delete</button>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     <p class="card-text">{{lesson.description}}</p>
                 </div>
                 <div class="card-footer">
@@ -43,5 +85,17 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+#nav-icon {
+    display: inline-block;
+    cursor: pointer;
+}
 
+#nav-icon span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    margin: 3px 0;
+    background-color: #333;
+    transition: 0.3s;
+}
 </style>

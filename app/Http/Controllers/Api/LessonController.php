@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LessonCreateRequest;
 use App\Http\Resources\LessonCollection;
+use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
+use Illuminate\Http\JsonResponse;
 
 class LessonController extends Controller
 {
@@ -14,6 +16,15 @@ class LessonController extends Controller
         $lessons = Lesson::where('course_id', $courseId)->with(['materials.files', 'homeworks'])->get();
 
         return new LessonCollection($lessons);
+    }
+
+    public function show(Lesson $lesson): LessonResource|JsonResponse
+    {
+        if (!$lesson) {
+            return response()->json(['message' => 'Lesson not found'], 404);
+        }
+
+        return new LessonResource($lesson);
     }
 
     public function store(LessonCreateRequest $request, $courseId)
@@ -44,6 +55,37 @@ class LessonController extends Controller
             'message' => 'Lesson created successfully with materials and files!',
             'lesson' => $lesson,
         ], 201);
+    }
 
+    public function update(Lesson $lesson, LessonCreateRequest $request)
+    {
+        try {
+            $lesson->update([
+                'title' => $request->get('title'),
+                'description' => $request->get('description'),
+                'course_id' => $request->get('course_id'),
+            ]);
+
+            return response()->json(['message' => 'Lesson updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "message" => "Failed to update lesson",
+                "error" => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroy(Lesson $lesson)
+    {
+        try {
+            $lesson->delete();
+
+            return response()->json(['message' => 'Lesson deleted successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "message" => "Failed to delete lesson",
+                "error" => $e->getMessage()
+            ], 500);
+        }
     }
 }

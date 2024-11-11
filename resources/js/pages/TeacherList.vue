@@ -1,10 +1,8 @@
 <script setup>
 import axios from "axios";
 import {onMounted, ref} from "vue";
-import { useRouter } from 'vue-router';
 
 const teachers = ref();
-const router = useRouter();
 
 onMounted(async () => {
     await getTeachers();
@@ -30,7 +28,6 @@ const getTeachers = async () => {
                 <router-link :to="{name: 'teacher_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Teacher</router-link>
             </div>
         </div>
-
 
         <table class="table table-hover">
             <thead>

@@ -1,47 +1,60 @@
 <script setup>
 import axios from "axios";
-import {ref} from "vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 
 const errors = ref({});
 const successMessage = ref('');
+const route = useRoute();
 const data = ref({
     title: '',
     description: '',
-    price: '',
 });
 
-const saveCourse = async () => {
+onMounted(async () => {
+    try {
+        data.value = (await axios.get( `/api/courses/${route.params.id}`)).data.data;
+        successMessage.value = '';
+    } catch (error) {
+        console.error("Failed to get course: ", error);
+    }
+});
+
+const updateLesson = async (url = `/api/lessons/${route.params.id}`) => {
     try {
         errors.value = {};
         successMessage.value = '';
 
-        await axios.post(`/api/courses`, data.value);
-        successMessage.value = 'Course created successfully!';
+        await axios.put(url, {
+            title: data.value.title,
+            description: data.value.description,
+        });
+
+        successMessage.value = 'Lesson updated successfully!';
 
         setTimeout(() => {
             data.value = {
                 title: '',
                 description: '',
-                price: '',
             };
         }, 1000);
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
             errors.value = error.response.data.errors;
         } else {
-            console.error('Failed to create course');
+            console.error('Failed to update lesson');
         }
     }
 };
-
 </script>
+
 <template>
     <div class="container my-3">
-        <h3 class="mb-3">Create Course</h3>
+        <h3 class="mb-3">Update Lesson</h3>
         <div v-if="successMessage" class="alert alert-success">
             {{ successMessage }}
         </div>
-        <form @submit.prevent="saveCourse">
+        <form @submit.prevent="updateLesson()">
             <div class="form-group">
                 <label>Title</label>
                 <input v-model="data.title" type="text" class="form-control">
@@ -58,16 +71,8 @@ const saveCourse = async () => {
                 {{ errors.description[0] }}
             </div>
 
-            <div class="form-group">
-                <label>Price</label>
-                <input v-model="data.price" type="text" class="form-control">
-            </div>
-            <div v-if="errors.price" class="alert alert-danger my-1">
-                {{ errors.price[0] }}
-            </div>
-
             <div class="form-group my-3">
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </form>
     </div>

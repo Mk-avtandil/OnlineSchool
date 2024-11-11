@@ -25,8 +25,15 @@ const getCourses = async (url = '/api/courses') => {
     }
 };
 
-console.log(pagination);
-
+const deleteCourse = async (courseId) => {
+    try {
+        await axios.delete(`/api/courses/${courseId}`);
+        await getCourses();
+        successMessage.value = 'Course deleted successfully!';
+    } catch (error) {
+        console.error('Failed to delete course:', error);
+    }
+};
 </script>
 
 <template>
@@ -42,9 +49,30 @@ console.log(pagination);
         <div class="card-group">
             <div class="card" v-for="course in courses?.data">
                 <div class="card-body text-secondary">
-                    <h5 class="card-title text-dark">{{course.title}}</h5>
-                    <p class="card-text">{{course.description}}</p>
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 class="card-title text-dark">{{course.title}}</h5>
+                        </div>
+                        <div class="col-4 text-end align-top">
+                            <div class="btn-group">
 
+                                <router-link data-bs-toggle="dropdown" >
+                                    <div id="nav-icon">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                </router-link>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-sm-end">
+                                    <li>
+                                        <router-link :to="{name: 'courses_edit_page_url', params: {id: course.id}}" class="dropdown-item">Edit</router-link>
+                                    </li>
+                                    <button @click.prevent="deleteCourse(course.id)" class="dropdown-item" type="submit">Delete</button>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="card-text">{{course.description}}</p>
                     <div class="btn-group">
                         <router-link :to="{name: 'course_groups_page_url', params: {id: course.id}}" class="btn btn-outline-success">Groups</router-link>
                     </div>
@@ -66,5 +94,17 @@ console.log(pagination);
 </template>
 
 <style scoped>
+#nav-icon {
+    display: inline-block;
+    cursor: pointer;
+}
 
+#nav-icon span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    margin: 3px 0;
+    background-color: #333;
+    transition: 0.3s;
+}
 </style>

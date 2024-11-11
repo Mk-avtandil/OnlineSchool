@@ -8,6 +8,11 @@ const routes = [
         component: () => import("../pages/Сourse.vue"),
     },
     {
+        path: "/course/:id",
+        name: "courses_edit_page_url",
+        component: () => import("../pages/CourseEdit.vue"),
+    },
+    {
         path: "/course/store",
         name: "course_create_page_url",
         component: () => import("../pages/CourseCreate.vue"),
@@ -33,6 +38,11 @@ const routes = [
         path: "/course/:id/lesson/store",
         name: "lesson_create_page_url",
         component: () => import("../pages/LessonCreate.vue"),
+    },
+    {
+        path: "/course/lesson/edit/:id",
+        name: "lesson_edit_page_url",
+        component: () => import("../pages/LessonEdit.vue"),
     },
     {
         path: "/students",
