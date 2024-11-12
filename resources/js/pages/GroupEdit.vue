@@ -31,7 +31,7 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
         errors.value = {};
         successMessage.value = '';
 
-        const response = await axios.put(url, {
+        await axios.put(url, {
             title: data.value.title,
             description: data.value.description,
             start_time: data.value.start_time,
