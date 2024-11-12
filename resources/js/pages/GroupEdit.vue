@@ -4,6 +4,7 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 const errors = ref({});
+const students = ref([]);
 const successMessage = ref('');
 const route = useRoute();
 const data = ref({
@@ -11,15 +12,17 @@ const data = ref({
     description: '',
     start_time: '',
     end_time: '',
+    students: [],
 });
 
 onMounted(async () => {
     try {
-        const response = await axios.get(`/api/group/${route.params.id}`);
-        data.value = response.data.data;
+        const groupResponse = await axios.get(`/api/group/${route.params.id}`);
+        data.value = groupResponse.data.data;
+
         successMessage.value = '';
     } catch (error) {
-        console.error("Failed to get group: ", error);
+        console.error("Failed to get data: ", error);
     }
 });
 
@@ -28,7 +31,7 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
         errors.value = {};
         successMessage.value = '';
 
-        await axios.put(url, {
+        const response = await axios.put(url, {
             title: data.value.title,
             description: data.value.description,
             start_time: data.value.start_time,
@@ -43,13 +46,13 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
                 description: '',
                 start_time: '',
                 end_time: '',
+                students: [],
             };
         }, 1000);
     } catch (error) {
+        console.error('Failed to update group:', error);
         if (error.response && error.response.data && error.response.data.errors) {
             errors.value = error.response.data.errors;
-        } else {
-            console.error('Failed to update group');
         }
     }
 };
@@ -62,7 +65,7 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
             {{ successMessage }}
         </div>
         <form @submit.prevent="updateGroup()">
-            <div class="form-group">
+            <div class="form-group my-2">
                 <label>Title</label>
                 <input v-model="data.title" type="text" class="form-control">
             </div>
@@ -70,7 +73,7 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
                 {{ errors.title[0] }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <label>Description</label>
                 <input v-model="data.description" type="text" class="form-control">
             </div>
@@ -78,7 +81,7 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
                 {{ errors.description[0] }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <label>Start time</label>
                 <input v-model="data.start_time" type="time" class="form-control">
             </div>
@@ -86,7 +89,7 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
                 {{ errors.start_time[0] }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group my-2">
                 <label>End time</label>
                 <input v-model="data.end_time" type="time" class="form-control">
             </div>
@@ -94,14 +97,22 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
                 {{ errors.end_time[0] }}
             </div>
 
+            <div class="form-group my-2">
+                <label>Students in Group</label>
+                <div>
+                    <a v-for="student in data.students" :key="student.id" class="btn btn-warning my-1"
+                       style="margin-right: 3px;">
+                        {{ student.first_name }} {{ student.last_name }}
+                    </a>
+                </div>
+            </div>
+
             <div class="form-group my-3">
                 <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </form>
     </div>
-
 </template>
 
 <style scoped>
-
 </style>

@@ -60,7 +60,9 @@ const deleteGroup = async (groupId) => {
                                     <li>
                                         <router-link :to="{name: 'group_edit_page_url', params: {id: group.id}}" class="dropdown-item">Edit</router-link>
                                     </li>
-                                    <button @click.prevent="deleteGroup(group.id)" class="dropdown-item" type="submit">Delete</button>
+                                    <li>
+                                        <button @click.prevent="deleteGroup(group.id)" class="dropdown-item" type="submit">Delete</button>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -76,9 +78,9 @@ const deleteGroup = async (groupId) => {
 
                     <span>Студенты группы:</span>
                     <div>
-                        <button v-for="student in group.students" type="button" class="bg-success rounded-4 text-light p-2">
+                        <a v-for="student in group.students" class="btn btn-warning my-1" style="margin-right: 3px;">
                             {{student.first_name}} {{student.last_name}}
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card-footer">
