@@ -7,7 +7,6 @@ use App\Http\Requests\LessonCreateRequest;
 use App\Http\Resources\LessonCollection;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
-use Illuminate\Http\JsonResponse;
 
 class LessonController extends Controller
 {
@@ -18,7 +17,7 @@ class LessonController extends Controller
         return new LessonCollection($lessons);
     }
 
-    public function show(Lesson $lesson): LessonResource|JsonResponse
+    public function show(Lesson $lesson)
     {
         if (!$lesson) {
             return response()->json(['message' => 'Lesson not found'], 404);
@@ -52,7 +51,7 @@ class LessonController extends Controller
         }
 
         return response()->json([
-            'message' => 'Lesson created successfully with materials and files!',
+            'message' => 'Lesson created successfully!',
             'lesson' => $lesson,
         ], 201);
     }
@@ -63,7 +62,6 @@ class LessonController extends Controller
             $lesson->update([
                 'title' => $request->get('title'),
                 'description' => $request->get('description'),
-                'course_id' => $request->get('course_id'),
             ]);
 
             return response()->json(['message' => 'Lesson updated successfully'], 200);

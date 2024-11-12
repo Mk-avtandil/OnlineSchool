@@ -10,7 +10,7 @@ onMounted(async () => {
     await getLessons();
 });
 
-const getLessons = async (url = `/api/lessons/${route.params.id}`) => {
+const getLessons = async (url = `/api/course/${route.params.id}/lessons`) => {
     try {
         const response = await axios.get(url);
         lessons.value = response.data;
@@ -21,15 +21,13 @@ const getLessons = async (url = `/api/lessons/${route.params.id}`) => {
 
 const deleteLesson = async (lessonId) => {
     try {
-        await axios.delete(`/api/lessons/${lessonId}`);
+        await axios.delete(`/api/lesson/${lessonId}`);
         await getLessons();
         successMessage.value = 'Lesson deleted successfully!';
     } catch (error) {
         console.error('Failed to delete lesson:', error);
     }
 };
-
-
 </script>
 
 <template>
@@ -42,7 +40,7 @@ const deleteLesson = async (lessonId) => {
                 <router-link :to="{name: 'lesson_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Lesson</router-link>
             </div>
         </div>
-        <div class="card-group" v-for="lesson in lessons?.data">
+        <div class="card-group" v-for="lesson in lessons?.data" :key="lesson.id">
             <div class="card my-3">
                 <div class="card-body text-secondary">
                     <div class="row">
@@ -51,7 +49,7 @@ const deleteLesson = async (lessonId) => {
                         </div>
                         <div class="col-4 text-end align-top">
                             <div class="btn-group">
-                                <router-link data-bs-toggle="dropdown" >
+                                <router-link data-bs-toggle="dropdown" to="">
                                     <div id="nav-icon">
                                         <span></span>
                                         <span></span>

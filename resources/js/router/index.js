@@ -8,7 +8,7 @@ const routes = [
         component: () => import("../pages/Сourse.vue"),
     },
     {
-        path: "/course/:id",
+        path: "/course/:id/edit",
         name: "courses_edit_page_url",
         component: () => import("../pages/CourseEdit.vue"),
     },
@@ -28,6 +28,11 @@ const routes = [
         name: "group_create_page_url",
         component: () => import("../pages/GroupCreate.vue"),
     },
+    {
+        path: "/group/:id/edit",
+        name: "group_edit_page_url",
+        component: () => import("../pages/GroupEdit.vue"),
+    },
     // Lessons
     {
         path: "/course/:id/lessons",
@@ -40,7 +45,7 @@ const routes = [
         component: () => import("../pages/LessonCreate.vue"),
     },
     {
-        path: "/course/lesson/edit/:id",
+        path: "/lesson/:id/edit",
         name: "lesson_edit_page_url",
         component: () => import("../pages/LessonEdit.vue"),
     },

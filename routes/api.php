@@ -12,31 +12,31 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('courses')
-    ->name('course.')
+Route::name('course.')
     ->group(function () {
-        Route::get('/', [CourseController::class, 'index'])->name('index');
-        Route::get('/{course}', [CourseController::class, 'show'])->name('show');
-        Route::put('/{course}', [CourseController::class, 'update'])->name('update');
-        Route::post('/', [CourseController::class, 'store'])->name('store');
-        Route::delete('/{course}', [CourseController::class, 'destroy'])->name('destroy');
+        Route::get('/courses', [CourseController::class, 'index'])->name('index');
+        Route::get('/course/{course}', [CourseController::class, 'show'])->name('show');
+        Route::put('/course/{course}', [CourseController::class, 'update'])->name('update');
+        Route::post('/course/store', [CourseController::class, 'store'])->name('store');
+        Route::delete('course/{course}', [CourseController::class, 'destroy'])->name('destroy');
     });
 
-Route::prefix('groups')
-    ->name('group.')
+Route::name('group.')
     ->group(function () {
-        Route::get('/{courseId}', [GroupController::class, 'index'])->name('index');
-        Route::post('/{courseId}/store', [GroupController::class, 'store'])->name('store');
+        Route::get('/course/{courseId}/groups', [GroupController::class, 'index'])->name('index');
+        Route::get('/group/{group}', [GroupController::class, 'show'])->name('show');
+        Route::put('/group/{group}', [GroupController::class, 'update'])->name('update');
+        Route::post('/course/{courseId}/group/store', [GroupController::class, 'store'])->name('store');
+        Route::delete('group/{group}', [GroupController::class, 'destroy'])->name('destroy');
     });
 
-Route::prefix('lessons')
-    ->name('lesson.')
+Route::name('lesson.')
     ->group(function () {
-        Route::get('/{courseId}', [LessonController::class, 'index'])->name('index');
-        Route::get('/{lesson}', [LessonController::class, 'show'])->name('show');
-        Route::put('/{lesson}', [LessonController::class, 'update'])->name('update');
-        Route::post('/{courseId}/store', [LessonController::class, 'store'])->name('store');
-        Route::delete('/{lesson}', [LessonController::class, 'destroy'])->name('destroy');
+        Route::get('/course/{courseId}/lessons', [LessonController::class, 'index'])->name('index');
+        Route::get('/lesson/{lesson}', [LessonController::class, 'show'])->name('show');
+        Route::put('/lesson/{lesson}', [LessonController::class, 'update'])->name('update');
+        Route::post('/course/{courseId}/lesson/store', [LessonController::class, 'store'])->name('store');
+        Route::delete('lesson/{lesson}', [LessonController::class, 'destroy'])->name('destroy');
     });
 
 Route::prefix('students')

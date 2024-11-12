@@ -27,7 +27,7 @@ const getCourses = async (url = '/api/courses') => {
 
 const deleteCourse = async (courseId) => {
     try {
-        await axios.delete(`/api/courses/${courseId}`);
+        await axios.delete(`/api/course/${courseId}`);
         await getCourses();
         successMessage.value = 'Course deleted successfully!';
     } catch (error) {
@@ -55,7 +55,6 @@ const deleteCourse = async (courseId) => {
                         </div>
                         <div class="col-4 text-end align-top">
                             <div class="btn-group">
-
                                 <router-link data-bs-toggle="dropdown" >
                                     <div id="nav-icon">
                                         <span></span>

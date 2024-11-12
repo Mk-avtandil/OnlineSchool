@@ -44,8 +44,7 @@ const saveGroup = async () => {
     try {
         errors.value = {};
         successMessage.value = '';
-
-        await axios.post(`/api/groups/${route.params.id}/store`, data.value);
+        await axios.post(`/api/course/${route.params.id}/group/store`, data.value);
         successMessage.value = 'Group created successfully!';
 
         setTimeout(() => {

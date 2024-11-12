@@ -30,7 +30,7 @@ const saveLesson = async () => {
             formData.append('materials[][files][]', file);
         });
 
-        await axios.post(`/api/lessons/${route.params.id}/store`, formData);
+        await axios.post(`/api/course/${route.params.id}/lesson/store`, formData);
 
         successMessage.value = 'Lesson created successfully!';
 
@@ -53,7 +53,7 @@ const saveLesson = async () => {
 
 <template>
     <div class="container my-3">
-        <h3 class="mb-3">Create Group</h3>
+        <h3 class="mb-3">Create Lesson</h3>
         <div v-if="successMessage" class="alert alert-success">
             {{ successMessage }}
         </div>
