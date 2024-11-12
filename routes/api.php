@@ -39,16 +39,22 @@ Route::name('lesson.')
         Route::delete('lesson/{lesson}', [LessonController::class, 'destroy'])->name('destroy');
     });
 
-Route::prefix('students')
+Route::prefix('student')
     ->name('student.')
     ->group(function () {
         Route::get('/', [StudentController::class, 'index'])->name('index');
+        Route::get('/{student}', [StudentController::class, 'show'])->name('show');
+        Route::put('/{student}', [StudentController::class, 'update'])->name('update');
         Route::post('/store', [StudentController::class, 'store'])->name('store');
+        Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
     });
 
-Route::prefix('teachers')
+Route::prefix('teacher')
     ->name('teacher.')
     ->group(function () {
         Route::get('/', [TeacherController::class, 'index'])->name('index');
+        Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
+        Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update');
         Route::post('/store', [TeacherController::class, 'store'])->name('store');
+        Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
     });

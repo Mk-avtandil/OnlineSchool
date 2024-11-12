@@ -60,7 +60,9 @@ const deleteLesson = async (lessonId) => {
                                     <li>
                                         <router-link :to="{name: 'lesson_edit_page_url', params: {id: lesson.id}}" class="dropdown-item">Edit</router-link>
                                     </li>
-                                    <button @click.prevent="deleteLesson(lesson.id)" class="dropdown-item" type="submit">Delete</button>
+                                    <li>
+                                        <button @click.prevent="deleteLesson(lesson.id)" class="dropdown-item" type="submit">Delete</button>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -68,6 +70,7 @@ const deleteLesson = async (lessonId) => {
                     <p class="card-text">{{lesson.description}}</p>
                 </div>
                 <div class="card-footer">
+                    {{lessons.materials}}
                     <span>Materials:</span>
                     <ul v-for="material in lesson.materials">
                         <li v-for="file in material.files" :key="file.id">

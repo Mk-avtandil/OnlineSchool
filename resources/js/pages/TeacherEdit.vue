@@ -1,24 +1,43 @@
 <script setup>
 import axios from "axios";
-import {ref} from "vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 
 const errors = ref({});
 const successMessage = ref('');
+const route = useRoute();
 const data = ref({
     first_name: '',
     last_name: '',
     birthday: '',
     phone: '',
-    email: ''
+    email: '',
 });
 
-const saveTeacher = async () => {
+onMounted(async () => {
+    try {
+        const response = await axios.get(`/api/teacher/${route.params.id}`);
+        data.value = response.data.data;
+        successMessage.value = '';
+    } catch (error) {
+        console.error("Failed to get teacher: ", error);
+    }
+});
+
+const updateTeacher = async (url = `/api/teacher/${route.params.id}`) => {
     try {
         errors.value = {};
         successMessage.value = '';
 
-        await axios.post(`/api/teacher/store`, data.value);
-        successMessage.value = 'Teacher created successfully!';
+        await axios.put(url, {
+            first_name: data.value.first_name,
+            last_name: data.value.last_name,
+            birthday: data.value.birthday,
+            phone: data.value.phone,
+            email: data.value.email,
+        });
+
+        successMessage.value = 'Teacher updated successfully!';
 
         setTimeout(() => {
             data.value = {
@@ -33,19 +52,19 @@ const saveTeacher = async () => {
         if (error.response && error.response.data && error.response.data.errors) {
             errors.value = error.response.data.errors;
         } else {
-            console.error('Failed to create teacher');
+            console.error('Failed to update teacher');
         }
     }
 };
-
 </script>
+
 <template>
     <div class="container my-3">
-        <h3 class="mb-3">Create Teacher</h3>
+        <h3 class="mb-3">Update Teacher</h3>
         <div v-if="successMessage" class="alert alert-success">
             {{ successMessage }}
         </div>
-        <form @submit.prevent="saveTeacher">
+        <form @submit.prevent="updateTeacher()">
             <div class="form-group">
                 <label>First name</label>
                 <input v-model="data.first_name" type="text" class="form-control">
@@ -87,7 +106,7 @@ const saveTeacher = async () => {
             </div>
 
             <div class="form-group my-3">
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </form>
     </div>

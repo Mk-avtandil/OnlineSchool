@@ -10,10 +10,20 @@ onMounted(async () => {
 
 const getTeachers = async () => {
     try {
-        const response = await axios.get('/api/teachers');
+        const response = await axios.get('/api/teacher');
         teachers.value = response.data;
     } catch (error) {
         console.error('Error fetching teachers:', error);
+    }
+};
+
+const deleteTeacher = async (teacherId) => {
+    try {
+        await axios.delete(`/api/teacher/${teacherId}`);
+        await getTeachers();
+        successMessage.value = 'Teacher deleted successfully!';
+    } catch (error) {
+        console.error('Failed to delete teacher:', error);
     }
 };
 </script>
@@ -36,14 +46,19 @@ const getTeachers = async () => {
                 <th scope="col">Birthday</th>
                 <th scope="col">Phone</th>
                 <th scope="col">Email</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="teacher in teachers?.data">
+            <tr v-for="teacher in teachers?.data" class="align-middle">
                 <th>{{teacher.first_name}} {{teacher.last_name}}</th>
                 <td>{{teacher.phone}}</td>
                 <td>{{teacher.phone}}</td>
                 <td>{{teacher.email}}</td>
+                <td>
+                    <router-link :to="{name: 'teacher_edit_page_url', params: {id: teacher.id}}" class="btn btn-warning">Edit</router-link>
+                    <button @click.prevent="deleteTeacher(teacher.id)" class="btn btn-danger m-1" type="submit">Delete</button>
+                </td>
             </tr>
             </tbody>
         </table>

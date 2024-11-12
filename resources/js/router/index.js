@@ -49,6 +49,7 @@ const routes = [
         name: "lesson_edit_page_url",
         component: () => import("../pages/LessonEdit.vue"),
     },
+    // Students
     {
         path: "/students",
         name: "student_list_page_url",
@@ -60,6 +61,12 @@ const routes = [
         component: () => import("../pages/StudentCreate.vue"),
     },
     {
+        path: "/student/:id/edit",
+        name: "student_edit_page_url",
+        component: () => import("../pages/StudentEdit.vue"),
+    },
+    // Teachers
+    {
         path: "/teachers",
         name: "teacher_list_page_url",
         component: () => import("../pages/TeacherList.vue"),
@@ -68,6 +75,11 @@ const routes = [
         path: "/teacher/store",
         name: "teacher_create_page_url",
         component: () => import("../pages/TeacherCreate.vue"),
+    },
+    {
+        path: "/teacher/:id/edit",
+        name: "teacher_edit_page_url",
+        component: () => import("../pages/TeacherEdit.vue"),
     },
 ];
 
