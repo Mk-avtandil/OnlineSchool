@@ -12,7 +12,7 @@ class LessonController extends Controller
 {
     public function index($courseId): LessonCollection
     {
-        $lessons = Lesson::where('course_id', $courseId)->with('media')->get();
+        $lessons = Lesson::where('course_id', $courseId)->with('media', 'homeworks')->get();
 
         return new LessonCollection($lessons);
     }

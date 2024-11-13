@@ -18,6 +18,7 @@ class LessonResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
+            'homeworks' => $this->homeworks,
             'materials' => $this->getMedia('lesson_files')->map(function ($media) {
                 return [
                     'id' => $media->id,

@@ -70,17 +70,31 @@ const deleteLesson = async (lessonId) => {
                     <p class="card-text">{{lesson.description}}</p>
                 </div>
                 <div class="card-footer">
-                    <div v-if="lesson.materials.length">
-                        <span>Materials:</span>
-                        <ul>
-                            <li v-for="file in lesson.materials" :key="file.id">
-                                <a :href="file.url" :download="file.name">
-                                    Download {{ file.name }}
-                                </a>
-                            </li>
-                        </ul>
+                    <div class="row">
+                        <div class="col-6">
+                            <div v-if="lesson.materials.length">
+                                <span>Materials:</span>
+                                <ul>
+                                    <li v-for="file in lesson.materials" :key="file.id">
+                                        <a :href="file.url" :download="file.name">
+                                            Download {{ file.name }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <p v-else>No materials found</p>
+                        </div>
+                        <div class="col-6">
+                            <span>Homeworks:</span>
+                            <ul class="list-group">
+                                <button v-for="homework in lesson.homeworks" class="btn p-0 mb-1">
+                                    <li class="list-group-item p-2 bg-warning-subtle">
+                                        {{homework.title}}
+                                    </li>
+                                </button>
+                            </ul>
+                        </div>
                     </div>
-                    <p v-else>No materials found</p>
                 </div>
             </div>
         </div>
