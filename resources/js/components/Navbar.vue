@@ -21,6 +21,20 @@
                         <router-link :to="{name: 'teacher_list_page_url'}" class="nav-link active" aria-current="page">Teachers</router-link>
                     </li>
                 </ul>
+
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="!isAuthenticated">
+                    <li class="nav-item">
+                        <router-link :to="{name: 'register_page_url'}" class="nav-link active" aria-current="page">Register</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link :to="{name: 'login_page_url'}" class="nav-link active" aria-current="page">Login</router-link>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="isAuthenticated">
+                    <li class="nav-item" >
+                        <button type="button" @click="logout" class="nav-link active">Logout</button>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentCreateRequest;
+use App\Http\Requests\StudentUpdateRequest;
 use App\Http\Resources\StudentCollection;
 use App\Http\Resources\StudentResource;
 use App\Models\Student;
@@ -44,17 +45,18 @@ class StudentController extends Controller
         }
     }
 
-    public function update(Student $student, StudentCreateRequest $request)
+    public function update(Student $student, StudentUpdateRequest $request)
     {
+        $fields = ['first_name', 'last_name', 'birthday', 'address', 'phone', 'email'];
         try {
-            $student->update([
-                'first_name' => $request->get('first_name'),
-                'last_name' => $request->get('last_name'),
-                'birthday' => $request->get('birthday'),
-                'address' => $request->get('address'),
-                'phone' => $request->get('phone'),
-                'email' => $request->get('email'),
-            ]);
+            foreach ($fields as $field) {
+                $newValue = $request->get($field);
+
+                if ($student->$field !== $newValue) {
+                    $student->$field = $newValue;
+                }
+            }
+            $student->save();
 
             return response()->json(['message' => 'Student updated successfully'], 200);
         } catch (\Exception $e) {

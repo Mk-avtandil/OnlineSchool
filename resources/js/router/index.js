@@ -81,6 +81,17 @@ const routes = [
         name: "teacher_edit_page_url",
         component: () => import("../pages/TeacherEdit.vue"),
     },
+    // Auth
+    {
+        path: "/register",
+        name: "register_page_url",
+        component: () => import("../pages/RegisterPage.vue"),
+    },
+    {
+        path: "/login",
+        name: "login_page_url",
+        component: () => import("../pages/LoginPage.vue"),
+    },
 ];
 
 export default createRouter({
