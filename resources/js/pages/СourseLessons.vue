@@ -70,15 +70,17 @@ const deleteLesson = async (lessonId) => {
                     <p class="card-text">{{lesson.description}}</p>
                 </div>
                 <div class="card-footer">
-                    {{lessons.materials}}
-                    <span>Materials:</span>
-                    <ul v-for="material in lesson.materials">
-                        <li v-for="file in material.files" :key="file.id">
-                            <a :href="`/storage/${file.file_path}`" download >
-                                Download file
-                            </a>
-                        </li>
-                    </ul>
+                    <div v-if="lesson.materials.length">
+                        <span>Materials:</span>
+                        <ul>
+                            <li v-for="file in lesson.materials" :key="file.id">
+                                <a :href="file.url" :download="file.name">
+                                    Download {{ file.name }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <p v-else>No materials found</p>
                 </div>
             </div>
         </div>

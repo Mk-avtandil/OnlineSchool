@@ -10,11 +10,6 @@ class Material extends Model
 {
     protected $fillable = ['lesson_id'];
 
-    public function lesson(): BelongsTo
-    {
-        return $this->belongsTo(Lesson::class);
-    }
-
     public function files(): morphMany
     {
         return $this->morphMany(File::class, 'fileable');

@@ -12,7 +12,7 @@ class LessonController extends Controller
 {
     public function index($courseId): LessonCollection
     {
-        $lessons = Lesson::where('course_id', $courseId)->with(['materials', 'homeworks'])->get();
+        $lessons = Lesson::where('course_id', $courseId)->with('media')->get();
 
         return new LessonCollection($lessons);
     }
@@ -34,20 +34,8 @@ class LessonController extends Controller
             'course_id' => $courseId,
         ]);
 
-        if ($request->has('materials')) {
-            foreach ($request->materials as $materialData) {
-                $material = $lesson->materials()->create([]);
-
-                if (isset($materialData['files'])) {
-                    foreach ($materialData['files'] as $file) {
-                        $filePath = $file->store('materials', 'public');
-
-                        $material->files()->create([
-                            'file_path' => $filePath,
-                        ]);
-                    }
-                }
-            }
+        if ($request->hasFile('files')) {
+            $lesson->addFiles($request->file('files'));
         }
 
         return response()->json([

@@ -27,10 +27,14 @@ const saveLesson = async () => {
         formData.append('description', data.value.description);
 
         data.value.files.forEach(file => {
-            formData.append('materials[][files][]', file);
+            formData.append('files[]', file);
         });
 
-        await axios.post(`/api/course/${route.params.id}/lesson/store`, formData);
+        await axios.post(`/api/course/${route.params.id}/lesson/store`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
         successMessage.value = 'Lesson created successfully!';
 
@@ -54,29 +58,32 @@ const saveLesson = async () => {
 <template>
     <div class="container my-3">
         <h3 class="mb-3">Create Lesson</h3>
+
         <div v-if="successMessage" class="alert alert-success">
             {{ successMessage }}
         </div>
-        <form @submit.prevent="saveLesson">
+
+        <form @submit.prevent="saveLesson()">
+
             <div class="form-group my-2">
-                <label>Title</label>
-                <input v-model="data.title" type="text" class="form-control" required>
+                <label for="title">Title</label>
+                <input v-model="data.title" type="text" id="title" class="form-control" required>
             </div>
             <div v-if="errors.title" class="alert alert-danger my-1">
                 {{ errors.title[0] }}
             </div>
 
             <div class="form-group my-2">
-                <label>Description</label>
-                <input v-model="data.description" type="text" class="form-control" required>
+                <label for="description">Description</label>
+                <textarea v-model="data.description" id="description" class="form-control" required></textarea>
             </div>
             <div v-if="errors.description" class="alert alert-danger my-1">
                 {{ errors.description[0] }}
             </div>
 
             <div class="form-group my-2">
-                <label>Upload Files</label>
-                <input type="file" @change="handleFileChange" multiple class="form-control">
+                <label for="files">Upload Files</label>
+                <input type="file" @change="handleFileChange" id="files" class="form-control" multiple>
             </div>
             <div v-if="errors.files" class="alert alert-danger my-1">
                 {{ errors.files[0] }}
