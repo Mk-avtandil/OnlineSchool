@@ -53,7 +53,7 @@ const saveHomework = async () => {
 
             <div class="form-group my-2">
                 <label>Description</label>
-                <textarea v-model="data.description" id="description" class="form-control" required></textarea>
+                <textarea v-model="data.description" rows="5" class="form-control"></textarea>
             </div>
             <div v-if="errors.description" class="alert alert-danger my-1">
                 {{ errors.description[0] }}

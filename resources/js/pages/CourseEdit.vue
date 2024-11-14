@@ -33,14 +33,6 @@ const updateCourse = async (url = `/api/course/${route.params.id}`) => {
         });
 
         successMessage.value = 'Course updated successfully!';
-
-        setTimeout(() => {
-            data.value = {
-                title: '',
-                description: '',
-                price: '',
-            };
-        }, 1000);
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
             errors.value = error.response.data.errors;
@@ -68,7 +60,7 @@ const updateCourse = async (url = `/api/course/${route.params.id}`) => {
 
             <div class="form-group">
                 <label>Description</label>
-                <input v-model="data.description" type="text" class="form-control">
+                <textarea v-model="data.description" rows="5" class="form-control"></textarea>
             </div>
             <div v-if="errors.description" class="alert alert-danger my-1">
                 {{ errors.description[0] }}

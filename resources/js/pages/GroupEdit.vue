@@ -85,7 +85,7 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
 
             <div class="form-group my-2">
                 <label>Description</label>
-                <input v-model="data.description" type="text" class="form-control">
+                <textarea v-model="data.description" rows="5" class="form-control"></textarea>
             </div>
             <div v-if="errors.description" class="alert alert-danger my-1">
                 {{ errors.description[0] }}
@@ -108,26 +108,27 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
             </div>
 
             <div class="form-group my-2">
-                <label>Students in Group</label>
-                <div>
-                    <a v-for="student in data.students" :key="student.id" class="btn btn-warning my-1"
-                       style="margin-right: 3px;">
-                        {{ student.first_name }} {{ student.last_name }}
-                    </a>
-                </div>
-            </div>
-
-            <div class="form-group my-3">
-                <label>Add Students to Group</label>
-                <div>
-                    <div v-for="student in availableStudents" :key="student.id" class="form-check">
-                        <input type="checkbox"
-                               class="form-check-input"
-                               :value="student.id"
-                               v-model="selectedStudents">
-                        <label class="form-check-label">
-                            {{ student.first_name }} {{ student.last_name }}
-                        </label>
+                <div class="row">
+                    <div class="col-6">
+                        <label>Students in Group</label>
+                        <div>
+                            <a v-for="student in data.students" :key="student.id" class="btn btn-warning my-1"
+                               style="margin-right: 3px;">
+                                {{ student.first_name }} {{ student.last_name }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label>Add Students to Group</label>
+                        <ul class="scrollable-list list-group">
+                            <li class="list-group-item" v-for="student in availableStudents" :key="student.id">
+                                <input class="form-check-input me-1" type="checkbox" :id="'checkbox-' + student.id"
+                                       :value="student.id" v-model="selectedStudents">
+                                <label class="form-check-label" :for="'checkbox-' + student.id">
+                                    {{ student.first_name }} {{ student.last_name }}
+                                </label>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -140,4 +141,9 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
 </template>
 
 <style scoped>
+.scrollable-list {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 5px;
+}
 </style>

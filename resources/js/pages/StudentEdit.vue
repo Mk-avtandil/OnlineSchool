@@ -40,17 +40,6 @@ const updateStudent = async (url = `/api/student/${route.params.id}`) => {
         });
 
         successMessage.value = 'Student updated successfully!';
-
-        setTimeout(() => {
-            data.value = {
-                first_name: '',
-                last_name: '',
-                birthday: '',
-                address: '',
-                phone: '',
-                email: '',
-            };
-        }, 1000);
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
             errors.value = error.response.data.errors;

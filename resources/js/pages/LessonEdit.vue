@@ -33,12 +33,6 @@ const updateLesson = async (url = `/api/lesson/${route.params.id}`) => {
 
         successMessage.value = 'Lesson updated successfully!';
 
-        setTimeout(() => {
-            data.value = {
-                title: '',
-                description: '',
-            };
-        }, 1000);
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
             errors.value = error.response.data.errors;
