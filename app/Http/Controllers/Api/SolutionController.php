@@ -11,16 +11,19 @@ class SolutionController extends Controller
 {
     public function store(SolutionCreateRequest $request, $homeworkId): JsonResponse
     {
-        try {
-            Solution::create([
-                'answer' => $request->get('answer'),
-                'homework_id' => $homeworkId,
-                'student_id' => 1,
-            ]);
+        $solution = Solution::create([
+            'answer' => $request->get('answer'),
+            'homework_id' => $homeworkId,
+            'student_id' => 1,
+        ]);
 
-            return response()->json(['message' => 'Solution created successfully'], 201);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to create solution', 'error' => $e->getMessage()], 500);
+        if ($request->hasFile('files')) {
+            $solution->addFiles($request->file('files'));
         }
+
+        return response()->json([
+            'message' => 'Lesson created successfully!',
+            'lesson' => $solution,
+        ], 201);
     }
 }

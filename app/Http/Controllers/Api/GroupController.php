@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GroupCreateRequest;
+use App\Http\Requests\GroupUpdateRequest;
 use App\Http\Resources\GroupCollection;
 use App\Http\Resources\GroupResource;
 use App\Models\Group;
@@ -56,15 +57,23 @@ class GroupController extends Controller
         }
     }
 
-    public function update(Group $group, GroupCreateRequest $request): JsonResponse
+    public function update(Group $group, GroupUpdateRequest $request): JsonResponse
     {
+        $fields = ['title', 'description', 'start_time', 'end_time'];
         try {
-            $group->update([
-                'title' => $request->get('title'),
-                'description' => $request->get('description'),
-                'start_time' => $request->get('start_time'),
-                'end_time' => $request->get('end_time'),
-            ]);
+            foreach ($fields as $field) {
+                $newValue = $request->get($field);
+
+                if ($group->$field !== $newValue) {
+                    $group->$field = $newValue;
+                }
+            }
+            $group->save();
+
+            if ($request->has('students') && count($request->get('students')) > 0) {
+                $students = Student::find($request->get('students'));
+                $group->students()->sync($students);
+            }
 
             return response()->json(['message' => 'Group updated successfully'], 200);
         } catch (\Exception $e) {

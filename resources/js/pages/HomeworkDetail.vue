@@ -10,6 +10,7 @@ const successMessage = ref('');
 
 const data = ref({
     answer: '',
+    files: [],
 });
 
 onMounted(async () => {
@@ -26,15 +27,36 @@ const getHomework = async (url = `/api/homework/${route.params.id}`) => {
     }
 };
 
+const handleFileChange = (event) => {
+    data.value.files = Array.from(event.target.files);
+};
+
 const saveSolution = async (url = `/api/homework/${route.params.id}/solution/store`) => {
     try {
         errors.value = {};
         successMessage.value = '';
 
-        await axios.post(url, data.value);
+        const formData = new FormData();
+
+        formData.append('answer', data.value.answer);
+
+        data.value.files.forEach(file => {
+            formData.append('files[]', file);
+        });
+
+        await axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
         successMessage.value = 'Solution created successfully!';
 
-        setTimeout(() => {data.value = {answer: ''}}, 1000);
+        setTimeout(() => {
+            data.value = {
+                answer: '',
+                files: [],
+            }}, 1000);
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
             errors.value = error.response.data.errors;
@@ -48,7 +70,7 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
 <template>
     <div class="container my-4">
         <div class="row">
-            <div class="col-6">
+            <div class="col-12 mb-4">
                 <h3 class="mb-2">Homework</h3>
                 <div class="card-group">
                     <div class="card">
@@ -64,8 +86,8 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
                     </div>
                 </div>
             </div>
-            <div class="col-6">
-                <h3 class="mb-2">Solution</h3>
+            <div class="col-12">
+                <h3 class="">Solution</h3>
                 <div v-if="successMessage" class="alert alert-success">
                     {{ successMessage }}
                 </div>
@@ -77,6 +99,14 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
                     </div>
                     <div v-if="errors.answer" class="alert alert-danger my-1">
                         {{ errors.answer[0] }}
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label for="files">Upload Files</label>
+                        <input type="file" @change="handleFileChange" id="files" class="form-control" multiple>
+                    </div>
+                    <div v-if="errors.files" class="alert alert-danger my-1">
+                        {{ errors.files[0] }}
                     </div>
 
                     <div class="form-group my-3">

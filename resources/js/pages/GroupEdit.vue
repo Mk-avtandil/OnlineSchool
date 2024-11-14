@@ -4,8 +4,9 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 const errors = ref({});
-const students = ref([]);
 const successMessage = ref('');
+const availableStudents = ref([]);
+const selectedStudents = ref([]);
 const route = useRoute();
 const data = ref({
     title: '',
@@ -16,39 +17,48 @@ const data = ref({
 });
 
 onMounted(async () => {
-    try {
-        const groupResponse = await axios.get(`/api/group/${route.params.id}`);
-        data.value = groupResponse.data.data;
-
-        successMessage.value = '';
-    } catch (error) {
-        console.error("Failed to get data: ", error);
-    }
+    await getGroup();
+    await getStudents();
 });
+
+const getGroup = async (url = `/api/group/${route.params.id}`) => {
+    try {
+        const response = await axios.get(url);
+        data.value = response.data.data;
+    } catch (error) {
+        console.error("Failed to get groups: ", error);
+    }
+};
+
+const getStudents = async (url = '/api/student') => {
+    try {
+        const response = await axios.get(url);
+        availableStudents.value = response.data.data.filter(student =>
+            !data.value.students.some(groupStudent => groupStudent.id === student.id)
+        );
+    } catch (error) {
+        console.error("Failed to get students: ", error);
+    }
+};
 
 const updateGroup = async (url = `/api/group/${route.params.id}`) => {
     try {
         errors.value = {};
         successMessage.value = '';
 
-        await axios.put(url, {
+        const response = await axios.put(url, {
             title: data.value.title,
             description: data.value.description,
             start_time: data.value.start_time,
             end_time: data.value.end_time,
+            students: [data.value.students, selectedStudents.value],
         });
 
         successMessage.value = 'Group updated successfully!';
 
-        setTimeout(() => {
-            data.value = {
-                title: '',
-                description: '',
-                start_time: '',
-                end_time: '',
-                students: [],
-            };
-        }, 1000);
+        await getGroup();
+        await getStudents();
+
     } catch (error) {
         console.error('Failed to update group:', error);
         if (error.response && error.response.data && error.response.data.errors) {
@@ -104,6 +114,21 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
                        style="margin-right: 3px;">
                         {{ student.first_name }} {{ student.last_name }}
                     </a>
+                </div>
+            </div>
+
+            <div class="form-group my-3">
+                <label>Add Students to Group</label>
+                <div>
+                    <div v-for="student in availableStudents" :key="student.id" class="form-check">
+                        <input type="checkbox"
+                               class="form-check-input"
+                               :value="student.id"
+                               v-model="selectedStudents">
+                        <label class="form-check-label">
+                            {{ student.first_name }} {{ student.last_name }}
+                        </label>
+                    </div>
                 </div>
             </div>
 

@@ -11,9 +11,6 @@ class LessonCreateRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:100'],
             'description' => ['required', 'string'],
-            'materials' => ['nullable', 'array'],
-            'materials.*.files' => ['nullable', 'array'],
-            'materials.*.files.*' => ['file', 'mimes:jpg,png,pdf,docx,txt,jpeg'],
         ];
     }
 }

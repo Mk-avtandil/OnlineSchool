@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Solution extends Model
+class Solution extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     protected $fillable = [
         'answer',
         'student_id',
@@ -21,5 +25,18 @@ class Solution extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
+    }
+
+    public function addFiles($files)
+    {
+        foreach ($files as $file) {
+            $this->addMedia($file)
+                ->toMediaCollection('solution_files');
+        }
+    }
+
+    public function getFiles()
+    {
+        return $this->getMedia('solution_files');
     }
 }
