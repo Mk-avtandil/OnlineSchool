@@ -81,6 +81,17 @@ const routes = [
         name: "teacher_edit_page_url",
         component: () => import("../pages/TeacherEdit.vue"),
     },
+    // Homeworks
+    {
+        path: "/lesson/:id/homework/store",
+        name: "homework_create_page_url",
+        component: () => import("../pages/HomeworkCreate.vue"),
+    },
+    {
+        path: "/homework/:id",
+        name: "homework_detail_page_url",
+        component: () => import("../pages/HomeworkDetail.vue")
+    },
     // Auth
     {
         path: "/register",

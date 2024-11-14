@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Solution extends Model
 {
+    protected $fillable = [
+        'answer',
+        'student_id',
+        'homework_id',
+    ];
 
     public function homework(): belongsTo
     {
@@ -16,10 +21,5 @@ class Solution extends Model
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
-    }
-
-    public function files()
-    {
-        return $this->morphMany(File::class, 'fileable');
     }
 }

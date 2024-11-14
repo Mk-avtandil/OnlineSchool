@@ -13,7 +13,6 @@ class TeacherSeeder extends Seeder
     public function run(): void
     {
         Teacher::create([
-            'id' => 1,
             'first_name' => 'Maksat',
             'last_name' => 'Maksatov',
             'birthday' => date('Y-m-d', strtotime('12.04.1997')),
@@ -22,7 +21,6 @@ class TeacherSeeder extends Seeder
         ]);
 
         Teacher::create([
-            'id' => 2,
             'first_name' => 'Vlad',
             'last_name' => 'Vladov',
             'birthday' => date('Y-m-d', strtotime('12.04.1997')),
@@ -31,7 +29,6 @@ class TeacherSeeder extends Seeder
         ]);
 
         Teacher::create([
-            'id' => 3,
             'first_name' => 'Chika',
             'last_name' => 'Sultanov',
             'birthday' => date('Y-m-d', strtotime('12.04.1997')),

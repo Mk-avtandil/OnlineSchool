@@ -73,7 +73,7 @@ const saveGroup = async () => {
         <div v-if="successMessage" class="alert alert-success">
             {{ successMessage }}
         </div>
-        <form @submit.prevent="saveGroup">
+        <form @submit.prevent="saveGroup()">
             <div class="form-group my-2">
                 <label>Title</label>
                 <input v-model="data.title" type="text" class="form-control">

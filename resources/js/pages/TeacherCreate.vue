@@ -45,7 +45,7 @@ const saveTeacher = async () => {
         <div v-if="successMessage" class="alert alert-success">
             {{ successMessage }}
         </div>
-        <form @submit.prevent="saveTeacher">
+        <form @submit.prevent="saveTeacher()">
             <div class="form-group">
                 <label>First name</label>
                 <input v-model="data.first_name" type="text" class="form-control">

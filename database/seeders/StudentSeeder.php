@@ -13,7 +13,6 @@ class StudentSeeder extends Seeder
     public function run(): void
     {
         Student::create([
-            'id' => 1,
             'first_name' => 'Avtandil',
             'last_name' => 'Kurbanov',
             'birthday' => date('Y-m-d', strtotime('12.04.1997')),
@@ -23,7 +22,6 @@ class StudentSeeder extends Seeder
         ]);
 
         Student::create([
-            'id' => 2,
             'first_name' => 'Dastan',
             'last_name' => 'Kushnazarov',
             'birthday' => date('Y-m-d', strtotime('12.04.1997')),
@@ -33,7 +31,6 @@ class StudentSeeder extends Seeder
         ]);
 
         Student::create([
-            'id' => 3,
             'first_name' => 'Malika',
             'last_name' => 'Malikova',
             'birthday' => date('Y-m-d', strtotime('12.04.1997')),

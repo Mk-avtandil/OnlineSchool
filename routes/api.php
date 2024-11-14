@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\GroupController;
+use App\Http\Controllers\Api\HomeworkController;
 use App\Http\Controllers\Api\LessonController;
+use App\Http\Controllers\Api\SolutionController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TeacherController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -91,4 +93,15 @@ Route::prefix('teacher')
         Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update');
         Route::post('/store', [TeacherController::class, 'store'])->name('store');
         Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
+    });
+
+Route::name('homework.')
+    ->group(function () {
+        Route::post('/lesson/{lesson}/homework/store', [HomeworkController::class, 'store'])->name('store');
+        Route::get('/homework/{homework}', [HomeworkController::class, 'show'])->name('show');
+    });
+
+Route::name('solution.')
+    ->group(function () {
+        Route::post('/homework/{homeworkId}/solution/store', [SolutionController::class, 'store'])->name('store');
     });

@@ -85,14 +85,23 @@ const deleteLesson = async (lessonId) => {
                             <p v-else>No materials found</p>
                         </div>
                         <div class="col-6">
-                            <span>Homeworks:</span>
-                            <ul class="list-group">
-                                <button v-for="homework in lesson.homeworks" class="btn p-0 mb-1">
-                                    <li class="list-group-item p-2 bg-warning-subtle">
-                                        {{homework.title}}
-                                    </li>
-                                </button>
-                            </ul>
+                            <div v-if="lesson.homeworks.length">
+                                <span>Homeworks:</span>
+                                <ul class="list-group">
+                                    <button v-for="homework in lesson.homeworks" class="btn p-0 rounded-0 homework-btn">
+                                        <router-link :to="{name: 'homework_detail_page_url', params: {id: homework.id}}" class="list-group-item p-2">
+                                            {{homework.title}}
+                                        </router-link>
+                                    </button>
+                                </ul>
+                            </div>
+
+                            <p v-else>
+                                No homeworks found ->
+                                <router-link :to="{name: 'homework_create_page_url', params: {id: lesson.id}}" class="btn btn-link p-0 text-decoration-none">
+                                    Add homework
+                                </router-link>
+                            </p>
                         </div>
                     </div>
                 </div>

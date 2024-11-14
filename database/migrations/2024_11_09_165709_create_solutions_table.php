@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Homework;
 use App\Models\Lesson;
 use App\Models\Student;
 use Illuminate\Database\Migrations\Migration;
@@ -15,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('solutions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Lesson::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Homework::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Student::class)->constrained()->onDelete('cascade');
             $table->text('answer')->nullable();
             $table->timestamps();
