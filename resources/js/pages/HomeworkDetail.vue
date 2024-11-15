@@ -4,6 +4,7 @@ import {onMounted, ref} from "vue";
 import { useRoute } from 'vue-router';
 
 const homework = ref();
+const solutions = ref();
 const route = useRoute();
 const errors = ref({});
 const successMessage = ref('');
@@ -15,6 +16,7 @@ const data = ref({
 
 onMounted(async () => {
     await getHomework();
+    await getSolutions();
 });
 
 const getHomework = async (url = `/api/homework/${route.params.id}`) => {
@@ -26,6 +28,15 @@ const getHomework = async (url = `/api/homework/${route.params.id}`) => {
         console.error('Error fetching homework:', error);
     }
 };
+
+const getSolutions = async (url = `/api/solutions`) => {
+    try {
+        const response = await axios.get(url);
+        solutions.value = response.data.data;
+    } catch (error) {
+        console.error('Error fetching solutions');
+    }
+}
 
 const handleFileChange = (event) => {
     data.value.files = Array.from(event.target.files);
@@ -87,7 +98,7 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
                 </div>
             </div>
             <div class="col-12">
-                <h3 class="">Solution</h3>
+                <h3>Create solution</h3>
                 <div v-if="successMessage" class="alert alert-success">
                     {{ successMessage }}
                 </div>
@@ -113,6 +124,55 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
                         <button type="submit" class="btn btn-primary">Send</button>
                     </div>
                 </form>
+            </div>
+
+            <div class="row">
+                <div class="col-12 my-2" v-for="group in student?.groups">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">{{group?.title}}</h4>
+                        </div>
+                        <div class="card-footer">
+                            <span>Start time: {{group?.start_time}}</span><br>
+                            <span>End time: {{group?.end_time}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Students solution</h3>
+            <div class="col-12 my-2" v-for="solution in solutions">
+                <div class="card">
+                    <div class="card-header">
+                        <table class="table">
+                            <tr>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>email</th>
+                                <th>phone</th>
+                            </tr>
+                            <tr>
+                                <td class="w-25">{{solution.student.first_name}}</td>
+                                <td class="w-25">{{solution.student.last_name}}</td>
+                                <td class="w-25">{{solution.student.email}}</td>
+                                <td class="w-25">{{solution.student.phone}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-body">
+                        <h5>Answer: </h5>
+                        <p>{{solution.answer}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div v-if="solution.materials.length" v-for="material in solution.materials" :key="material.id">
+                            <a class="p-0 text-decoration-none text-info" :href="material.url" :download="material.name">
+                                Download {{ material.name }}
+                            </a>
+                        </div>
+                        <div v-else>No materials</div>
+                        <button class="w-100 my-2 btn btn-outline-primary">Feedback</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

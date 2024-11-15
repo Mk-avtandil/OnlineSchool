@@ -95,7 +95,6 @@ const deleteLesson = async (lessonId) => {
                                     </button>
                                 </ul>
                             </div>
-
                             <p v-else>
                                 No homeworks found ->
                                 <router-link :to="{name: 'homework_create_page_url', params: {id: lesson.id}}" class="btn btn-link p-0 text-decoration-none">
