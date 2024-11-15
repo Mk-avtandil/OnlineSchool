@@ -80,4 +80,18 @@ class StudentController extends Controller
             ], 500);
         }
     }
+
+    public function getStudentCourses(Student $student): JsonResponse
+    {
+        $student = Student::with('groups.course')->find($student->id);
+
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+
+        $courses = $student->groups->pluck("course")->unique('id');
+
+        return response()->json($courses);
+    }
+
 }

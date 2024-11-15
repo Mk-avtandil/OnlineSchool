@@ -16,7 +16,7 @@ class GroupFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->title(),
+            'title' => $this->faker->unique()->word(),
             'description' => $this->faker->text(),
             'start_time' => $this->faker->time(),
             'end_time' => $this->faker->time(),

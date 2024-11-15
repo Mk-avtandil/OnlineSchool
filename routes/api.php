@@ -85,6 +85,7 @@ Route::prefix('student')
         Route::put('/{student}', [StudentController::class, 'update'])->name('update');
         Route::post('/store', [StudentController::class, 'store'])->name('store');
         Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
+        Route::get('/{student}/courses', [StudentController::class, 'getStudentCourses'])->name('getStudentCourses');
     });
 
 Route::prefix('teacher')

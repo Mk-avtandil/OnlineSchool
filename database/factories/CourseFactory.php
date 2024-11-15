@@ -15,7 +15,7 @@ class CourseFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->title(),
+            'title' => $this->faker->unique()->word(),
             'description' => $this->faker->text(),
             'price' => $this->faker->numberBetween(1000, 100000),
         ];

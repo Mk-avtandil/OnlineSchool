@@ -69,19 +69,20 @@ const deleteGroup = async (groupId) => {
                     </div>
                     <p class="card-text">{{group.description}}</p>
 
-                    <span>Менторы группы:</span>
-                    <div>
+                    <h5 class="mb-0 mt-2">Менторы группы:</h5>
+                    <span>
                         <a v-for="teacher in group.teachers" type="button" class="btn btn-warning my-1" style="margin-right: 3px;">
                             {{teacher.first_name}} {{teacher.last_name}}
                         </a>
-                    </div>
+                    </span>
 
-                    <span>Студенты группы:</span>
-                    <div>
-                        <a v-for="student in group.students" class="btn btn-warning my-1" style="margin-right: 3px;">
+                    <h5 class="mb-0 mt-2">Студенты группы:</h5>
+                    <span v-for="student in group.students">
+                        <router-link :to="{name: 'student_detail_page_url', params: {id: student.id}}"
+                             class="btn btn-warning my-1" style="margin-right: 3px;">
                             {{student.first_name}} {{student.last_name}}
-                        </a>
-                    </div>
+                        </router-link>
+                    </span>
                 </div>
                 <div class="card-footer">
                     <span>Start time: {{group.start_time}}</span><br>

@@ -56,6 +56,11 @@ const routes = [
         component: () => import("../pages/StudentList.vue"),
     },
     {
+        path: "/student/:id",
+        name: "student_detail_page_url",
+        component: () => import("../pages/StudentDetail.vue")
+    },
+    {
         path: "/student/store",
         name: "student_create_page_url",
         component: () => import("../pages/StudentCreate.vue"),
