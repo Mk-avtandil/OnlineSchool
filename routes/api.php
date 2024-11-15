@@ -64,6 +64,8 @@ Route::name('group.')
         Route::put('/group/{group}', [GroupController::class, 'update'])->name('update');
         Route::post('/course/{courseId}/group/store', [GroupController::class, 'store'])->name('store');
         Route::delete('group/{group}', [GroupController::class, 'destroy'])->name('destroy');
+        Route::put('/group/{groupId}/remove-student', [GroupController::class, 'removeStudent'])->name('removeStudent');
+        Route::put('/group/{groupId}/remove-teacher', [GroupController::class, 'removeTeacher'])->name('removeTeacher');
     });
 
 Route::name('lesson.')

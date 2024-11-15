@@ -71,9 +71,9 @@ const deleteGroup = async (groupId) => {
 
                     <span>Менторы группы:</span>
                     <div>
-                        <button v-for="teacher in group.teachers" type="button" class="bg-success rounded-4 text-light p-2">
+                        <a v-for="teacher in group.teachers" type="button" class="btn btn-warning my-1" style="margin-right: 3px;">
                             {{teacher.first_name}} {{teacher.last_name}}
-                        </button>
+                        </a>
                     </div>
 
                     <span>Студенты группы:</span>

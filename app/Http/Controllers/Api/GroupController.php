@@ -75,6 +75,11 @@ class GroupController extends Controller
                 $group->students()->sync($students);
             }
 
+            if ($request->has('teachers') && count($request->get('teachers')) > 0) {
+                $teachers = Teacher::find($request->get('teachers'));
+                $group->teachers()->sync($teachers);
+            }
+
             return response()->json(['message' => 'Group updated successfully'], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -96,5 +101,25 @@ class GroupController extends Controller
                 "error" => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function removeStudent(GroupUpdateRequest $request, $groupId)
+    {
+        $group = Group::findOrFail($groupId);
+        $studentId = $request->input('student_id');
+
+        $group->students()->detach($studentId);
+
+        return response()->json(['message' => 'Student removed successfully!']);
+    }
+
+    public function removeTeacher(GroupUpdateRequest $request, $groupId)
+    {
+        $group = Group::findOrFail($groupId);
+        $teacherId = $request->input('teacher_id');
+
+        $group->teachers()->detach($teacherId);
+
+        return response()->json(['message' => 'Teacher removed successfully!']);
     }
 }
