@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router';
 
 const homework = ref();
 const solutions = ref();
+const grades = ref();
 const route = useRoute();
 const errors = ref({});
 const successMessage = ref('');
@@ -12,6 +13,11 @@ const successMessage = ref('');
 const data = ref({
     answer: '',
     files: [],
+});
+
+const gradeData = ref( {
+    grade: '',
+    feedback: '',
 });
 
 onMounted(async () => {
@@ -76,6 +82,22 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
         }
     }
 }
+
+const saveGrade = async (solutionId, studentId) => {
+    try {
+        errors.value = {};
+
+        await axios.post(`/api/grade/${solutionId}/${studentId}`, gradeData.value);
+        await getSolutions();
+
+    } catch (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+            errors.value = error.response.data.errors;
+        } else {
+            console.error('Failed to create grade');
+        }
+    }
+};
 </script>
 
 <template>
@@ -126,7 +148,6 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
                 </form>
             </div>
 
-
             <div class="col-12 my-2" v-for="group in student?.groups">
                 <div class="card">
                     <div class="card-body">
@@ -168,22 +189,22 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
                                     <h6>Feedback: {{solution.grade.feedback}}</h6>
                                 </div>
                                 <div v-else>
-                                    <form @submit.prevent="saveGrade()">
+                                    <form @submit.prevent="saveGrade(solution.id, solution.student.id)">
                                         <div class="form-group">
                                             <label>Grade</label>
-                                            <input class="form-control" type="text">
+                                            <input v-model="gradeData.grade" class="form-control" type="text">
                                         </div>
-<!--                                        <div class="alert alert-danger my-1">-->
-
-<!--                                        </div>-->
+                                        <div v-if="errors.grade" class="alert alert-danger my-1">
+                                            {{ errors.grade[0] }}
+                                        </div>
 
                                         <div class="form-group">
                                             <label>Feedback</label>
-                                            <textarea class="form-control" required></textarea>
+                                            <textarea v-model="gradeData.feedback" class="form-control" required></textarea>
                                         </div>
-<!--                                        <div class="alert alert-danger my-1">-->
-
-<!--                                        </div>-->
+                                        <div v-if="errors.feedback" class="alert alert-danger my-1">
+                                            {{ errors.feedback[0] }}
+                                        </div>
 
                                         <div class="form-group my-3">
                                             <button type="submit" class="btn btn-primary">Send</button>

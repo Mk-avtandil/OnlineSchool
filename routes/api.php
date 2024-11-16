@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\GradeController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\HomeworkController;
 use App\Http\Controllers\Api\LessonController;
@@ -108,4 +109,9 @@ Route::name('solution.')
     ->group(function () {
         Route::get('/solutions', [SolutionController::class, 'index'])->name('index');
         Route::post('/homework/{homeworkId}/solution/store', [SolutionController::class, 'store'])->name('store');
+    });
+
+Route::name('grade.')
+    ->group(function () {
+        Route::post('/grade/{solutionId}/{studentId}', [GradeController::class, 'store'])->name('store');
     });
