@@ -1,9 +1,8 @@
 <?php
 
-use App\Models\Grade;
-use App\Models\Homework;
-use App\Models\Lesson;
+use App\Models\Solution;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +14,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('solutions', function (Blueprint $table) {
+        Schema::create('grades', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Homework::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Student::class)->constrained()->onDelete('cascade');
-            $table->text('answer')->nullable();
+            $table->foreignIdFor(Teacher::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Solution::class)->constrained()->onDelete('cascade');
+            $table->integer('grade');
+            $table->string('feedback');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('solutions');
+        Schema::dropIfExists('grades');
     }
 };

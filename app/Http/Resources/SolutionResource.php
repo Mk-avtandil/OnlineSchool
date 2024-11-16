@@ -19,6 +19,7 @@ class SolutionResource extends JsonResource
             'student_id' => $this->student_id,
             'answer' => $this->answer,
             'student' => $this->student,
+            'grade' => $this->grade,
             'materials' => $this->getMedia('solution_files')->map(function ($media) {
                 return [
                     'id' => $media->id,

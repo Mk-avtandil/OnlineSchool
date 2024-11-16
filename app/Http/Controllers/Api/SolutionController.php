@@ -12,7 +12,7 @@ class SolutionController extends Controller
 {
     public function index(): SolutionCollection
     {
-        $solutions = Solution::with("student")->get();
+        $solutions = Solution::with("student", "grade")->get();
 
         return new SolutionCollection($solutions);
     }

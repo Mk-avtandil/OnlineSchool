@@ -126,16 +126,15 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
                 </form>
             </div>
 
-            <div class="row">
-                <div class="col-12 my-2" v-for="group in student?.groups">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">{{group?.title}}</h4>
-                        </div>
-                        <div class="card-footer">
-                            <span>Start time: {{group?.start_time}}</span><br>
-                            <span>End time: {{group?.end_time}}</span>
-                        </div>
+
+            <div class="col-12 my-2" v-for="group in student?.groups">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{group?.title}}</h4>
+                    </div>
+                    <div class="card-footer">
+                        <span>Start time: {{group?.start_time}}</span><br>
+                        <span>End time: {{group?.end_time}}</span>
                     </div>
                 </div>
             </div>
@@ -144,33 +143,57 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
             <div class="col-12 my-2" v-for="solution in solutions">
                 <div class="card">
                     <div class="card-header">
-                        <table class="table">
-                            <tr>
-                                <th>First name</th>
-                                <th>Last name</th>
-                                <th>email</th>
-                                <th>phone</th>
-                            </tr>
-                            <tr>
-                                <td class="w-25">{{solution.student.first_name}}</td>
-                                <td class="w-25">{{solution.student.last_name}}</td>
-                                <td class="w-25">{{solution.student.email}}</td>
-                                <td class="w-25">{{solution.student.phone}}</td>
-                            </tr>
-                        </table>
+                        <span>Student: </span>
+                        <router-link :to="{name: 'student_detail_page_url', params: {id: solution.student.id}}" class="text-decoration-none">
+                            {{solution.student.first_name}} {{solution.student.last_name}}
+                        </router-link>
                     </div>
                     <div class="card-body">
-                        <h5>Answer: </h5>
+                        <h6>Answer: </h6>
                         <p>{{solution.answer}}</p>
                     </div>
                     <div class="card-footer">
-                        <div v-if="solution.materials.length" v-for="material in solution.materials" :key="material.id">
-                            <a class="p-0 text-decoration-none text-info" :href="material.url" :download="material.name">
-                                Download {{ material.name }}
-                            </a>
+                        <div class="row">
+                            <div class="col-6">
+                                <div v-if="solution.materials.length" v-for="material in solution.materials" :key="material.id">
+                                    <a class="p-0 text-decoration-none text-info" :href="material.url" :download="material.name">
+                                        Download {{ material.name }}
+                                    </a>
+                                </div>
+                                <div v-else>No materials</div>
+                            </div>
+                            <div class="col-6">
+                                <div v-if="solution.grade" class="text-success align-content-center">
+                                    <h6>Grade: {{solution.grade.grade}}</h6>
+                                    <h6>Feedback: {{solution.grade.feedback}}</h6>
+                                </div>
+                                <div v-else>
+                                    <form @submit.prevent="saveGrade()">
+                                        <div class="form-group">
+                                            <label>Grade</label>
+                                            <input class="form-control" type="text">
+                                        </div>
+<!--                                        <div class="alert alert-danger my-1">-->
+
+<!--                                        </div>-->
+
+                                        <div class="form-group">
+                                            <label>Feedback</label>
+                                            <textarea class="form-control" required></textarea>
+                                        </div>
+<!--                                        <div class="alert alert-danger my-1">-->
+
+<!--                                        </div>-->
+
+                                        <div class="form-group my-3">
+                                            <button type="submit" class="btn btn-primary">Send</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <div v-else>No materials</div>
-                        <button class="w-100 my-2 btn btn-outline-primary">Feedback</button>
+
+
                     </div>
                 </div>
             </div>
