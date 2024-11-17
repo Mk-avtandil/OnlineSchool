@@ -9,7 +9,8 @@ const data = ref({
     last_name: '',
     birthday: '',
     phone: '',
-    email: ''
+    email: '',
+    password: '',
 });
 
 const saveTeacher = async () => {
@@ -27,6 +28,7 @@ const saveTeacher = async () => {
                 birthday: '',
                 phone: '',
                 email: '',
+                password: '',
             };
         }, 1000);
     } catch (error) {
@@ -84,6 +86,14 @@ const saveTeacher = async () => {
             </div>
             <div v-if="errors.email" class="alert alert-danger my-1">
                 {{ errors.email[0] }}
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input v-model="data.password" type="password" class="form-control">
+            </div>
+            <div v-if="errors.password" class="alert alert-danger my-1">
+                {{ errors.password[0] }}
             </div>
 
             <div class="form-group my-3">

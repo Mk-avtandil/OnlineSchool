@@ -10,16 +10,22 @@ class Teacher extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'user_id',
         'first_name',
         'last_name',
         'birthday',
         'phone',
         'email',
+        'password',
     ];
 
     public function groups(): belongsToMany
     {
         return $this->belongsToMany(Group::class, 'group_teacher');
+    }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

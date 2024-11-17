@@ -8,6 +8,8 @@ use App\Http\Requests\TeacherUpdateRequest;
 use App\Http\Resources\TeacherCollection;
 use App\Http\Resources\TeacherResource;
 use App\Models\Teacher;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TeacherController extends Controller
@@ -31,12 +33,21 @@ class TeacherController extends Controller
     public function store(TeacherCreateRequest $request): JsonResponse
     {
         try {
+            $user = User::create([
+                'name' => $request->get('first_name'),
+                'email' => $request->get('email'),
+                'password' => Hash::make($request->password),
+                'role' => 'teacher',
+            ]);
+
             Teacher::create([
+                'user_id' => $user->id,
                 'first_name' => $request->get('first_name'),
                 'last_name' => $request->get('last_name'),
                 'birthday' => $request->get('birthday'),
                 'phone' => $request->get('phone'),
                 'email' => $request->get('email'),
+                'password' => $request->get('password'),
             ]);
             return response()->json(['message' => 'Teacher created successfully'], 201);
         } catch (\Exception $e) {

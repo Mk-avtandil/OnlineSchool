@@ -8,7 +8,9 @@ use App\Http\Requests\StudentUpdateRequest;
 use App\Http\Resources\StudentCollection;
 use App\Http\Resources\StudentResource;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -31,14 +33,26 @@ class StudentController extends Controller
     public function store(StudentCreateRequest $request): JsonResponse
     {
         try {
+            $user = User::create([
+                'name' => $request->get('first_name'),
+                'email' => $request->get('email'),
+                'password' => Hash::make($request->password),
+                'role' => 'student',
+            ]);
+
             Student::create([
+                'user_id' => $user->id,
                 'first_name' => $request->get('first_name'),
                 'last_name' => $request->get('last_name'),
                 'birthday' => $request->get('birthday'),
                 'address' => $request->get('address'),
                 'phone' => $request->get('phone'),
                 'email' => $request->get('email'),
+                'password' => $request->get('password'),
             ]);
+
+
+
             return response()->json(['message' => 'Student created successfully'], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to create student', 'error' => $e->getMessage()], 500);

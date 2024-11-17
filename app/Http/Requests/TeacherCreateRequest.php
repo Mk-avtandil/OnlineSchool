@@ -14,6 +14,7 @@ class TeacherCreateRequest extends FormRequest
             'birthday' => ['required', 'date'],
             'phone' => ['required', 'string', 'max:20'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:teachers'],
+            'password' => ['required', 'string', 'min:8'],
         ];
     }
 }
