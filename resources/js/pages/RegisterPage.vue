@@ -2,9 +2,11 @@
 import axios from "axios";
 import {ref} from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 const errors = ref({});
 const router = useRouter();
+const store = useStore();
 const showPassword = ref(false);
 const showPassword2 = ref(false);
 const registerData = ref({
@@ -23,6 +25,8 @@ const register = async () => {
             password_confirmation: registerData.value.password_confirmation,
         });
 
+        store.dispatch('setToken', response.data.access_token);
+        store.dispatch('fetchUser');
         router.push({name: 'courses_page_url'});
     } catch(error) {
         if (error.response && error.response.data && error.response.data.errors) {

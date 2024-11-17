@@ -1,5 +1,22 @@
 <script setup>
+import { useStore } from "vuex";
+import {computed, onMounted} from "vue";
 
+const store = useStore();
+const token = computed(() => store.getters.token);
+const user = computed(() => store.getters.user);
+const isAuthenticated = computed(() => store.getters.isAuthenticated);
+
+const logout = async () => {
+    await store.dispatch('logout');
+};
+
+onMounted(() => {
+    if (isAuthenticated.value && !user.value) {
+        store.dispatch('fetchUser');
+        console.log('Fetching user data...');
+    }
+});
 </script>
 
 <template>
