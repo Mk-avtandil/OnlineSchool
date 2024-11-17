@@ -35,10 +35,11 @@ const getHomework = async (url = `/api/homework/${route.params.id}`) => {
     }
 };
 
-const getSolutions = async (url = `/api/solutions`) => {
+const getSolutions = async (url = `/api/homework/${route.params.id}/solutions`) => {
     try {
         const response = await axios.get(url);
         solutions.value = response.data.data;
+        console.log(solutions);
     } catch (error) {
         console.error('Error fetching solutions');
     }
@@ -213,8 +214,6 @@ const saveGrade = async (solutionId, studentId) => {
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>

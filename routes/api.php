@@ -109,6 +109,7 @@ Route::name('solution.')
     ->group(function () {
         Route::get('/solutions', [SolutionController::class, 'index'])->name('index');
         Route::post('/homework/{homeworkId}/solution/store', [SolutionController::class, 'store'])->name('store');
+        Route::get('/homework/{homeworkId}/solutions', [SolutionController::class, 'getHomeworkSolutions'])->name('getHomeworkSolutions');
     });
 
 Route::name('grade.')

@@ -17,6 +17,17 @@ class SolutionController extends Controller
         return new SolutionCollection($solutions);
     }
 
+    public function getHomeworkSolutions($homeworkId): SolutionCollection|JsonResponse
+    {
+        try {
+            $solutions = Solution::with(['student', 'grade'])->where('homework_id', $homeworkId)->get();
+
+            return new SolutionCollection($solutions);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to fetch homework solutions'], 500);
+        }
+    }
+
     public function store(SolutionCreateRequest $request, $homeworkId): JsonResponse
     {
         $solution = Solution::create([
