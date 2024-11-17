@@ -11,8 +11,6 @@ class GroupCreateRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:100'],
             'description' => ['required', 'string'],
-            'start_time' => ['required', 'date_format:H:i'],
-            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
         ];
     }
 }

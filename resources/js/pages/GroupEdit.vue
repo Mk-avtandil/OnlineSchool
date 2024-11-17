@@ -13,8 +13,6 @@ const route = useRoute();
 const data = ref({
     title: '',
     description: '',
-    start_time: '',
-    end_time: '',
     students: [],
     teachers: [],
 });
@@ -64,8 +62,6 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
         const response = await axios.put(url, {
             title: data.value.title,
             description: data.value.description,
-            start_time: data.value.start_time,
-            end_time: data.value.end_time,
             students: [data.value.students, selectedStudents.value],
             teachers: [data.value.teachers, selectedTeachers.value],
         });
@@ -140,22 +136,6 @@ const removeTeacher = async (teacherId) => {
             </div>
             <div v-if="errors.description" class="alert alert-danger my-1">
                 {{ errors.description[0] }}
-            </div>
-
-            <div class="form-group my-2">
-                <label>Start time</label>
-                <input v-model="data.start_time" type="time" class="form-control">
-            </div>
-            <div v-if="errors.start_time" class="alert alert-danger my-1">
-                {{ errors.start_time[0] }}
-            </div>
-
-            <div class="form-group my-2">
-                <label>End time</label>
-                <input v-model="data.end_time" type="time" class="form-control">
-            </div>
-            <div v-if="errors.end_time" class="alert alert-danger my-1">
-                {{ errors.end_time[0] }}
             </div>
 
             <div class="form-group my-2">

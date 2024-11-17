@@ -18,8 +18,6 @@ class GroupFactory extends Factory
         return [
             'title' => $this->faker->unique()->word(),
             'description' => $this->faker->text(),
-            'start_time' => $this->faker->time(),
-            'end_time' => $this->faker->time(),
             'course_id' => Course::inRandomOrder()->first()->id,
         ];
     }

@@ -36,8 +36,6 @@ class GroupController extends Controller
             $group = Group::create([
                 'title' => $request->get('title'),
                 'description' => $request->get('description'),
-                'start_time' => $request->get('start_time'),
-                'end_time' => $request->get('end_time'),
                 'course_id' => $courseId,
             ]);
 
@@ -59,7 +57,7 @@ class GroupController extends Controller
 
     public function update(Group $group, GroupUpdateRequest $request): JsonResponse
     {
-        $fields = ['title', 'description', 'start_time', 'end_time'];
+        $fields = ['title', 'description'];
         try {
             foreach ($fields as $field) {
                 $newValue = $request->get($field);

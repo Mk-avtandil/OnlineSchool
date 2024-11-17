@@ -17,8 +17,6 @@ return new class extends Migration
             $table->foreignIdFor(Course::class)->constrained()->onDelete('cascade');
             $table->string('title', 200);
             $table->text('description')->nullable();
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
             $table->timestamps();
         });
     }

@@ -12,7 +12,7 @@ const successMessage = ref('');
 
 onMounted(async () => {
     await getStudent();
-    await getStudentCourses()
+    await getStudentCourses();
 });
 
 const getStudent = async (url = `/api/student/${route.params.id}`) => {
@@ -96,10 +96,7 @@ const getStudentCourses = async (url = `/api/student/${route.params.id}/courses`
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="card-title">{{group?.title}}</h4>
-                                    </div>
-                                    <div class="card-footer">
-                                        <span>Start time: {{group?.start_time}}</span><br>
-                                        <span>End time: {{group?.end_time}}</span>
+                                        <p class="card-text">{{group?.description}}</p>
                                     </div>
                                 </div>
                             </div>

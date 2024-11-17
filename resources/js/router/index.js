@@ -77,6 +77,11 @@ const routes = [
         component: () => import("../pages/TeacherList.vue"),
     },
     {
+        path: "/teacher/:id",
+        name: "teacher_detail_page_url",
+        component: () => import("../pages/TeacherDetail.vue")
+    },
+    {
         path: "/teacher/store",
         name: "teacher_create_page_url",
         component: () => import("../pages/TeacherCreate.vue"),

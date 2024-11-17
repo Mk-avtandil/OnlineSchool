@@ -13,7 +13,7 @@ class CourseController extends Controller
 {
     public function index(): CourseCollection
     {
-        $courses = Course::with("groups")->paginate(3);
+        $courses = Course::with("groups")->paginate(6);
 
         return new CourseCollection($courses);
     }

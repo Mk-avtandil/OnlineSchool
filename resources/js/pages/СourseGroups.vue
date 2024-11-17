@@ -84,10 +84,6 @@ const deleteGroup = async (groupId) => {
                         </router-link>
                     </span>
                 </div>
-                <div class="card-footer">
-                    <span>Start time: {{group.start_time}}</span><br>
-                    <span>End time: {{group.end_time}}</span>
-                </div>
             </div>
         </div>
     </div>

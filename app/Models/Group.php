@@ -14,8 +14,6 @@ class Group extends Model
         'course_id',
         'title',
         'description',
-        'start_time',
-        'end_time',
     ];
 
     public function students(): belongsToMany

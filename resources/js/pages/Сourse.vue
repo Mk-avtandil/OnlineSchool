@@ -38,7 +38,7 @@ const deleteCourse = async (courseId) => {
 
 <template>
     <div class="container my-4">
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-8">
                 <h3 class="mb-2">Courses</h3>
             </div>
@@ -46,42 +46,44 @@ const deleteCourse = async (courseId) => {
                 <router-link :to="{name: 'course_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Course</router-link>
             </div>
         </div>
-        <div class="card-group">
-            <div class="card" v-for="course in courses?.data">
-                <div class="card-body text-secondary">
-                    <div class="row">
-                        <div class="col-8">
-                            <h5 class="card-title text-dark">{{course.title}}</h5>
-                        </div>
-                        <div class="col-4 text-end align-top">
-                            <div class="btn-group">
-                                <router-link data-bs-toggle="dropdown" >
-                                    <div id="nav-icon">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </div>
-                                </router-link>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-sm-end">
-                                    <li>
-                                        <router-link :to="{name: 'courses_edit_page_url', params: {id: course.id}}" class="dropdown-item">Edit</router-link>
-                                    </li>
-                                    <button @click.prevent="deleteCourse(course.id)" class="dropdown-item" type="submit">Delete</button>
-                                </ul>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+            <div class="col" v-for="course in courses?.data" :key="course.id">
+                <div class="card" >
+                    <div class="card-body text-secondary">
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="card-title text-dark">{{course.title}}</h5>
+                            </div>
+                            <div class="col-4 text-end align-top">
+                                <div class="btn-group">
+                                    <router-link data-bs-toggle="dropdown" >
+                                        <div id="nav-icon">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </router-link>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-sm-end">
+                                        <li>
+                                            <router-link :to="{name: 'courses_edit_page_url', params: {id: course.id}}" class="dropdown-item">Edit</router-link>
+                                        </li>
+                                        <button @click.prevent="deleteCourse(course.id)" class="dropdown-item" type="submit">Delete</button>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <p class="card-text">{{course.description}}</p>
-                    <div class="btn-group">
-                        <router-link :to="{name: 'course_groups_page_url', params: {id: course.id}}" class="btn btn-outline-success">Groups</router-link>
-                    </div>
+                        <p class="card-text">{{course.description}}</p>
+                        <div class="btn-group">
+                            <router-link :to="{name: 'course_groups_page_url', params: {id: course.id}}" class="btn btn-outline-success">Groups</router-link>
+                        </div>
 
-                    <div class="btn-group mx-1">
-                        <router-link :to="{name: 'course_lessons_page_url', params: {id: course.id}}" class="btn btn-outline-success">Lessons</router-link>
+                        <div class="btn-group mx-1">
+                            <router-link :to="{name: 'course_lessons_page_url', params: {id: course.id}}" class="btn btn-outline-success">Lessons</router-link>
+                        </div>
                     </div>
-                </div>
-                <div class="card-footer">
-                    Price: {{course.price}}
+                    <div class="card-footer">
+                        Price: {{course.price}}
+                    </div>
                 </div>
             </div>
         </div>
