@@ -9,6 +9,7 @@ use App\Http\Resources\TeacherCollection;
 use App\Http\Resources\TeacherResource;
 use App\Models\Teacher;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -37,8 +38,9 @@ class TeacherController extends Controller
                 'name' => $request->get('first_name'),
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->password),
-                'role' => 'teacher',
             ]);
+
+            $user->assignRole('teacher');
 
             Teacher::create([
                 'user_id' => $user->id,

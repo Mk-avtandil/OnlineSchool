@@ -79,9 +79,9 @@ Route::prefix('student')
     ->group(function () {
         Route::get('/', [StudentController::class, 'index'])->name('index');
         Route::get('/{student}', [StudentController::class, 'show'])->name('show');
-        Route::put('/{student}', [StudentController::class, 'update'])->name('update');
-        Route::post('/store', [StudentController::class, 'store'])->name('store');
-        Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
+        Route::put('/{student}', [StudentController::class, 'update'])->name('update')->middleware('is_super_admin');
+        Route::post('/store', [StudentController::class, 'store'])->name('store')->middleware('is_super_admin');
+        Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy')->middleware('is_super_admin');
         Route::get('/{student}/courses', [StudentController::class, 'getStudentCourses'])->name('getStudentCourses');
     });
 
@@ -90,9 +90,9 @@ Route::prefix('teacher')
     ->group(function () {
         Route::get('/', [TeacherController::class, 'index'])->name('index');
         Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
-        Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update');
-        Route::post('/store', [TeacherController::class, 'store'])->name('store');
-        Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
+        Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update')->middleware('is_super_admin');
+        Route::post('/store', [TeacherController::class, 'store'])->name('store')->middleware('is_super_admin');
+        Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('destroy')->middleware('is_super_admin');
     });
 
 Route::name('homework.')

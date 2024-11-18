@@ -37,8 +37,9 @@ class StudentController extends Controller
                 'name' => $request->get('first_name'),
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->password),
-                'role' => 'student',
             ]);
+
+            $user->assignRole('student');
 
             Student::create([
                 'user_id' => $user->id,
@@ -50,8 +51,6 @@ class StudentController extends Controller
                 'email' => $request->get('email'),
                 'password' => $request->get('password'),
             ]);
-
-
 
             return response()->json(['message' => 'Student created successfully'], 201);
         } catch (\Exception $e) {
