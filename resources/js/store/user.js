@@ -44,6 +44,7 @@ const actions = {
     async logout({ commit }) {
         commit('REMOVE_TOKEN');
         commit('CLEAR_USER');
+        commit('setIsAuthenticated', false);
     }
 };
 

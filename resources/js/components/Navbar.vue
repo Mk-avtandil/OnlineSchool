@@ -1,15 +1,27 @@
 <script setup>
 import { useStore } from "vuex";
 import {computed, onMounted} from "vue";
+import {useRouter} from "vue-router";
 
 const store = useStore();
+const router = useRouter();
 const token = computed(() => store.getters.token);
 const user = computed(() => store.getters.user);
 const isAuthenticated = computed(() => store.getters.isAuthenticated);
 
 const logout = async () => {
-    await store.dispatch('logout');
-};
+    try {
+        await store.dispatch('logout');
+
+        localStorage.removeItem('auth_token');
+        axios.defaults.headers.Authorization = null;
+
+        await axios.post('/api/logout');
+        router.push({name: 'courses_page_url'});
+    } catch (error) {
+        console.error("Logout failed: ", error);
+    }
+}
 
 onMounted(() => {
     if (isAuthenticated.value && !user.value) {
