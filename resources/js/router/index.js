@@ -103,11 +103,11 @@ const routes = [
         component: () => import("../pages/HomeworkDetail.vue")
     },
     // Auth
-    {
-        path: "/register",
-        name: "register_page_url",
-        component: () => import("../pages/RegisterPage.vue"),
-    },
+    // {
+    //     path: "/register",
+    //     name: "register_page_url",
+    //     component: () => import("../pages/RegisterPage.vue"),
+    // },
     {
         path: "/login",
         name: "login_page_url",

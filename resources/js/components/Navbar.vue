@@ -40,9 +40,9 @@ onMounted(() => {
                 </ul>
 
                 <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="!isAuthenticated">
-                    <li class="nav-item">
-                        <router-link :to="{name: 'register_page_url'}" class="nav-link active" aria-current="page">Register</router-link>
-                    </li>
+<!--                    <li class="nav-item">-->
+<!--                        <router-link :to="{name: 'register_page_url'}" class="nav-link active" aria-current="page">Register</router-link>-->
+<!--                    </li>-->
                     <li class="nav-item">
                         <router-link :to="{name: 'login_page_url'}" class="nav-link active" aria-current="page">Login</router-link>
                     </li>
