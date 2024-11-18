@@ -1,11 +1,14 @@
 <script setup>
 import axios from "axios";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import { useRouter } from 'vue-router';
+import { useStore } from "vuex";
 
+const store = useStore();
 const courses = ref();
 const router = useRouter();
 const pagination = ref({});
+const role = computed(() => store.getters.role);
 
 onMounted(async () => {
     await getCourses();
@@ -42,7 +45,7 @@ const deleteCourse = async (courseId) => {
             <div class="col-8">
                 <h3 class="mb-2">Courses</h3>
             </div>
-            <div class="col-4 text-end">
+            <div class="col-4 text-end" v-if="['admin', 'super_admin'].includes(role)">
                 <router-link :to="{name: 'course_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Course</router-link>
             </div>
         </div>
@@ -54,7 +57,7 @@ const deleteCourse = async (courseId) => {
                             <div class="col-8">
                                 <h5 class="card-title text-dark">{{course.title}}</h5>
                             </div>
-                            <div class="col-4 text-end align-top">
+                            <div class="col-4 text-end align-top" v-if="['admin', 'super_admin'].includes(role)">
                                 <div class="btn-group">
                                     <router-link data-bs-toggle="dropdown" >
                                         <div id="nav-icon">

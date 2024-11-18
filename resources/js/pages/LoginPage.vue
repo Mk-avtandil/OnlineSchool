@@ -23,6 +23,7 @@ const login = async () => {
 
         store.dispatch('setToken', response.data.access_token);
         store.dispatch('fetchUser');
+        store.dispatch('setRole', response.data.role)
         router.push({name: 'courses_page_url'});
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {

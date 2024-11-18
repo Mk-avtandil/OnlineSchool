@@ -7,6 +7,7 @@ const store = useStore();
 const router = useRouter();
 const token = computed(() => store.getters.token);
 const user = computed(() => store.getters.user);
+const role = computed(() => store.getters.role);
 const isAuthenticated = computed(() => store.getters.isAuthenticated);
 
 const logout = async () => {
@@ -49,11 +50,7 @@ onMounted(() => {
                         <router-link :to="{name: 'teacher_list_page_url'}" class="nav-link active" aria-current="page">Teachers</router-link>
                     </li>
                 </ul>
-
                 <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="!isAuthenticated">
-<!--                    <li class="nav-item">-->
-<!--                        <router-link :to="{name: 'register_page_url'}" class="nav-link active" aria-current="page">Register</router-link>-->
-<!--                    </li>-->
                     <li class="nav-item">
                         <router-link :to="{name: 'login_page_url'}" class="nav-link active" aria-current="page">Login</router-link>
                     </li>
