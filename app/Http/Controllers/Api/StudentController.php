@@ -34,22 +34,16 @@ class StudentController extends Controller
     {
         try {
             $user = User::create([
-                'name' => $request->get('first_name'),
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->password),
             ]);
 
             $user->assignRole('student');
-
-            Student::create([
-                'user_id' => $user->id,
+            $user->student()->create([
                 'first_name' => $request->get('first_name'),
                 'last_name' => $request->get('last_name'),
                 'birthday' => $request->get('birthday'),
-                'address' => $request->get('address'),
                 'phone' => $request->get('phone'),
-                'email' => $request->get('email'),
-                'password' => $request->get('password'),
             ]);
 
             return response()->json(['message' => 'Student created successfully'], 201);
@@ -60,7 +54,7 @@ class StudentController extends Controller
 
     public function update(Student $student, StudentUpdateRequest $request)
     {
-        $fields = ['first_name', 'last_name', 'birthday', 'address', 'phone', 'email'];
+        $fields = ['first_name', 'last_name', 'birthday', 'phone'];
         try {
             foreach ($fields as $field) {
                 $newValue = $request->get($field);

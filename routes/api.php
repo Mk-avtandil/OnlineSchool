@@ -9,11 +9,6 @@ use App\Http\Controllers\Api\SolutionController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TeacherController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,25 +16,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Route::post('/register', [RegisteredUserController::class, 'store'])
-//    ->name('register');
-
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->name('login');
-
-Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
-    ->name('password.email');
-
-Route::post('/reset-password', [NewPasswordController::class, 'store'])
-    ->name('password.store');
-
-Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
-    ->middleware(['auth', 'signed', 'throttle:6,1'])
-    ->name('verification.verify');
-
-Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-    ->middleware(['auth', 'throttle:6,1'])
-    ->name('verification.send');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
@@ -49,8 +27,6 @@ Route::name('course.')
     ->group(function () {
         Route::get('/courses', [CourseController::class, 'index'])->name('index');
         Route::get('/course/{course}', [CourseController::class, 'show'])->name('show');
-        Route::put('/course/{course}', [CourseController::class, 'update'])->name('update');
-        Route::delete('course/{course}', [CourseController::class, 'destroy'])->name('destroy');
     });
 
 Route::name('group.')
@@ -78,9 +54,6 @@ Route::prefix('student')
     ->group(function () {
         Route::get('/', [StudentController::class, 'index'])->name('index');
         Route::get('/{student}', [StudentController::class, 'show'])->name('show');
-        Route::put('/{student}', [StudentController::class, 'update'])->name('update');
-        Route::post('/store', [StudentController::class, 'store'])->name('store');
-        Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
         Route::get('/{student}/courses', [StudentController::class, 'getStudentCourses'])->name('getStudentCourses');
     });
 
@@ -116,4 +89,14 @@ Route::name('course.')
     ->middleware(['auth:sanctum', 'role:admin|super_admin'])
     ->group(function () {
         Route::post('/course/store', [CourseController::class, 'store'])->name('store');
+        Route::put('/course/{course}', [CourseController::class, 'update'])->name('update');
+        Route::delete('course/{course}', [CourseController::class, 'destroy'])->name('destroy');
+    });
+
+Route::name('student.')
+    ->middleware(['auth:sanctum', 'role:super_admin'])
+    ->group(function () {
+        Route::put('/student/{student}', [StudentController::class, 'update'])->name('update');
+        Route::post('/student/store', [StudentController::class, 'store'])->name('store');
+        Route::delete('/student/{student}', [StudentController::class, 'destroy'])->name('destroy');
     });

@@ -15,8 +15,6 @@ class Teacher extends Model
         'last_name',
         'birthday',
         'phone',
-        'email',
-        'password',
     ];
 
     public function groups(): belongsToMany

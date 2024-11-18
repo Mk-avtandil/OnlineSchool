@@ -44,7 +44,7 @@ const getStudentCourses = async (url = `/api/student/${route.params.id}/courses`
                 <table class="table table-bordered fw-medium">
                     <tr>
                         <th>First name</th>
-                        <td>{{student?.id}}</td>
+                        <td>{{student?.first_name}}</td>
                     </tr>
                     <tr>
                         <th>Last name</th>
@@ -57,14 +57,6 @@ const getStudentCourses = async (url = `/api/student/${route.params.id}/courses`
                     <tr>
                         <th>Phone</th>
                         <td>{{student?.phone}}</td>
-                    </tr>
-                    <tr>
-                        <th>Address</th>
-                        <td>{{student?.address}}</td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td>{{student?.email}}</td>
                     </tr>
                 </table>
             </div>
@@ -106,11 +98,7 @@ const getStudentCourses = async (url = `/api/student/${route.params.id}/courses`
                     <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="3">...</div>
                 </div>
             </div>
-
         </div>
-
-
-
     </div>
 </template>
 

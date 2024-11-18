@@ -14,10 +14,7 @@ class Student extends Model
         'first_name',
         'last_name',
         'birthday',
-        'address',
         'phone',
-        'email',
-        'password',
     ];
 
     public function groups(): belongsToMany

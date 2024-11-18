@@ -16,10 +16,7 @@ class StudentSeeder extends Seeder
             'first_name' => 'Avtandil',
             'last_name' => 'Kurbanov',
             'birthday' => date('Y-m-d', strtotime('12.04.1997')),
-            'address' => 'Kudaibergen',
             'phone' => '0704323433',
-            'email' => 'avtandil@gmail.com',
-            'password' => '12345678',
         ]);
     }
 }

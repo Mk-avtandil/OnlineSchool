@@ -11,7 +11,6 @@ const data = ref({
     last_name: '',
     birthday: '',
     phone: '',
-    email: '',
 });
 
 onMounted(async () => {
@@ -34,7 +33,6 @@ const updateTeacher = async (url = `/api/teacher/${route.params.id}`) => {
             last_name: data.value.last_name,
             birthday: data.value.birthday,
             phone: data.value.phone,
-            email: data.value.email,
         });
 
         successMessage.value = 'Teacher updated successfully!';
@@ -87,20 +85,11 @@ const updateTeacher = async (url = `/api/teacher/${route.params.id}`) => {
                 {{ errors.phone[0] }}
             </div>
 
-            <div class="form-group">
-                <label>Email</label>
-                <input v-model="data.email" type="email" class="form-control">
-            </div>
-            <div v-if="errors.email" class="alert alert-danger my-1">
-                {{ errors.email[0] }}
-            </div>
-
             <div class="form-group my-3">
                 <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </form>
     </div>
-
 </template>
 
 <style scoped>

@@ -26,7 +26,6 @@ const logout = async () => {
 onMounted(() => {
     if (isAuthenticated.value && !user.value) {
         store.dispatch('fetchUser');
-        console.log('Fetching user data...');
     }
 });
 </script>
@@ -61,7 +60,7 @@ onMounted(() => {
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="isAuthenticated">
                     <li class="nav-item">
-                        <button type="button"  class="nav-link active">{{user.name}}</button>
+                        <button type="button"  class="nav-link active">{{user.email}}</button>
                     </li>
                     <li class="nav-item" >
                         <button type="button" @click="logout" class="nav-link active">Logout</button>

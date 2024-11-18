@@ -33,7 +33,7 @@ const getTeacher = async (url = `/api/teacher/${route.params.id}`) => {
                 <table class="table table-bordered fw-medium">
                     <tr>
                         <th>First name</th>
-                        <td>{{teacher?.id}}</td>
+                        <td>{{teacher?.first_name}}</td>
                     </tr>
                     <tr>
                         <th>Last name</th>
@@ -46,10 +46,6 @@ const getTeacher = async (url = `/api/teacher/${route.params.id}`) => {
                     <tr>
                         <th>Phone</th>
                         <td>{{teacher?.phone}}</td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td>{{teacher?.email}}</td>
                     </tr>
                 </table>
             </div>

@@ -41,15 +41,13 @@ const deleteStudent = async (studentId) => {
             </div>
         </div>
 
-
         <table class="table table-hover">
             <thead>
             <tr>
                 <th scope="col">Full name</th>
                 <th scope="col">Birthday</th>
                 <th scope="col">Phone</th>
-                <th scope="col">Email</th>
-                <th scope="col"></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -61,7 +59,6 @@ const deleteStudent = async (studentId) => {
                 </th>
                 <td>{{student.birthday}}</td>
                 <td>{{student.phone}}</td>
-                <td>{{student.email}}</td>
                 <td>
                     <router-link :to="{name: 'student_edit_page_url', params: {id: student.id}}" class="btn btn-warning">Edit</router-link>
                     <button @click.prevent="deleteStudent(student.id)" class="btn btn-danger m-1" type="submit">Delete</button>

@@ -45,7 +45,6 @@ const deleteTeacher = async (teacherId) => {
                 <th scope="col">Full name</th>
                 <th scope="col">Birthday</th>
                 <th scope="col">Phone</th>
-                <th scope="col">Email</th>
                 <th></th>
             </tr>
             </thead>
@@ -56,9 +55,8 @@ const deleteTeacher = async (teacherId) => {
                         {{teacher.first_name}} {{teacher.last_name}}
                     </router-link>
                 </th>
+                <td>{{teacher.birthday}}</td>
                 <td>{{teacher.phone}}</td>
-                <td>{{teacher.phone}}</td>
-                <td>{{teacher.email}}</td>
                 <td>
                     <router-link :to="{name: 'teacher_edit_page_url', params: {id: teacher.id}}" class="btn btn-warning">Edit</router-link>
                     <button @click.prevent="deleteTeacher(teacher.id)" class="btn btn-danger m-1" type="submit">Delete</button>

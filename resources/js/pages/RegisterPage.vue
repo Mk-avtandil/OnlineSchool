@@ -10,7 +10,6 @@ const store = useStore();
 const showPassword = ref(false);
 const showPassword2 = ref(false);
 const registerData = ref({
-    name: '',
     email: '',
     password: '',
     password_confirmation: ''
@@ -19,7 +18,6 @@ const registerData = ref({
 const register = async () => {
     try {
         const response = await axios.post('/api/register', {
-            name: registerData.value.name,
             email: registerData.value.email,
             password: registerData.value.password,
             password_confirmation: registerData.value.password_confirmation,

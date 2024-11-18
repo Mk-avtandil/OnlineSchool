@@ -12,9 +12,7 @@ class StudentUpdateRequest extends FormRequest
             'first_name' => ['string', 'max:20'],
             'last_name' => ['string', 'max:20'],
             'birthday' => ['date'],
-            'address' => ['string', 'max:100'],
             'phone' => ['string', 'max:20'],
-            'email' => ['string', 'email', 'max:255'],
         ];
     }
 }

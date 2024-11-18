@@ -9,7 +9,6 @@ use App\Http\Resources\TeacherCollection;
 use App\Http\Resources\TeacherResource;
 use App\Models\Teacher;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -35,22 +34,19 @@ class TeacherController extends Controller
     {
         try {
             $user = User::create([
-                'name' => $request->get('first_name'),
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->password),
             ]);
 
             $user->assignRole('teacher');
-
-            Teacher::create([
+            $user->teacher()->create([
                 'user_id' => $user->id,
                 'first_name' => $request->get('first_name'),
                 'last_name' => $request->get('last_name'),
                 'birthday' => $request->get('birthday'),
                 'phone' => $request->get('phone'),
-                'email' => $request->get('email'),
-                'password' => $request->get('password'),
             ]);
+
             return response()->json(['message' => 'Teacher created successfully'], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to create teacher', 'error' => $e->getMessage()], 500);
@@ -59,7 +55,7 @@ class TeacherController extends Controller
 
     public function update(Teacher $teacher, TeacherUpdateRequest $request)
     {
-        $fields = ['first_name', 'last_name', 'birthday', 'phone', 'email'];
+        $fields = ['first_name', 'last_name', 'birthday', 'phone'];
         try {
             foreach ($fields as $field) {
                 $newValue = $request->get($field);

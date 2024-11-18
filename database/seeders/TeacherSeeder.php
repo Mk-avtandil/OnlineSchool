@@ -15,8 +15,6 @@ class TeacherSeeder extends Seeder
             'last_name' => 'Maksatov',
             'birthday' => date('Y-m-d', strtotime('12.04.1997')),
             'phone' => '0702320433',
-            'email' => 'maksat@gmail.com',
-            'password' => '12345678',
         ]);
     }
 }

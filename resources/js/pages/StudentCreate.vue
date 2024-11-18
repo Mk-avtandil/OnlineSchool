@@ -8,7 +8,6 @@ const data = ref({
         first_name: '',
         last_name: '',
         birthday: '',
-        address: '',
         phone: '',
         email: '',
         password: '',
@@ -27,7 +26,6 @@ const saveStudent = async () => {
                 first_name: '',
                 last_name: '',
                 birthday: '',
-                address: '',
                 phone: '',
                 email: '',
                 password: '',
@@ -73,14 +71,6 @@ const saveStudent = async () => {
             </div>
             <div v-if="errors.birthday" class="alert alert-danger my-1">
                 {{ errors.birthday[0] }}
-            </div>
-
-            <div class="form-group">
-                <label>Address</label>
-                <input v-model="data.address" type="text" class="form-control">
-            </div>
-            <div v-if="errors.address" class="alert alert-danger my-1">
-                {{ errors.address[0] }}
             </div>
 
             <div class="form-group">

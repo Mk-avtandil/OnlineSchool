@@ -13,7 +13,6 @@ class TeacherUpdateRequest extends FormRequest
             'last_name' => ['string', 'max:20'],
             'birthday' => ['date'],
             'phone' => ['string', 'max:20'],
-            'email' => ['string', 'email', 'max:255'],
         ];
     }
 }
