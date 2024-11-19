@@ -90,7 +90,7 @@ const deleteCourse = async (courseId) => {
                 </div>
             </div>
         </div>
-        <div class="pagination my-2">
+        <div class="pagination my-2" v-if="pagination.prev_page_url || pagination.next_page_url">
             <button class="btn btn-success text-light" @click.prevent="getCourses(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
             <button class="btn btn-success mx-2" @click.prevent="getCourses(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
         </div>

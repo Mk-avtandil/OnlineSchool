@@ -18,6 +18,7 @@ const logout = async () => {
         axios.defaults.headers.Authorization = null;
 
         await axios.post('/api/logout');
+        await axios.get('/sanctum/csrf-cookie');
         router.push({name: 'courses_page_url'});
     } catch (error) {
         console.error("Logout failed: ", error);
