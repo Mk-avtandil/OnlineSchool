@@ -1,8 +1,11 @@
 <script setup>
 import axios from "axios";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import { useRoute } from 'vue-router';
+import { useStore } from "vuex";
 
+const store = useStore();
+const role = computed(() => store.getters.role);
 const homework = ref();
 const solutions = ref();
 const grades = ref();
@@ -120,7 +123,7 @@ const saveGrade = async (solutionId, studentId) => {
                     </div>
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-12" v-if="role === 'student'">
                 <h3>Create solution</h3>
                 <div v-if="successMessage" class="alert alert-success">
                     {{ successMessage }}
@@ -161,8 +164,8 @@ const saveGrade = async (solutionId, studentId) => {
                 </div>
             </div>
 
-            <h3>Students solution</h3>
-            <div class="col-12 my-2" v-for="solution in solutions">
+            <h3 v-if="role === 'teacher'">Students solution</h3>
+            <div class="col-12 my-2" v-for="solution in solutions" v-if="role === 'teacher'">
                 <div class="card">
                     <div class="card-header">
                         <span>Student: </span>

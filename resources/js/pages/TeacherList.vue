@@ -1,7 +1,10 @@
 <script setup>
 import axios from "axios";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
+import { useStore } from "vuex";
 
+const store = useStore();
+const role = computed(() => store.getters.role);
 const teachers = ref();
 
 onMounted(async () => {
@@ -34,7 +37,7 @@ const deleteTeacher = async (teacherId) => {
             <div class="col-8">
                 <h3 class="mb-2">Teachers</h3>
             </div>
-            <div class="col-4 text-end">
+            <div class="col-4 text-end" v-if="role==='super_admin'">
                 <router-link :to="{name: 'teacher_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Teacher</router-link>
             </div>
         </div>
@@ -57,10 +60,11 @@ const deleteTeacher = async (teacherId) => {
                 </th>
                 <td>{{teacher.birthday}}</td>
                 <td>{{teacher.phone}}</td>
-                <td>
+                <td v-if="role==='super_admin'">
                     <router-link :to="{name: 'teacher_edit_page_url', params: {id: teacher.id}}" class="btn btn-warning">Edit</router-link>
                     <button @click.prevent="deleteTeacher(teacher.id)" class="btn btn-danger m-1" type="submit">Delete</button>
                 </td>
+                <td v-else></td>
             </tr>
             </tbody>
         </table>

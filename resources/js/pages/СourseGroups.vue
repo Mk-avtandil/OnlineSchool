@@ -1,8 +1,11 @@
 <script setup>
 import axios from "axios";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import { useRoute } from 'vue-router';
+import { useStore } from "vuex";
 
+const store = useStore();
+const role = computed(() => store.getters.role);
 const groups = ref({});
 const route = useRoute();
 
@@ -36,7 +39,7 @@ const deleteGroup = async (groupId) => {
             <div class="col-8">
                 <h3 class="mb-2">Course groups</h3>
             </div>
-            <div class="col-4 text-end">
+            <div class="col-4 text-end" v-if="['admin', 'super_admin'].includes(role)">
                 <router-link :to="{name: 'group_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Group</router-link>
             </div>
         </div>
@@ -47,7 +50,7 @@ const deleteGroup = async (groupId) => {
                         <div class="col-8">
                             <h5 class="card-title text-dark">{{group.title}}</h5>
                         </div>
-                        <div class="col-4 text-end align-top">
+                        <div class="col-4 text-end align-top" v-if="['admin', 'super_admin'].includes(role)">
                             <div class="btn-group">
                                 <router-link data-bs-toggle="dropdown" >
                                     <div id="nav-icon">
