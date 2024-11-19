@@ -120,4 +120,11 @@ class GroupController extends Controller
 
         return response()->json(['message' => 'Teacher removed successfully!']);
     }
+
+    public function getTeachersForGroup($groupId): JsonResponse
+    {
+        $group = Group::findOrFail($groupId);
+        $teachers = $group->teachers;
+        return response()->json($teachers);
+    }
 }

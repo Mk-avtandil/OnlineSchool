@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\GradeController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\HomeworkController;
 use App\Http\Controllers\Api\LessonController;
+use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\SolutionController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TeacherController;
@@ -27,6 +28,7 @@ Route::name('course.')
 Route::name('group.')
     ->group(function () {
         Route::get('/course/{courseId}/groups', [GroupController::class, 'index'])->name('index');
+        Route::get('/group/{groupId}/teachers', [GroupController::class, 'getTeachersForGroup'])->name('getTeachersForGroup');
         Route::get('/group/{group}', [GroupController::class, 'show'])->name('show');
     });
 
@@ -54,6 +56,12 @@ Route::prefix('teacher')
 Route::name('homework.')
     ->group(function () {
         Route::get('/homework/{homework}', [HomeworkController::class, 'show'])->name('show');
+    });
+
+Route::name('schedule.')
+    ->group(function () {
+        Route::get('/schedule', [ScheduleController::class, 'index'])->name('index');
+        Route::post('/schedule/store', [ScheduleController::class, 'store'])->name('store');
     });
 
 

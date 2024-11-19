@@ -40,12 +40,12 @@ const deleteCourse = async (courseId) => {
 </script>
 
 <template>
-    <div class="container my-4">
-        <div class="row mb-3">
+    <div class="container my-3">
+        <div class="row mb-2">
             <div class="col-8">
-                <h3 class="mb-2">Courses</h3>
+                <span class="fs-3">Courses</span>
             </div>
-            <div class="col-4 text-end" v-if="['admin', 'super_admin'].includes(role)">
+            <div class="col-4 text-end  align-content-center" v-if="['admin', 'super_admin'].includes(role)">
                 <router-link :to="{name: 'course_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Course</router-link>
             </div>
         </div>

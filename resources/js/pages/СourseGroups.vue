@@ -34,7 +34,7 @@ const deleteGroup = async (groupId) => {
 </script>
 
 <template>
-    <div class="container my-4">
+    <div class="container my-3">
         <div class="row">
             <div class="col-8">
                 <span class="fs-6">

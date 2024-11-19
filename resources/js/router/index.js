@@ -102,6 +102,17 @@ const routes = [
         name: "homework_detail_page_url",
         component: () => import("../pages/HomeworkDetail.vue")
     },
+    // Schedule
+    {
+        path: "/schedule",
+        name: "schedule_page_url",
+        component: () => import("../pages/Schedule.vue"),
+    },
+    {
+        path: "/schedule/store",
+        name: "schedule_create_page_url",
+        component: () => import("../pages/ScheduleCreate.vue")
+    },
     // Auth
     {
         path: "/login",
