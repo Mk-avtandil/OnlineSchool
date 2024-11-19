@@ -37,7 +37,10 @@ const deleteStudent = async (studentId) => {
     <div class="container my-3">
         <div class="row">
             <div class="col-8">
-                <h3 class="mb-2">Students</h3>
+                 <span class="fs-6">
+                    <button @click="$router.go(-1)" class="btn btn-outline-dark">Назад</button>
+                </span>
+                <span class="fs-3 mx-2 align-middle">Students</span>
             </div>
             <div class="col-4 text-end" v-if="role==='super_admin'">
                 <router-link :to="{name: 'student_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Student</router-link>

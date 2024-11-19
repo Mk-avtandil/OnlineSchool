@@ -30,10 +30,12 @@ class SolutionController extends Controller
 
     public function store(SolutionCreateRequest $request, $homeworkId): JsonResponse
     {
+        $student = auth()->user()->student;
+
         $solution = Solution::create([
             'answer' => $request->get('answer'),
             'homework_id' => $homeworkId,
-            'student_id' => 1,
+            'student_id' => $student->id,
         ]);
 
         if ($request->hasFile('files')) {
@@ -41,8 +43,8 @@ class SolutionController extends Controller
         }
 
         return response()->json([
-            'message' => 'Lesson created successfully!',
-            'lesson' => $solution,
+            'message' => 'Solution created successfully!',
+            'solution' => $solution,
         ], 201);
     }
 }

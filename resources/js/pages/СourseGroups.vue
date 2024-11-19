@@ -37,7 +37,10 @@ const deleteGroup = async (groupId) => {
     <div class="container my-4">
         <div class="row">
             <div class="col-8">
-                <h3 class="mb-2">Course groups</h3>
+                <span class="fs-6">
+                    <button @click="$router.go(-1)" class="btn btn-outline-dark">Назад</button>
+                </span>
+                <span class="fs-3 mx-2 align-middle">Course groups</span>
             </div>
             <div class="col-4 text-end" v-if="['admin', 'super_admin'].includes(role)">
                 <router-link :to="{name: 'group_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Group</router-link>

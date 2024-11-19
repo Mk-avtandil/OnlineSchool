@@ -37,7 +37,10 @@ const deleteLesson = async (lessonId) => {
     <div class="container my-4">
         <div class="row">
             <div class="col-8">
-                <h3 class="mb-2">Course lessons</h3>
+                <span class="fs-6">
+                    <button @click="$router.go(-1)" class="btn btn-outline-dark">Назад</button>
+                </span>
+                <span class="fs-3 mx-2 align-middle">Course lessons</span>
             </div>
             <div class="col-4 text-end" v-if="['admin', 'super_admin', 'teacher'].includes(role)">
                 <router-link :to="{name: 'lesson_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Lesson</router-link>

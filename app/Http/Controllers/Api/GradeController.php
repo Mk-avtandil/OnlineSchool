@@ -12,12 +12,14 @@ class GradeController extends Controller
     public function store(GradeCreateRequest $request, $solutionId, $studentId): JsonResponse
     {
         try {
+            $teacher = auth()->user()->teacher;
+
             Grade::create([
                 'grade' => $request->get('grade'),
                 'feedback' => $request->get('feedback'),
                 'student_id' => $studentId,
                 'solution_id' => $solutionId,
-                'teacher_id' => 1,
+                'teacher_id' => $teacher->id,
             ]);
 
             return response()->json(['message' => 'Grade created successfully'], 201);
