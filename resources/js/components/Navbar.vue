@@ -53,6 +53,9 @@ onMounted(() => {
                     <li class="nav-item">
                         <router-link :to="{name: 'schedule_page_url'}" class="nav-link active" aria-current="page">Schedule</router-link>
                     </li>
+                    <li class="nav-item" v-if="role === 'super_admin'">
+                        <router-link :to="{name: 'statistics_page_url'}" class="nav-link active" aria-current="page">Statistics</router-link>
+                    </li>
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="!isAuthenticated">
                     <li class="nav-item">

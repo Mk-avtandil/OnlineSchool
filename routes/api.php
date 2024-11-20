@@ -63,7 +63,6 @@ Route::name('schedule.')
         Route::get('/schedule', [ScheduleController::class, 'index'])->name('index');
     });
 
-
 // Super admin
 Route::middleware(['auth:sanctum', 'role:super_admin'])
     ->group(function () {
@@ -100,6 +99,7 @@ Route::middleware(['auth:sanctum', 'role:super_admin||admin'])
                 Route::put('/group/{group}', [GroupController::class, 'update'])->name('update');
                 Route::post('/course/{courseId}/group/store', [GroupController::class, 'store'])->name('store');
                 Route::delete('/group/{group}', [GroupController::class, 'destroy'])->name('destroy');
+                Route::get('/groups/', [GroupController::class, 'getAllGroups'])->name('getAllGroups');
                 Route::put('/group/{groupId}/remove-student', [GroupController::class, 'removeStudent'])->name('removeStudent');
                 Route::put('/group/{groupId}/remove-teacher', [GroupController::class, 'removeTeacher'])->name('removeTeacher');
             });

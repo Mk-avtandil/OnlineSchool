@@ -58,7 +58,7 @@ const routes = [
     {
         path: "/student/:id",
         name: "student_detail_page_url",
-        component: () => import("../pages/StudentDetail.vue")
+        component: () => import("../pages/StudentDetail.vue"),
     },
     {
         path: "/student/store",
@@ -79,7 +79,7 @@ const routes = [
     {
         path: "/teacher/:id",
         name: "teacher_detail_page_url",
-        component: () => import("../pages/TeacherDetail.vue")
+        component: () => import("../pages/TeacherDetail.vue"),
     },
     {
         path: "/teacher/store",
@@ -100,7 +100,7 @@ const routes = [
     {
         path: "/homework/:id",
         name: "homework_detail_page_url",
-        component: () => import("../pages/HomeworkDetail.vue")
+        component: () => import("../pages/HomeworkDetail.vue"),
     },
     // Schedule
     {
@@ -111,7 +111,13 @@ const routes = [
     {
         path: "/schedule/store",
         name: "schedule_create_page_url",
-        component: () => import("../pages/ScheduleCreate.vue")
+        component: () => import("../pages/ScheduleCreate.vue"),
+    },
+    // Statistics
+    {
+        path: "/statistics",
+        name: "statistics_page_url",
+        component: () => import("../pages/Statistics.vue"),
     },
     // Auth
     {

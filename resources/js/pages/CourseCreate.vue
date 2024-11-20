@@ -37,8 +37,12 @@ const saveCourse = async () => {
 </script>
 <template>
     <div class="container my-3">
-        <h3 class="mb-3">Create Course</h3>
-        <div v-if="successMessage" class="alert alert-success">
+        <span class="fs-6">
+            <button @click="$router.go(-1)" class="btn btn-outline-dark">Назад</button>
+        </span>
+        <span class="fs-3 m-2 align-middle">Create Course</span>
+
+        <div v-if="successMessage" class="alert alert-success mt-2">
             {{ successMessage }}
         </div>
         <form @submit.prevent="saveCourse()">

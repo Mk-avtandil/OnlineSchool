@@ -101,7 +101,14 @@ class GroupController extends Controller
         }
     }
 
-    public function removeStudent(GroupUpdateRequest $request, $groupId)
+    public function getAllGroups(): GroupCollection
+    {
+        $groups = Group::all();
+
+        return new GroupCollection($groups);
+    }
+
+    public function removeStudent(GroupUpdateRequest $request, $groupId): JsonResponse
     {
         $group = Group::findOrFail($groupId);
         $studentId = $request->input('student_id');
@@ -111,7 +118,7 @@ class GroupController extends Controller
         return response()->json(['message' => 'Student removed successfully!']);
     }
 
-    public function removeTeacher(GroupUpdateRequest $request, $groupId)
+    public function removeTeacher(GroupUpdateRequest $request, $groupId): JsonResponse
     {
         $group = Group::findOrFail($groupId);
         $teacherId = $request->input('teacher_id');
