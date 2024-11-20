@@ -16,7 +16,7 @@ class GroupController extends Controller
 {
     public function index($courseId): GroupCollection
     {
-        $groups = Group::where('course_id', $courseId)->with(['students', 'teachers'])->get();
+        $groups = Group::where('course_id', $courseId)->with(['students', 'teachers', 'course'])->get();
 
         return new GroupCollection($groups);
     }
@@ -103,7 +103,7 @@ class GroupController extends Controller
 
     public function getAllGroups(): GroupCollection
     {
-        $groups = Group::all();
+        $groups = Group::with('students', 'teachers', 'course')->get();
 
         return new GroupCollection($groups);
     }

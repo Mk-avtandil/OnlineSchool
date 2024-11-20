@@ -11,20 +11,6 @@ class Userseeder extends Seeder
 {
     public function run(): void
     {
-        $student = User::create([
-            'email' => 'avtandil@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
-
-        $student->assignRole('student');
-
-        $teacher = User::create([
-            'email' => 'maksat@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
-
-        $teacher->assignRole('teacher');
-
         $admin = User::create([
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),

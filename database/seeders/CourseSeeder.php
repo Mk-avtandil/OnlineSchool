@@ -9,34 +9,84 @@ class CourseSeeder extends Seeder
 {
     public function run(): void
     {
-        Course::create([
+        $course = Course::create([
             'title' => 'English',
             'description' => 'American English',
             'price' => 10000,
         ]);
 
-        Course::create([
+        $course->groups()->create([
+            'title' => 'A1 level',
+            'Description' => 'Test description',
+        ]);
+
+        $course->lessons()->create([
+            'title' => 'Lesson 1',
+            'Description' => 'To be',
+        ]);
+
+        $course = Course::create([
             'title' => 'Spanish',
             'description' => 'New course',
             'price' => 12000,
         ]);
 
-        Course::create([
+        $course->groups()->create([
+            'title' => 'C1 level',
+            'Description' => 'Test description',
+        ]);
+
+        $course->lessons()->create([
+            'title' => 'Lesson 1',
+            'Description' => 'Checking level',
+        ]);
+
+        $course = Course::create([
             'title' => 'Backend',
             'description' => 'bootcamp course',
             'price' => 15000,
         ]);
 
-        Course::create([
+        $course->groups()->create([
+            'title' => 'Group №1',
+            'Description' => 'Test description',
+        ]);
+
+        $course->lessons()->create([
+            'title' => 'Lesson 1',
+            'Description' => 'Sql',
+        ]);
+
+        $course = Course::create([
             'title' => 'Frontend',
             'description' => 'bootcamp course',
             'price' => 10000,
         ]);
 
-        Course::create([
+        $course->groups()->create([
+            'title' => 'Morning group',
+            'Description' => 'Test description',
+        ]);
+
+        $course->lessons()->create([
+            'title' => 'Lesson 1',
+            'Description' => 'HTML + CSS',
+        ]);
+
+        $course = Course::create([
             'title' => 'Computer Science',
             'description' => 'For developers',
             'price' => 20000,
+        ]);
+
+        $course->groups()->create([
+            'title' => 'Group for senior developers',
+            'Description' => 'Test description',
+        ]);
+
+        $course->lessons()->create([
+            'title' => 'Lesson 1',
+            'Description' => 'Binary tree',
         ]);
     }
 }
