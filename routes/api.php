@@ -61,7 +61,6 @@ Route::name('homework.')
 Route::name('schedule.')
     ->group(function () {
         Route::get('/schedule', [ScheduleController::class, 'index'])->name('index');
-        Route::post('/schedule/store', [ScheduleController::class, 'store'])->name('store');
     });
 
 
@@ -103,6 +102,12 @@ Route::middleware(['auth:sanctum', 'role:super_admin||admin'])
                 Route::delete('/group/{group}', [GroupController::class, 'destroy'])->name('destroy');
                 Route::put('/group/{groupId}/remove-student', [GroupController::class, 'removeStudent'])->name('removeStudent');
                 Route::put('/group/{groupId}/remove-teacher', [GroupController::class, 'removeTeacher'])->name('removeTeacher');
+            });
+
+        Route::name('schedule.')
+            ->group(function () {
+                Route::post('/schedule/store', [ScheduleController::class, 'store'])->name('store');
+                Route::delete('/schedule/{schedule}', [ScheduleController::class, 'destroy'])->name('destroy');
             });
     });
 

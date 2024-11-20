@@ -4,9 +4,9 @@ import {onMounted, watch, ref} from "vue";
 
 const errors = ref({});
 const successMessage = ref('');
-const courses = ref([]);
-const teachers = ref([]);
-const groups = ref([]);
+const courses = ref();
+const teachers = ref();
+const groups = ref();
 const data = ref({
     course: '',
     group: '',
@@ -53,8 +53,19 @@ const saveSchedule = async () => {
         errors.value = {};
         successMessage.value = '';
 
-        await axios.post(`/api/schedule/store`, data.value);
-        console.log('data')
+        const selectedCourse = courses.value.find(course => course.id === data.value.course);
+        const selectedGroup = groups.value.find(group => group.id === data.value.group);
+        const selectedTeacher = teachers.value.find(teacher => teacher.id === data.value.teacher);
+
+        const payload = {
+            course: selectedCourse.title,
+            group: selectedGroup.title,
+            teacher: selectedTeacher.first_name,
+            start_time: data.value.start_time,
+            end_time: data.value.end_time
+        };
+
+        await axios.post(`/api/schedule/store`, payload);
         successMessage.value = 'Schedule created successfully!';
 
         setTimeout(() => {
