@@ -7,13 +7,26 @@ use App\Http\Requests\CourseCreateRequest;
 use App\Http\Resources\CourseCollection;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CourseController extends Controller
 {
     public function index(): CourseCollection
     {
-        $courses = Course::with(["groups", "lessons"])->paginate(6);
+        $user = Auth::user();
+
+        if ($user->hasRole('student')) {
+            $courses = Course::whereHas('groups.students', function ($query) use ($user) {
+               $query->where('students.user_id', $user->id);
+            })->with(["groups", "lessons"])->paginate(6);
+        } elseif ($user->hasRole('teacher')) {
+            $courses = Course::whereHas('groups.teachers', function ($query) use ($user) {
+                $query->where('teachers.user_id', $user->id);
+            })->with(['groups', 'lessons'])->paginate(6);
+        } elseif ($user->hasAnyRole(['admin', 'super_admin'])) {
+            $courses = Course::with(["groups", "lessons"])->paginate(6);
+        }
 
         return new CourseCollection($courses);
     }

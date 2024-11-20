@@ -7,15 +7,33 @@ use App\Http\Requests\LessonCreateRequest;
 use App\Http\Resources\LessonCollection;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
+use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
     public function index($courseId): LessonCollection
     {
-        $lessons = Lesson::where('course_id', $courseId)->with('media', 'homeworks')->get();
+        $user = Auth::user();
+
+        $lessonsQuery = Lesson::where('course_id', $courseId)->with('media', 'homeworks');
+
+        if ($user->hasRole('student')) {
+            $lessonsQuery->whereHas('course.groups.students', function ($query) use ($user) {
+                $query->where('students.user_id', $user->id);
+            });
+        }
+
+        if ($user->hasRole('teacher')) {
+            $lessonsQuery->whereHas('course.groups.teachers', function ($query) use ($user) {
+                $query->where('teachers.user_id', $user->id);
+            });
+        }
+
+        $lessons = $lessonsQuery->get();
 
         return new LessonCollection($lessons);
     }
+
 
     public function show(Lesson $lesson)
     {
