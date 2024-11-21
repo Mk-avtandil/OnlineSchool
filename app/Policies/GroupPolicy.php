@@ -11,9 +11,13 @@ class GroupPolicy
     {
         if ($user->hasRole(['admin', 'super_admin'])) {
             return true;
-        } elseif ($user->hasRole('student')) {
+        }
+
+        if ($user->hasRole('student')) {
             return $group->students->contains($user);
-        } elseif ($user->hasRole('teacher')) {
+        }
+
+        if ($user->hasRole('teacher')) {
             return $group->teachers->contains($user);
         }
 

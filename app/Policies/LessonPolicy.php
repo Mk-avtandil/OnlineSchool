@@ -11,9 +11,13 @@ class LessonPolicy
     {
         if ($user->hasRole(['admin', 'super_admin'])) {
             return true;
-        } elseif ($user->hasRole('student')) {
+        }
+
+        if ($user->hasRole('student')) {
             return $lesson->course->groups()->where('student_id', $user->id)->exists();
-        } elseif ($user->hasRole('teacher')) {
+        }
+
+        if ($user->hasRole('teacher')) {
             return $lesson->course->groups()->where('teacher_id', $user->id)->exists();
         }
 

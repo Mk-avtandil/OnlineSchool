@@ -21,7 +21,9 @@ class LessonController extends Controller
             $lessonsQuery->whereHas('course.groups.students', function ($query) use ($user) {
                 $query->where('students.user_id', $user->id);
             });
-        } elseif ($user->hasRole('teacher')) {
+        }
+
+        if ($user->hasRole('teacher')) {
             $lessonsQuery->whereHas('course.groups.teachers', function ($query) use ($user) {
                 $query->where('teachers.user_id', $user->id);
             });

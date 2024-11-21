@@ -25,7 +25,9 @@ class GroupController extends Controller
             $groupQuery->whereHas('students', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             });
-        } elseif ($user->hasRole('teacher')) {
+        }
+
+        if ($user->hasRole('teacher')) {
             $groupQuery->whereHas('teachers', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             });

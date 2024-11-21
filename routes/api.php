@@ -19,48 +19,51 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::name('course.')
+Route::middleware(['auth:sanctum'])
     ->group(function () {
-        Route::get('/courses', [CourseController::class, 'index'])->name('index');
-        Route::get('/course/{course}', [CourseController::class, 'show'])->name('show');
-    });
+        Route::name('course.')
+            ->group(function () {
+                Route::get('/courses', [CourseController::class, 'index'])->name('index');
+                Route::get('/course/{course}', [CourseController::class, 'show'])->name('show');
+            });
 
-Route::name('group.')
-    ->group(function () {
-        Route::get('/course/{courseId}/groups', [GroupController::class, 'index'])->name('index');
-        Route::get('/group/{groupId}/teachers', [GroupController::class, 'getTeachersForGroup'])->name('getTeachersForGroup');
-        Route::get('/group/{group}', [GroupController::class, 'show'])->name('show');
-    });
+        Route::name('group.')
+            ->group(function () {
+                Route::get('/course/{courseId}/groups', [GroupController::class, 'index'])->name('index');
+                Route::get('/group/{groupId}/teachers', [GroupController::class, 'getTeachersForGroup'])->name('getTeachersForGroup');
+                Route::get('/group/{group}', [GroupController::class, 'show'])->name('show');
+            });
 
-Route::name('lesson.')
-    ->group(function () {
-        Route::get('/course/{courseId}/lessons', [LessonController::class, 'index'])->name('index');
-        Route::get('/lesson/{lesson}', [LessonController::class, 'show'])->name('show');
-    });
+        Route::name('lesson.')
+            ->group(function () {
+                Route::get('/course/{courseId}/lessons', [LessonController::class, 'index'])->name('index');
+                Route::get('/lesson/{lesson}', [LessonController::class, 'show'])->name('show');
+            });
 
-Route::prefix('student')
-    ->name('student.')
-    ->group(function () {
-        Route::get('/', [StudentController::class, 'index'])->name('index');
-        Route::get('/{student}', [StudentController::class, 'show'])->name('show');
-        Route::get('/{student}/courses', [StudentController::class, 'getStudentCourses'])->name('getStudentCourses');
-    });
+        Route::prefix('student')
+            ->name('student.')
+            ->group(function () {
+                Route::get('/', [StudentController::class, 'index'])->name('index');
+                Route::get('/{student}', [StudentController::class, 'show'])->name('show');
+                Route::get('/{student}/courses', [StudentController::class, 'getStudentCourses'])->name('getStudentCourses');
+            });
 
-Route::prefix('teacher')
-    ->name('teacher.')
-    ->group(function () {
-        Route::get('/', [TeacherController::class, 'index'])->name('index');
-        Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
-    });
+        Route::prefix('teacher')
+            ->name('teacher.')
+            ->group(function () {
+                Route::get('/', [TeacherController::class, 'index'])->name('index');
+                Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
+            });
 
-Route::name('homework.')
-    ->group(function () {
-        Route::get('/homework/{homework}', [HomeworkController::class, 'show'])->name('show');
-    });
+        Route::name('homework.')
+            ->group(function () {
+                Route::get('/homework/{homework}', [HomeworkController::class, 'show'])->name('show');
+            });
 
-Route::name('schedule.')
-    ->group(function () {
-        Route::get('/schedule', [ScheduleController::class, 'index'])->name('index');
+        Route::name('schedule.')
+            ->group(function () {
+                Route::get('/schedule', [ScheduleController::class, 'index'])->name('index');
+            });
     });
 
 // Super admin
