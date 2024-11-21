@@ -21,15 +21,17 @@ class LessonController extends Controller
             $lessonsQuery->whereHas('course.groups.students', function ($query) use ($user) {
                 $query->where('students.user_id', $user->id);
             });
-        }
-
-        if ($user->hasRole('teacher')) {
+        } elseif ($user->hasRole('teacher')) {
             $lessonsQuery->whereHas('course.groups.teachers', function ($query) use ($user) {
                 $query->where('teachers.user_id', $user->id);
             });
         }
 
         $lessons = $lessonsQuery->get();
+
+        if ($lessons->isEmpty()) {
+            abort(403, 'You do not have access to this lesson!');
+        }
 
         return new LessonCollection($lessons);
     }

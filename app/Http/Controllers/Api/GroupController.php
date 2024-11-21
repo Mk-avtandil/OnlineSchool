@@ -10,13 +10,32 @@ use App\Http\Resources\GroupResource;
 use App\Models\Group;
 use App\Models\Student;
 use App\Models\Teacher;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class GroupController extends Controller
 {
     public function index($courseId): GroupCollection
     {
-        $groups = Group::where('course_id', $courseId)->with(['students', 'teachers', 'course'])->get();
+        $user = Auth::user();
+
+        $groupQuery = Group::where('course_id', $courseId)->with(['course']);
+
+        if ($user->hasRole('student')) {
+            $groupQuery->whereHas('students', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            });
+        } elseif ($user->hasRole('teacher')) {
+            $groupQuery->whereHas('teachers', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            });
+        }
+
+        $groups = $groupQuery->get();
+
+        if ($groups->isEmpty()) {
+            abort(403, 'You do not have access to this group!');
+        }
 
         return new GroupCollection($groups);
     }
