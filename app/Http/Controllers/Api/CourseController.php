@@ -7,28 +7,37 @@ use App\Http\Requests\CourseCreateRequest;
 use App\Http\Resources\CourseCollection;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CourseController extends Controller
 {
-    public function index(): CourseCollection
+    public function index(Request $request): CourseCollection
     {
         $user = Auth::user();
+
+        $courses = Course::with(['groups', 'lessons']);
 
         if ($user->hasRole('student')) {
             $courses = Course::whereHas('groups.students', function ($query) use ($user) {
                $query->where('students.user_id', $user->id);
-            })->with(["groups", "lessons"])->paginate(6);
-        } elseif ($user->hasRole('teacher')) {
-            $courses = Course::whereHas('groups.teachers', function ($query) use ($user) {
-                $query->where('teachers.user_id', $user->id);
-            })->with(['groups', 'lessons'])->paginate(6);
-        } elseif ($user->hasAnyRole(['admin', 'super_admin'])) {
-            $courses = Course::with(["groups", "lessons"])->paginate(6);
+            })->with(["groups", "lessons"]);
         }
 
-        return new CourseCollection($courses);
+        if ($user->hasRole('teacher')) {
+            $courses = Course::whereHas('groups.teachers', function ($query) use ($user) {
+                $query->where('teachers.user_id', $user->id);
+            })->with(['groups', 'lessons']);
+        }
+
+        if ($request->has('search')) {
+            $courses->where('title', 'like', '%' . $request->input('search') . '%');
+        }
+
+        $result = $courses->paginate(6);
+
+        return new CourseCollection($result);
     }
 
     public function store(CourseCreateRequest $request): JsonResponse

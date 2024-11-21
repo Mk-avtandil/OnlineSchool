@@ -13,10 +13,6 @@ class HomeworkController extends Controller
 
     public function show(Homework $homework): HomeworkResource|JsonResponse
     {
-        if (!$homework) {
-            return response()->json(['message' => 'Homework not found'], 404);
-        }
-
         return new HomeworkResource($homework);
     }
 
