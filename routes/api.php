@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware(['auth:sanctum'])->name('logout');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -53,6 +53,7 @@ Route::middleware(['auth:sanctum'])
             ->group(function () {
                 Route::get('/', [TeacherController::class, 'index'])->name('index');
                 Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
+                Route::get('/{teacher}/courses', [TeacherController::class, 'getTeacherCourses'])->name('getTeacherCourses');
             });
 
         Route::name('homework.')

@@ -27,7 +27,6 @@ const getStudent = async (url = `/api/student/${route.params.id}`) => {
 const getStudentCourses = async (url = `/api/student/${route.params.id}/courses`) => {
     try {
         const response = await axios.get(url);
-        console.log(response.data)
         studentCourses.value = response.data
     } catch (error) {
         console.error('Error fetching courses', error.response || error);
