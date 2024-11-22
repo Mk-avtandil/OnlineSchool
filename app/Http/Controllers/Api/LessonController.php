@@ -7,6 +7,7 @@ use App\Http\Requests\LessonCreateRequest;
 use App\Http\Resources\LessonCollection;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
@@ -39,16 +40,12 @@ class LessonController extends Controller
     }
 
 
-    public function show(Lesson $lesson)
+    public function show(Lesson $lesson): LessonResource|JsonResponse
     {
-        if (!$lesson) {
-            return response()->json(['message' => 'Lesson not found'], 404);
-        }
-
         return new LessonResource($lesson);
     }
 
-    public function store(LessonCreateRequest $request, $courseId)
+    public function store(LessonCreateRequest $request, $courseId): JsonResponse
     {
         $lesson = Lesson::create([
             'title' => $request->title,
@@ -66,7 +63,7 @@ class LessonController extends Controller
         ], 201);
     }
 
-    public function update(Lesson $lesson, LessonCreateRequest $request)
+    public function update(Lesson $lesson, LessonCreateRequest $request): JsonResponse
     {
         try {
             $lesson->update([
@@ -83,7 +80,7 @@ class LessonController extends Controller
         }
     }
 
-    public function destroy(Lesson $lesson)
+    public function destroy(Lesson $lesson): JsonResponse
     {
         try {
             $lesson->delete();

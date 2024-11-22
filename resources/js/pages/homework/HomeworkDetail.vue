@@ -172,7 +172,6 @@ const saveSolution = async (url = `/api/homework/${route.params.id}/solution/sto
 </div>
 </template>
 
-
 <style scoped>
 
 </style>

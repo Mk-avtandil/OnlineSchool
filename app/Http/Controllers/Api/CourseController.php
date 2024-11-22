@@ -82,7 +82,7 @@ class CourseController extends Controller
         }
     }
 
-    public function destroy(Course $course)
+    public function destroy(Course $course): JsonResponse
     {
         try {
             $course->delete();

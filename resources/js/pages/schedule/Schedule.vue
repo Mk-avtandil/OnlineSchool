@@ -70,7 +70,6 @@ const deleteSchedule = async (scheduleId) => {
             </tbody>
         </table>
     </div>
-
 </template>
 
 <style scoped>

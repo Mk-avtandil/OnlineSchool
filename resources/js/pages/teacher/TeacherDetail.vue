@@ -8,7 +8,6 @@ const errors = ref({});
 const teacher = ref();
 const successMessage = ref('');
 
-
 onMounted(async () => {
     await getTeacher();
 });
@@ -22,7 +21,6 @@ const getTeacher = async (url = `/api/teacher/${route.params.id}`) => {
         console.error('Error fetching teacher:', error);
     }
 };
-
 </script>
 
 <template>

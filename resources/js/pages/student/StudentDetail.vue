@@ -9,7 +9,6 @@ const student = ref();
 const studentCourses = ref();
 const successMessage = ref('');
 
-
 onMounted(async () => {
     await getStudent();
     await getStudentCourses();

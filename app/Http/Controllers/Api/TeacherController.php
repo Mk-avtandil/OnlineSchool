@@ -53,7 +53,7 @@ class TeacherController extends Controller
         }
     }
 
-    public function update(Teacher $teacher, TeacherUpdateRequest $request)
+    public function update(Teacher $teacher, TeacherUpdateRequest $request): JsonResponse
     {
         $fields = ['first_name', 'last_name', 'birthday', 'phone'];
         try {
@@ -75,7 +75,7 @@ class TeacherController extends Controller
         }
     }
 
-    public function destroy(Teacher $teacher)
+    public function destroy(Teacher $teacher): JsonResponse
     {
         try {
             $teacher->delete();

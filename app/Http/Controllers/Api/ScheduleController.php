@@ -31,7 +31,7 @@ class ScheduleController extends Controller
         return response()->json(['message' => 'Schedule created successfully!'], 201);
     }
 
-    public function destroy(Schedule $schedule)
+    public function destroy(Schedule $schedule): JsonResponse
     {
         try {
             $schedule->delete();

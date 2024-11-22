@@ -34,7 +34,6 @@ const saveHomework = async () => {
         }
     }
 };
-
 </script>
 <template>
     <div class="container my-3">

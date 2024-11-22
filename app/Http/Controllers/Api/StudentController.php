@@ -23,10 +23,6 @@ class StudentController extends Controller
 
     public function show(Student $student): StudentResource|JsonResponse
     {
-        if (!$student) {
-            return response()->json(['message' => 'Student not found'], 404);
-        }
-
         return new StudentResource($student);
     }
 
@@ -52,7 +48,7 @@ class StudentController extends Controller
         }
     }
 
-    public function update(Student $student, StudentUpdateRequest $request)
+    public function update(Student $student, StudentUpdateRequest $request): JsonResponse
     {
         $fields = ['first_name', 'last_name', 'birthday', 'phone'];
         try {
@@ -74,7 +70,7 @@ class StudentController extends Controller
         }
     }
 
-    public function destroy(Student $student)
+    public function destroy(Student $student): JsonResponse
     {
         try {
             $student->delete();
