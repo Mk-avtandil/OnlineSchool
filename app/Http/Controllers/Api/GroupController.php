@@ -7,45 +7,43 @@ use App\Http\Requests\GroupCreateRequest;
 use App\Http\Requests\GroupUpdateRequest;
 use App\Http\Resources\GroupCollection;
 use App\Http\Resources\GroupResource;
+use App\Models\Course;
 use App\Models\Group;
 use App\Models\Student;
 use App\Models\Teacher;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Policies\GroupPolicy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class GroupController extends Controller
 {
-    public function index($courseId): GroupCollection
+    public function index(Course $course): GroupCollection
     {
-//        $this->authorize('view', Group::class);
-//        $groupQuery = Group::where('course_id', $request->get('courseId'))->with(['course']);
+        $user = auth()->user();
 
-        $user = Auth::user();
+        $groupQuery = app(GroupPolicy::class)->viewAny($user, $course);
 
-        $groupQuery = Group::where('course_id', $courseId)->with(['course']);
-
-        $groups = $groupQuery->get();
+        $groups = $groupQuery->with('course')->get();
 
         if ($groups->isEmpty()) {
-            abort(403, 'You do not have access to this group!');
+            abort(403, 'You do not have access to any groups in this course!');
         }
 
         return new GroupCollection($groups);
     }
 
-    public function show(Group $group): GroupResource|JsonResponse
+    public function show(Group $group): GroupResource
     {
+        $this->authorize('view', $group);
         return new GroupResource($group);
     }
 
-    public function store(GroupCreateRequest $request, $courseId): JsonResponse
+    public function store(GroupCreateRequest $request, Course $course): JsonResponse
     {
         try {
             $group = Group::create([
                 'title' => $request->get('title'),
                 'description' => $request->get('description'),
-                'course_id' => $courseId,
+                'course_id' => $course->id,
             ]);
 
             if ($request->has('students') && count($request->get('students')) > 0) {
@@ -117,9 +115,8 @@ class GroupController extends Controller
         return new GroupCollection($groups);
     }
 
-    public function removeStudent(GroupUpdateRequest $request, $groupId): JsonResponse
+    public function removeStudent(GroupUpdateRequest $request, Group $group): JsonResponse
     {
-        $group = Group::findOrFail($groupId);
         $studentId = $request->input('student_id');
 
         $group->students()->detach($studentId);
@@ -135,12 +132,5 @@ class GroupController extends Controller
         $group->teachers()->detach($teacherId);
 
         return response()->json(['message' => 'Teacher removed successfully!']);
-    }
-
-    public function getTeachersForGroup($groupId): JsonResponse
-    {
-        $group = Group::findOrFail($groupId);
-        $teachers = $group->teachers;
-        return response()->json($teachers);
     }
 }

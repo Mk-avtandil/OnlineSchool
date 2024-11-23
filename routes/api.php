@@ -19,138 +19,127 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['auth:sanctum'])
+Route::prefix('courses')
+    ->name('course.')
     ->group(function () {
-        Route::prefix('courses')
-            ->name('course.')
-            ->group(function () {
-                Route::get('/', [CourseController::class, 'index'])->name('index');
-                Route::get('/{course}', [CourseController::class, 'show'])->name('show');
-            });
+        Route::middleware(['auth:sanctum'])->group(function () {
+            Route::get('/', [CourseController::class, 'index'])->name('index');
+            Route::get('/{course}', [CourseController::class, 'show'])->name('show');
+        });
 
-        Route::name('group.')
-            ->group(function () {
-                Route::get('/course/{courseId}/groups', [GroupController::class, 'index'])->name('index');
-                Route::get('/group/{groupId}/teachers', [GroupController::class, 'getTeachersForGroup'])->name('getTeachersForGroup');
-                Route::get('/group/{group}', [GroupController::class, 'show'])->name('show');
-            });
-
-        Route::name('lesson.')
-            ->group(function () {
-                Route::get('/course/{courseId}/lessons', [LessonController::class, 'index'])->name('index');
-                Route::get('/lesson/{lesson}', [LessonController::class, 'show'])->name('show');
-            });
-
-        Route::prefix('student')
-            ->name('student.')
-            ->group(function () {
-                Route::get('/', [StudentController::class, 'index'])->name('index');
-                Route::get('/{student}', [StudentController::class, 'show'])->name('show');
-                Route::get('/{student}/courses', [StudentController::class, 'getStudentCourses'])->name('getStudentCourses');
-            });
-
-        Route::prefix('teacher')
-            ->name('teacher.')
-            ->group(function () {
-                Route::get('/', [TeacherController::class, 'index'])->name('index');
-                Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
-                Route::get('/{teacher}/courses', [TeacherController::class, 'getTeacherCourses'])->name('getTeacherCourses');
-            });
-
-        Route::name('homework.')
-            ->group(function () {
-                Route::get('/homework/{homework}', [HomeworkController::class, 'show'])->name('show');
-            });
-
-        Route::name('schedule.')
-            ->group(function () {
-                Route::get('/schedule', [ScheduleController::class, 'index'])->name('index');
-            });
+        Route::middleware(['auth:sanctum', 'role:super_admin||admin'])->group(function () {
+            Route::post('/', [CourseController::class, 'store'])->name('store');
+            Route::put('/{course}', [CourseController::class, 'update'])->name('update');
+            Route::delete('/{course}', [CourseController::class, 'destroy'])->name('destroy');
+        });
     });
 
-// Super admin
-Route::middleware(['auth:sanctum', 'role:super_admin'])
+Route::prefix('groups')
+    ->name('group.')
     ->group(function () {
-        Route::prefix('student')
-            ->name('student.')
-            ->group(function () {
-                Route::post('/store', [StudentController::class, 'store'])->name('store');
-                Route::put('/{student}', [StudentController::class, 'update'])->name('update');
-                Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
-            });
+        Route::middleware(['auth:sanctum'])->group(function () {
+            Route::get('/{course}', [GroupController::class, 'index'])->name('index');
+            Route::get('/{group}/detail', [GroupController::class, 'show'])->name('show');
+        });
 
-        Route::prefix('teacher')
-            ->name('teacher.')
-            ->group(function () {
-                Route::post('/store', [TeacherController::class, 'store'])->name('store');
-                Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update');
-                Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
-            });
+        Route::middleware(['auth:sanctum', 'role:super_admin||admin'])->group(function () {
+            Route::put('/{group}', [GroupController::class, 'update'])->name('update');
+            Route::post('/{course}', [GroupController::class, 'store'])->name('store');
+            Route::delete('/{group}', [GroupController::class, 'destroy'])->name('destroy');
+            Route::get('/', [GroupController::class, 'getAllGroups'])->name('getAllGroups');
+            Route::put('/{group}/remove-student', [GroupController::class, 'removeStudent'])->name('removeStudent');
+            Route::put('/{group}/remove-teacher', [GroupController::class, 'removeTeacher'])->name('removeTeacher');
+        });
     });
 
-// Super admin && Admin
-Route::middleware(['auth:sanctum', 'role:super_admin||admin'])
+Route::prefix('lessons')
+    ->name('lesson.')
     ->group(function () {
-        Route::prefix('courses')
-            ->name('course.')
-            ->group(function () {
-                Route::post('/', [CourseController::class, 'store'])->name('store');
-                Route::put('/{course}', [CourseController::class, 'update'])->name('update');
-                Route::delete('/{course}', [CourseController::class, 'destroy'])->name('destroy');
-            });
+        Route::middleware(['auth:sanctum'])->group(function () {
+            Route::get('/{course}', [LessonController::class, 'index'])->name('index');
+            Route::get('/lesson/{lesson}', [LessonController::class, 'show'])->name('show');
+        });
 
-        Route::name('group.')
-            ->group(function () {
-                Route::put('/group/{group}', [GroupController::class, 'update'])->name('update');
-                Route::post('/course/{courseId}/group/store', [GroupController::class, 'store'])->name('store');
-                Route::delete('/group/{group}', [GroupController::class, 'destroy'])->name('destroy');
-                Route::get('/groups/', [GroupController::class, 'getAllGroups'])->name('getAllGroups');
-                Route::put('/group/{groupId}/remove-student', [GroupController::class, 'removeStudent'])->name('removeStudent');
-                Route::put('/group/{groupId}/remove-teacher', [GroupController::class, 'removeTeacher'])->name('removeTeacher');
-            });
-
-        Route::name('schedule.')
-            ->group(function () {
-                Route::post('/schedule/store', [ScheduleController::class, 'store'])->name('store');
-                Route::delete('/schedule/{schedule}', [ScheduleController::class, 'destroy'])->name('destroy');
-            });
+        Route::middleware(['auth:sanctum', 'role:super_admin||admin||teacher'])->group(function () {
+            Route::put('/lesson/{lesson}', [LessonController::class, 'update'])->name('update');
+            Route::post('/course/{courseId}/lesson/store', [LessonController::class, 'store'])->name('store');
+            Route::delete('lesson/{lesson}', [LessonController::class, 'destroy'])->name('destroy');
+        });
     });
 
-// Super admin && Admin && Teacher
-Route::middleware(['auth:sanctum', 'role:super_admin||admin||teacher'])
+Route::prefix('students')
+    ->name('student.')
     ->group(function () {
-        Route::name('lesson.')
-            ->group(function () {
-                Route::put('/lesson/{lesson}', [LessonController::class, 'update'])->name('update');
-                Route::post('/course/{courseId}/lesson/store', [LessonController::class, 'store'])->name('store');
-                Route::delete('lesson/{lesson}', [LessonController::class, 'destroy'])->name('destroy');
-            });
+        Route::middleware(['auth:sanctum'])->group(function () {
+            Route::get('/', [StudentController::class, 'index'])->name('index');
+            Route::get('/{student}', [StudentController::class, 'show'])->name('show');
+        });
+
+        Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
+            Route::post('/store', [StudentController::class, 'store'])->name('store');
+            Route::put('/{student}', [StudentController::class, 'update'])->name('update');
+            Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
+        });
     });
 
-// Teacher
-Route::middleware(['auth:sanctum', 'role:teacher'])
+Route::prefix('teachers')
+    ->name('teacher.')
     ->group(function () {
-        Route::name('homework.')
-            ->group(function () {
-                Route::post('/lesson/{lesson}/homework/store', [HomeworkController::class, 'store'])->name('store');
-            });
+        Route::middleware(['auth:sanctum'])->group(function () {
+            Route::get('/', [TeacherController::class, 'index'])->name('index');
+            Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
+        });
 
-        Route::name('grade.')
-            ->group(function () {
-                Route::post('/grade/{solutionId}/{studentId}', [GradeController::class, 'store'])->name('store');
-            });
-
-        Route::name('solution.')
-            ->group(function () {
-                Route::get('/homework/{homeworkId}/solutions', [SolutionController::class, 'getHomeworkSolutions'])->name('getHomeworkSolutions');
-            });
+        Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
+            Route::post('/store', [TeacherController::class, 'store'])->name('store');
+            Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update');
+            Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
+        });
     });
 
-// Student
-Route::middleware(['auth:sanctum', 'role:student'])
+Route::prefix('homeworks')
+    ->name('homework.')
     ->group(function () {
-        Route::name('solution.')
-            ->group(function () {
-                Route::post('/homework/{homeworkId}/solution/store', [SolutionController::class, 'store'])->name('store');
-            });
+        Route::middleware(['auth:sanctum'])->group(function () {
+            Route::get('/homework/{homework}', [HomeworkController::class, 'show'])->name('show');
+        });
+
+        Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
+            Route::post('/lesson/{lesson}/homework/store', [HomeworkController::class, 'store'])->name('store');
+        });
     });
+
+Route::prefix('solutions')
+    ->name('solution.')
+    ->group(function () {
+        Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
+            Route::get('/homework/{homeworkId}/solutions', [SolutionController::class, 'getHomeworkSolutions'])->name('getHomeworkSolutions');
+        });
+
+        Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
+            Route::post('/homework/{homeworkId}/solution/store', [SolutionController::class, 'store'])->name('store');
+        });
+    });
+
+Route::prefix('schedules')
+    ->name('schedule.')
+    ->group(function () {
+        Route::middleware(['auth:sanctum'])->group(function () {
+            Route::get('/schedule', [ScheduleController::class, 'index'])->name('index');
+        });
+
+        Route::middleware(['auth:sanctum', 'role:super_admin||admin'])->group(function () {
+            Route::post('/schedule/store', [ScheduleController::class, 'store'])->name('store');
+            Route::delete('/schedule/{schedule}', [ScheduleController::class, 'destroy'])->name('destroy');
+        });
+    });
+
+Route::prefix('grades')
+    ->name('grade.')
+    ->group(function () {
+        Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
+            Route::post('/grade/{solutionId}/{studentId}', [GradeController::class, 'store'])->name('store');
+        });
+    });
+
+

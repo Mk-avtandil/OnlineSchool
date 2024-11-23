@@ -24,10 +24,10 @@ const getTeacher = async (url = `/api/teacher/${route.params.id}`) => {
     }
 };
 
-const getTeacherCourses = async (url = `/api/teacher/${route.params.id}/courses`) => {
+const getTeacherCourses = async (url = '/api/courses') => {
     try {
         const response = await axios.get(url);
-        teacherCourses.value = response.data
+        teacherCourses.value = response.data.data
     } catch (error) {
         console.error('Error fetching courses', error.response || error);
     }

@@ -23,7 +23,7 @@ onMounted(async () => {
     await getStudents();
 });
 
-const getGroup = async (url = `/api/group/${route.params.id}`) => {
+const getGroup = async (url = `/api/groups/${route.params.id}/detail`) => {
     try {
         const response = await axios.get(url);
         data.value = response.data.data;
@@ -54,7 +54,7 @@ const getTeachers = async (url = '/api/teacher') => {
     }
 }
 
-const updateGroup = async (url = `/api/group/${route.params.id}`) => {
+const updateGroup = async (url = `/api/groups/${route.params.id}`) => {
     try {
         errors.value = {};
         successMessage.value = '';
@@ -82,7 +82,7 @@ const updateGroup = async (url = `/api/group/${route.params.id}`) => {
 
 const removeStudent = async (studentId) => {
     try {
-        const response = await axios.put(`/api/group/${route.params.id}/remove-student`, {
+        const response = await axios.put(`/api/groups/${route.params.id}/remove-student`, {
             student_id: studentId,
         });
 
@@ -99,7 +99,7 @@ const removeStudent = async (studentId) => {
 
 const removeTeacher = async (teacherId) => {
     try {
-        const response = await axios.put(`/api/group/${route.params.id}/remove-teacher`, {
+        const response = await axios.put(`/api/groups/${route.params.id}/remove-teacher`, {
             teacher_id: teacherId,
         });
 

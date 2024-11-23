@@ -44,7 +44,7 @@ class CourseController extends Controller
         }
     }
 
-    public function show(Course $course): CourseResource|JsonResponse
+    public function show(Course $course): CourseResource
     {
         return new CourseResource($course);
     }

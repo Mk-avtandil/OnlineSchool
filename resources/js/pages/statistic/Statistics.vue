@@ -10,26 +10,19 @@ const groups = ref();
 
 onMounted(async () => {
     await getCourses();
-    await getGroups();
 });
 
 const getCourses = async () => {
     try {
         const response = await axios.get('/api/courses');
         courses.value = response.data.data;
+        groups.value = courses.value.flatMap(...course => course.groups || []);
     } catch (error) {
         console.error('Error fetching courses:', error);
     }
 }
 
-const getGroups = async () => {
-    try {
-        const response = await axios.get('/api/groups');
-        groups.value = response.data.data;
-    } catch (error) {
-        console.error('Error fetching groups:', error);
-    }
-}
+
 </script>
 
 <template>
@@ -78,7 +71,7 @@ const getGroups = async () => {
             <button class="btn btn-primary">Download table</button>
         </div>
     </div>
-    <div class="container" v-else>
+    <div class="container my-3" v-else>
         <h3>У вас недостаточно прав для просмотра!</h3>
     </div>
 </template>

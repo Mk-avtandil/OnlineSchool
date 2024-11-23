@@ -13,7 +13,7 @@ onMounted(async () => {
     await getGroups();
 });
 
-const getGroups = async (url = `/api/course/${route.params.id}/groups`) => {
+const getGroups = async (url = `/api/groups/${route.params.id}`) => {
     try {
         const response = await axios.get(url);
         groups.value = response.data;
@@ -24,7 +24,7 @@ const getGroups = async (url = `/api/course/${route.params.id}/groups`) => {
 
 const deleteGroup = async (groupId) => {
     try {
-        await axios.delete(`/api/group/${groupId}`);
+        await axios.delete(`/api/groups/${groupId}`);
         await getGroups();
         successMessage.value = 'Group deleted successfully!';
     } catch (error) {

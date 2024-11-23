@@ -88,17 +88,4 @@ class TeacherController extends Controller
             ], 500);
         }
     }
-
-    public function getTeacherCourses(Teacher $teacher): JsonResponse
-    {
-        $teacher = Teacher::with('groups.course')->find($teacher->id);
-
-        if (!$teacher) {
-            return response()->json(['message' => 'Teacher not found'], 404);
-        }
-
-        $courses = $teacher->groups->pluck("course")->unique('id');
-
-        return response()->json($courses);
-    }
 }
