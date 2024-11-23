@@ -39,7 +39,7 @@ const getCourses = async (url = '/api/courses') => {
 
 const deleteCourse = async (courseId) => {
     try {
-        await axios.delete(`/api/course/${courseId}`);
+        await axios.delete(`/api/courses/${courseId}`);
         await getCourses();
         successMessage.value = 'Course deleted successfully!';
     } catch (error) {

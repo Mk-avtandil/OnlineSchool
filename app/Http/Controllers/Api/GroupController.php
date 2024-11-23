@@ -10,6 +10,7 @@ use App\Http\Resources\GroupResource;
 use App\Models\Group;
 use App\Models\Student;
 use App\Models\Teacher;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -17,21 +18,12 @@ class GroupController extends Controller
 {
     public function index($courseId): GroupCollection
     {
+//        $this->authorize('view', Group::class);
+//        $groupQuery = Group::where('course_id', $request->get('courseId'))->with(['course']);
+
         $user = Auth::user();
 
         $groupQuery = Group::where('course_id', $courseId)->with(['course']);
-
-        if ($user->hasRole('student')) {
-            $groupQuery->whereHas('students', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            });
-        }
-
-        if ($user->hasRole('teacher')) {
-            $groupQuery->whereHas('teachers', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            });
-        }
 
         $groups = $groupQuery->get();
 
@@ -44,10 +36,6 @@ class GroupController extends Controller
 
     public function show(Group $group): GroupResource|JsonResponse
     {
-        if (!$group) {
-            return response()->json(['message' => 'Group not found'], 404);
-        }
-
         return new GroupResource($group);
     }
 

@@ -15,7 +15,7 @@ const saveCourse = async () => {
         errors.value = {};
         successMessage.value = '';
 
-        await axios.post(`/api/course/store`, data.value);
+        await axios.post(`/api/courses`, data.value);
         successMessage.value = 'Course created successfully!';
 
         setTimeout(() => {

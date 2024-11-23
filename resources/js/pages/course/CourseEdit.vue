@@ -14,14 +14,14 @@ const data = ref({
 
 onMounted(async () => {
     try {
-        data.value = (await axios.get( `/api/course/${route.params.id}`)).data.data;
+        data.value = (await axios.get( `/api/courses/${route.params.id}`)).data.data;
         successMessage.value = '';
     } catch (error) {
         console.error("Failed to get course: ", error);
     }
 });
 
-const updateCourse = async (url = `/api/course/${route.params.id}`) => {
+const updateCourse = async (url = `/api/courses/${route.params.id}`) => {
     try {
         errors.value = {};
         successMessage.value = '';

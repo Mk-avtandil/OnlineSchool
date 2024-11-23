@@ -15,7 +15,7 @@ class GroupResource extends JsonResource
             'description' => $this->description,
             'students' => $this->students,
             'teachers' => $this->teachers,
-            'course' => $this->course
+            'course' => $this->course,
         ];
     }
 }

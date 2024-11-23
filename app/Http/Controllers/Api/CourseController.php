@@ -7,35 +7,24 @@ use App\Http\Requests\CourseCreateRequest;
 use App\Http\Resources\CourseCollection;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
+use App\Policies\CoursePolicy;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CourseController extends Controller
 {
     public function index(Request $request): CourseCollection
     {
-        $user = Auth::user();
+        $user = auth()->user();
 
-        $courses = Course::with(['groups', 'lessons']);
-
-        if ($user->hasRole('student')) {
-            $courses = Course::whereHas('groups.students', function ($query) use ($user) {
-               $query->where('students.user_id', $user->id);
-            })->with(["groups", "lessons"]);
-        }
-
-        if ($user->hasRole('teacher')) {
-            $courses = Course::whereHas('groups.teachers', function ($query) use ($user) {
-                $query->where('teachers.user_id', $user->id);
-            })->with(['groups', 'lessons']);
-        }
+        $coursesQuery = app(CoursePolicy::class)->viewAny($user);
 
         if ($request->has('search')) {
-            $courses->where('title', 'like', '%' . $request->input('search') . '%');
+            $coursesQuery->where('title', 'like', '%' . $request->input('search') . '%');
         }
 
-        $result = $courses->paginate(6);
+        $result = $coursesQuery->with(['groups.students', 'groups.teachers', 'lessons'])->paginate(6);
 
         return new CourseCollection($result);
     }
@@ -57,10 +46,6 @@ class CourseController extends Controller
 
     public function show(Course $course): CourseResource|JsonResponse
     {
-        if (!$course) {
-            return response()->json(['message' => 'Course not found'], 404);
-        }
-
         return new CourseResource($course);
     }
 

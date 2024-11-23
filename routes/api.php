@@ -21,10 +21,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])
     ->group(function () {
-        Route::name('course.')
+        Route::prefix('courses')
+            ->name('course.')
             ->group(function () {
-                Route::get('/courses', [CourseController::class, 'index'])->name('index');
-                Route::get('/course/{course}', [CourseController::class, 'show'])->name('show');
+                Route::get('/', [CourseController::class, 'index'])->name('index');
+                Route::get('/{course}', [CourseController::class, 'show'])->name('show');
             });
 
         Route::name('group.')
@@ -90,10 +91,10 @@ Route::middleware(['auth:sanctum', 'role:super_admin'])
 // Super admin && Admin
 Route::middleware(['auth:sanctum', 'role:super_admin||admin'])
     ->group(function () {
-        Route::prefix('course')
+        Route::prefix('courses')
             ->name('course.')
             ->group(function () {
-                Route::post('/store', [CourseController::class, 'store'])->name('store');
+                Route::post('/', [CourseController::class, 'store'])->name('store');
                 Route::put('/{course}', [CourseController::class, 'update'])->name('update');
                 Route::delete('/{course}', [CourseController::class, 'destroy'])->name('destroy');
             });
