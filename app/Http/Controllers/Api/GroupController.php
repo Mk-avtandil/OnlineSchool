@@ -24,10 +24,6 @@ class GroupController extends Controller
 
         $groups = $groupQuery->with('course')->get();
 
-        if ($groups->isEmpty()) {
-            abort(403, 'You do not have access to any groups in this course!');
-        }
-
         return new GroupCollection($groups);
     }
 

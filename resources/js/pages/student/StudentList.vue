@@ -15,7 +15,7 @@ onMounted(async () => {
 
 const getStudents = async () => {
     try {
-        const response = await axios.get('/api/student');
+        const response = await axios.get('/api/students');
         students.value = response.data;
     } catch (error) {
         console.error('Error fetching students:', error);
@@ -24,7 +24,7 @@ const getStudents = async () => {
 
 const deleteStudent = async (studentId) => {
     try {
-        await axios.delete(`/api/student/${studentId}`);
+        await axios.delete(`/api/students/${studentId}`);
         await getStudents();
         successMessage.value = 'Student deleted successfully!';
     } catch (error) {

@@ -6,35 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LessonCreateRequest;
 use App\Http\Resources\LessonCollection;
 use App\Http\Resources\LessonResource;
+use App\Models\Course;
 use App\Models\Lesson;
+use App\Policies\LessonPolicy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
-    public function index($courseId): LessonCollection
+    public function index(Course $course): LessonCollection
     {
         $user = Auth::user();
 
-        $lessonsQuery = Lesson::where('course_id', $courseId)->with('media', 'homeworks');
+        $lessonsQuery = app(LessonPolicy::class)->viewAny($user, $course);
 
-        if ($user->hasRole('student')) {
-            $lessonsQuery->whereHas('course.groups.students', function ($query) use ($user) {
-                $query->where('students.user_id', $user->id);
-            });
-        }
-
-        if ($user->hasRole('teacher')) {
-            $lessonsQuery->whereHas('course.groups.teachers', function ($query) use ($user) {
-                $query->where('teachers.user_id', $user->id);
-            });
-        }
-
-        $lessons = $lessonsQuery->get();
-
-        if ($lessons->isEmpty()) {
-            abort(403, 'You do not have access to this lesson!');
-        }
+        $lessons = $lessonsQuery->with('course.groups', 'course')->get();
 
         return new LessonCollection($lessons);
     }
@@ -42,6 +28,7 @@ class LessonController extends Controller
 
     public function show(Lesson $lesson): LessonResource|JsonResponse
     {
+        $this->authorize('view', $lesson);
         return new LessonResource($lesson);
     }
 

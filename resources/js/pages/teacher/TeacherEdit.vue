@@ -15,7 +15,7 @@ const data = ref({
 
 onMounted(async () => {
     try {
-        const response = await axios.get(`/api/teacher/${route.params.id}`);
+        const response = await axios.get(`/api/teachers/${route.params.id}`);
         data.value = response.data.data;
         successMessage.value = '';
     } catch (error) {
@@ -23,7 +23,7 @@ onMounted(async () => {
     }
 });
 
-const updateTeacher = async (url = `/api/teacher/${route.params.id}`) => {
+const updateTeacher = async (url = `/api/teachers/${route.params.id}`) => {
     try {
         errors.value = {};
         successMessage.value = '';

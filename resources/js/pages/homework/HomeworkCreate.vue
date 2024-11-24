@@ -16,7 +16,7 @@ const saveHomework = async () => {
     try {
         errors.value = {};
         successMessage.value = '';
-        await axios.post(`/api/lesson/${route.params.id}/homework/store`, data.value);
+        await axios.post(`/api/homeworks/${route.params.id}`, data.value);
         successMessage.value = 'Homework created successfully!';
 
         setTimeout(() => {
@@ -71,7 +71,6 @@ const saveHomework = async () => {
             </div>
         </form>
     </div>
-
 </template>
 
 <style scoped>

@@ -70,7 +70,7 @@ const saveSchedule = async () => {
             end_time: data.value.end_time,
         };
 
-        await axios.post("/api/schedule/store", payload);
+        await axios.post("/api/schedules/", payload);
         successMessage.value = "Schedule created successfully!";
         data.value = [];
     } catch (error) {

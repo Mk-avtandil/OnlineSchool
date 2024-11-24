@@ -13,7 +13,7 @@ onMounted(async () => {
     await getSchedule();
 });
 
-const getSchedule = async (url = '/api/schedule') => {
+const getSchedule = async (url = '/api/schedules') => {
     try {
         const response = await axios.get(url);
         schedules.value = response.data;
@@ -23,9 +23,9 @@ const getSchedule = async (url = '/api/schedule') => {
     }
 };
 
-const deleteSchedule = async (scheduleId) => {
+const deleteSchedule = async (schedule) => {
     try {
-        await axios.delete(`/api/schedule/${scheduleId}`);
+        await axios.delete(`/api/schedules/${schedule}`);
         await getSchedule();
         successMessage.value = 'Teacher deleted successfully!';
     } catch (error) {

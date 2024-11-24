@@ -32,7 +32,7 @@ const getGroup = async (url = `/api/groups/${route.params.id}/detail`) => {
     }
 };
 
-const getStudents = async (url = '/api/student') => {
+const getStudents = async (url = '/api/students') => {
     try {
         const response = await axios.get(url);
         availableStudents.value = response.data.data.filter(student =>
@@ -43,7 +43,7 @@ const getStudents = async (url = '/api/student') => {
     }
 };
 
-const getTeachers = async (url = '/api/teacher') => {
+const getTeachers = async (url = '/api/teachers') => {
     try {
         const response = await axios.get(url);
         availableTeachers.value = response.data.data.filter(teacher =>

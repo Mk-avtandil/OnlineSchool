@@ -23,7 +23,7 @@ onMounted(async () => {
     await getSolutions();
 });
 
-const getHomework = async (url = `/api/homework/${route.params.id}`) => {
+const getHomework = async (url = `/api/homeworks/${route.params.id}/detail`) => {
     try {
         const response = await axios.get(url);
         homework.value = response.data.data;
@@ -33,7 +33,7 @@ const getHomework = async (url = `/api/homework/${route.params.id}`) => {
     }
 };
 
-const getSolutions = async (url = `/api/homework/${route.params.id}/solutions`) => {
+const getSolutions = async (url = `/api/solutions/${route.params.id}`) => {
     try {
         const response = await axios.get(url);
         solutions.value = response.data.data;
@@ -47,7 +47,7 @@ const handleFileChange = (event) => {
     data.value.files = Array.from(event.target.files);
 };
 
-const saveSolution = async (url = `/api/homework/${route.params.id}/solution/store`) => {
+const saveSolution = async (url = `/api/solutions/${route.params.id}`) => {
     try {
         errors.value = {};
         successMessage.value = '';

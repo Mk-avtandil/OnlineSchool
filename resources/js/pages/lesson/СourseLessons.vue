@@ -13,7 +13,7 @@ onMounted(async () => {
     await getLessons();
 });
 
-const getLessons = async (url = `/api/course/${route.params.id}/lessons`) => {
+const getLessons = async (url = `/api/lessons/${route.params.id}`) => {
     try {
         const response = await axios.get(url);
         lessons.value = response.data;
@@ -24,7 +24,7 @@ const getLessons = async (url = `/api/course/${route.params.id}/lessons`) => {
 
 const deleteLesson = async (lessonId) => {
     try {
-        await axios.delete(`/api/lesson/${lessonId}`);
+        await axios.delete(`/api/lessons/${lessonId}`);
         await getLessons();
         successMessage.value = 'Lesson deleted successfully!';
     } catch (error) {

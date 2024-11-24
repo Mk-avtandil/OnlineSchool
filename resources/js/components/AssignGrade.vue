@@ -16,7 +16,7 @@ const emit = defineEmits(['grade-saved']);
 
 const saveGrade = async () => {
     try {
-        await axios.post(`/api/grade/${props.solution.id}/${props.solution.student.id}`, gradeData.value);
+        await axios.post(`/api/grades/${props.solution.id}/${props.solution.student.id}`, gradeData.value);
         emit('grade-saved');
     } catch (error) {
         console.error(error);

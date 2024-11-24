@@ -30,7 +30,7 @@ const saveLesson = async () => {
             formData.append('files[]', file);
         });
 
-        await axios.post(`/api/course/${route.params.id}/lesson/store`, formData, {
+        await axios.post(`/api/lessons/${route.params.id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

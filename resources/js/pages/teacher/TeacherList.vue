@@ -13,7 +13,7 @@ onMounted(async () => {
 
 const getTeachers = async () => {
     try {
-        const response = await axios.get('/api/teacher');
+        const response = await axios.get('/api/teachers');
         teachers.value = response.data;
     } catch (error) {
         console.error('Error fetching teachers:', error);
@@ -22,7 +22,7 @@ const getTeachers = async () => {
 
 const deleteTeacher = async (teacherId) => {
     try {
-        await axios.delete(`/api/teacher/${teacherId}`);
+        await axios.delete(`/api/teachers/${teacherId}`);
         await getTeachers();
         successMessage.value = 'Teacher deleted successfully!';
     } catch (error) {

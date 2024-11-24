@@ -22,7 +22,7 @@ onMounted(async () => {
 
 const fetchStudents = async () => {
     try {
-        const response = await axios.get('/api/student');
+        const response = await axios.get('/api/students');
         students.value = response.data;
     } catch (error) {
         console.error('Failed to fetch students', error);
@@ -31,7 +31,7 @@ const fetchStudents = async () => {
 
 const fetchTeachers = async () => {
     try {
-        const response = await axios.get('/api/teacher');
+        const response = await axios.get('/api/teachers');
         teachers.value = response.data;
     } catch (error) {
         console.error('Failed to fetch teachers', error);

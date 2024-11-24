@@ -18,7 +18,7 @@ const saveTeacher = async () => {
         errors.value = {};
         successMessage.value = '';
 
-        await axios.post(`/api/teacher/store`, data.value);
+        await axios.post(`/api/teachers`, data.value);
         successMessage.value = 'Teacher created successfully!';
 
         setTimeout(() => {
