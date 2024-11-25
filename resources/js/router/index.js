@@ -40,6 +40,12 @@ const routes = [
         component: () => import("../pages/group/GroupEdit.vue"),
         meta: { requiresAuth: true },
     },
+    {
+        path: "/group/:id/detail",
+        name: "group_detail_page_url",
+        component: () => import("../pages/group/GroupDetail.vue"),
+        meta: { requiresAuth: true },
+    },
     // Lessons
     {
         path: "/course/:id/lessons",

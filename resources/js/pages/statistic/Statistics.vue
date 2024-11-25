@@ -16,13 +16,11 @@ const getCourses = async () => {
     try {
         const response = await axios.get('/api/courses');
         courses.value = response.data.data;
-        groups.value = courses.value.flatMap(...course => course.groups || []);
+        groups.value = courses.value.flatMap(course => course.groups || []);
     } catch (error) {
         console.error('Error fetching courses:', error);
     }
 }
-
-
 </script>
 
 <template>
@@ -54,14 +52,12 @@ const getCourses = async () => {
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th>Course</th>
                 <th>Group</th>
                 <th>Number of students</th>
                 <th>Number of teachers</th>
             </tr>
             <tr v-for="group in groups">
-                <td>{{group?.course.title}}</td>
-                <td>{{group.title}}</td>
+                <td><router-link :to="{name: 'group_detail_page_url', params: {id: group.id}}">{{group.title}}</router-link></td>
                 <td>{{group?.students ? group.students.length : 0}}</td>
                 <td>{{group?.teachers ? group.teachers.length : 0}}</td>
             </tr>
