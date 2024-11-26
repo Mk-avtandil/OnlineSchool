@@ -71,7 +71,6 @@ const getLessons = async (courseId) => {
 
     <div class="container my-3">
         <h3>Lessons</h3>
-        {{lessons}}
         <table class="table table-bordered">
             <tr>
                 <th scope="col" class="table-header">Students</th>

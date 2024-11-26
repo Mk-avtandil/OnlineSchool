@@ -37,5 +37,19 @@ class StudentSeeder extends Seeder
         ]);
 
         $user->assignRole('student');
+
+        $user = User::create([
+            'email' => 'baitur@gmail.com',
+            'password' => Hash::make('12345678'),
+        ]);
+
+        $user->student()->create([
+            'first_name' => 'Baitur',
+            'last_name' => 'Baiturov',
+            'birthday' => date('Y-m-d', strtotime('12.12.1992')),
+            'phone' => '0704319000',
+        ]);
+
+        $user->assignRole('student');
     }
 }

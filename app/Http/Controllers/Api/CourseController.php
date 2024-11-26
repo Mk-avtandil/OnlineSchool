@@ -47,6 +47,9 @@ class CourseController extends Controller
     public function show(Course $course): CourseResource
     {
         $this->authorize('view', $course);
+
+        $course->load('groups.students', 'lessons');
+
         return new CourseResource($course);
     }
 
@@ -80,6 +83,54 @@ class CourseController extends Controller
                 "error" => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function statistics($courseId)
+    {
+        $course = Course::with([
+            'groups.students',
+            'groups.teachers',
+            'lessons.homeworks.solutions.grade',
+        ])->findOrFail($courseId);
+
+//        $statistics = [
+//            'course' => $course->title,
+//            'groups' => [],
+//        ];
+//
+//        foreach ($course->groups as $group) {
+//            $groupData = [
+//                'group_title' => $group->title,
+//                'students' => [],
+//                'teachers' => $group->teachers,
+//            ];
+//
+//            foreach ($group->students as $student) {
+//                $studentData = [
+//                    'student' => $student->first_name . ' ' . $student->last_name,
+//                    'lessons' => [],
+//                ];
+//
+//                foreach ($course->lessons as $lesson) {
+//                    $homework = $lesson->homeworks->firstWhere('lesson_id', $lesson->id);
+//                    if ($homework) {
+//                        $solution = $homework->solutions->firstWhere('student_id', $student->id);
+//                        $grade = $solution ? $solution->grade : null;
+//                        $studentData['lessons'][] = [
+//                            'lesson_name' => $lesson->title,
+//                            'homework' => $homework->title,
+//                            'grade' => $grade ? $grade->value : 'Не оценено',
+//                        ];
+//                    }
+//                }
+//
+//                $groupData['students'][] = $studentData;
+//            }
+//
+//            $statistics['groups'][] = $groupData;
+//        }
+
+        return response()->json(['data' => $course]);
     }
 }
 

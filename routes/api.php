@@ -31,6 +31,7 @@ Route::prefix('courses')
             Route::post('/', [CourseController::class, 'store'])->name('store');
             Route::put('/{course}', [CourseController::class, 'update'])->name('update');
             Route::delete('/{course}', [CourseController::class, 'destroy'])->name('destroy');
+            Route::get('/{course}/statistics', [CourseController::class, 'statistics'])->name('statistics');
         });
     });
 

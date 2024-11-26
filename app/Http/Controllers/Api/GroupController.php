@@ -12,10 +12,18 @@ use App\Models\Group;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Policies\GroupPolicy;
+use App\Services\GroupService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class GroupController extends Controller
 {
+    protected GroupService $groupService;
+
+    public function __construct(GroupService $groupService)
+    {
+        $this->groupService = $groupService;
+    }
+
     public function index(Course $course): GroupCollection
     {
         $user = auth()->user();
@@ -36,21 +44,15 @@ class GroupController extends Controller
     public function store(GroupCreateRequest $request, Course $course): JsonResponse
     {
         try {
+            $this->groupService->validateStudents($request->get('students'), $course);
+
             $group = Group::create([
                 'title' => $request->get('title'),
                 'description' => $request->get('description'),
                 'course_id' => $course->id,
             ]);
 
-            if ($request->has('students') && count($request->get('students')) > 0) {
-                $students = Student::find($request->get('students'));
-                $group->students()->sync($students);
-            }
-
-            if ($request->has('teachers') && count($request->get('teachers')) > 0) {
-                $teachers = Teacher::find($request->get('teachers'));
-                $group->teachers()->sync($teachers);
-            }
+            $this->groupService->syncRelations($group, $request->get('students'), $request->get('teachers'));
 
             return response()->json(['message' => 'Group created successfully', 'group' => $group], 201);
         } catch (\Exception $e) {
@@ -60,6 +62,8 @@ class GroupController extends Controller
 
     public function update(Group $group, GroupUpdateRequest $request): JsonResponse
     {
+        $this->groupService->validateStudents($request->get('students'), $group->course);
+
         $fields = ['title', 'description'];
         try {
             foreach ($fields as $field) {
@@ -71,22 +75,11 @@ class GroupController extends Controller
             }
             $group->save();
 
-            if ($request->has('students') && count($request->get('students')) > 0) {
-                $students = Student::find($request->get('students'));
-                $group->students()->sync($students);
-            }
-
-            if ($request->has('teachers') && count($request->get('teachers')) > 0) {
-                $teachers = Teacher::find($request->get('teachers'));
-                $group->teachers()->sync($teachers);
-            }
+            $this->groupService->syncRelations($group, $request->get('students'), $request->get('teachers'));
 
             return response()->json(['message' => 'Group updated successfully'], 200);
         } catch (\Exception $e) {
-            return response()->json([
-                "message" => "Failed to update group",
-                "error" => $e->getMessage()
-            ], 500);
+            return response()->json(["message" => "Failed to update group", "error" => $e->getMessage()], 500);
         }
     }
 
