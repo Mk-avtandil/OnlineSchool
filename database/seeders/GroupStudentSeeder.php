@@ -13,5 +13,15 @@ class GroupStudentSeeder extends Seeder
             'group_id' => 1,
             'student_id' => 1,
         ]);
+
+        GroupStudent::create([
+            'group_id' => 1,
+            'student_id' => 2,
+        ]);
+
+        GroupStudent::create([
+            'group_id' => 2,
+            'student_id' => 3,
+        ]);
     }
 }

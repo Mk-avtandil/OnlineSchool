@@ -60,29 +60,31 @@ const processCourseData = (course) => {
 
 <template>
     <div class="container my-3">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>Group</th>
-                <th>Student</th>
-                <th v-for="lesson in lessonTitles" :key="lesson">{{ lesson }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <template v-for="group in tableGroups" :key="group.groupTitle">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
                 <tr>
-                    <td :rowspan="group.students.length + 1">{{ group.groupTitle }}</td>
+                    <th>Group</th>
+                    <th>Student</th>
+                    <th v-for="lesson in lessonTitles" :key="lesson">{{ lesson }}</th>
                 </tr>
-                <tr v-for="student in group.students" :key="student.name">
-                    <td>{{ student.name }}</td>
-                    <td v-for="lesson in lessonTitles" :key="lesson">
-                        <span>Grade: {{ student.scores[lesson]?.grade }}</span>
-                        <br />
-                    </td>
-                </tr>
-            </template>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <template v-for="group in tableGroups" :key="group.groupTitle">
+                    <tr>
+                        <td :rowspan="group.students.length + 1">{{ group.groupTitle }}</td>
+                    </tr>
+                    <tr v-for="student in group.students" :key="student.name">
+                        <td>{{ student.name }}</td>
+                        <td v-for="lesson in lessonTitles" :key="lesson">
+                            <span>Grade: {{ student.scores[lesson]?.grade }}</span>
+                            <br />
+                        </td>
+                    </tr>
+                </template>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 

@@ -16,13 +16,23 @@ class CourseSeeder extends Seeder
         ]);
 
         $course->groups()->create([
-            'title' => 'A1 level',
+            'title' => 'Group A',
+            'Description' => 'Test description',
+        ]);
+
+        $course->groups()->create([
+            'title' => 'Group B',
             'Description' => 'Test description',
         ]);
 
         $course->lessons()->create([
             'title' => 'Lesson 1',
             'Description' => 'To be',
+        ]);
+
+        $course->lessons()->create([
+            'title' => 'Lesson 2',
+            'Description' => 'Present simple',
         ]);
 
         $course = Course::create([

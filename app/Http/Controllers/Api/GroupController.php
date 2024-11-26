@@ -9,8 +9,6 @@ use App\Http\Resources\GroupCollection;
 use App\Http\Resources\GroupResource;
 use App\Models\Course;
 use App\Models\Group;
-use App\Models\Student;
-use App\Models\Teacher;
 use App\Policies\GroupPolicy;
 use App\Services\GroupService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -69,17 +67,19 @@ class GroupController extends Controller
             foreach ($fields as $field) {
                 $newValue = $request->get($field);
 
-                if ($group->$field !== $newValue) {
+                if ($newValue !== null && $group->$field !== $newValue) {
                     $group->$field = $newValue;
                 }
             }
             $group->save();
 
-            $this->groupService->syncRelations($group, $request->get('students'), $request->get('teachers'));
+            if ($request->has('students') || $request->has('teachers')) {
+                $this->groupService->syncRelations($group, $request->get('students'), $request->get('teachers'));
+            }
 
             return response()->json(['message' => 'Group updated successfully'], 200);
         } catch (\Exception $e) {
-            return response()->json(["message" => "Failed to update group", "error" => $e->getMessage()], 500);
+            return response()->json(["message" => 'Failed to update group', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -113,9 +113,8 @@ class GroupController extends Controller
         return response()->json(['message' => 'Student removed successfully!']);
     }
 
-    public function removeTeacher(GroupUpdateRequest $request, $groupId): JsonResponse
+    public function removeTeacher(GroupUpdateRequest $request, Group $group): JsonResponse
     {
-        $group = Group::findOrFail($groupId);
         $teacherId = $request->input('teacher_id');
 
         $group->teachers()->detach($teacherId);

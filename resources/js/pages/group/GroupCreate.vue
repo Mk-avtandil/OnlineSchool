@@ -54,8 +54,12 @@ const saveGroup = async () => {
             };
         }, 1000);
     } catch (error) {
-        if (error.response && error.response.data && error.response.data.errors) {
-            errors.value = error.response.data.errors;
+        if (error.response && error.response.data) {
+            if (error.response.data.errors) {
+                errors.value = error.response.data.errors;
+            } else if (error.response.data.error) {
+                errors.value = {error: error.response.data.error};
+            }
         } else {
             console.error('Failed to create group');
         }
@@ -96,6 +100,9 @@ const saveGroup = async () => {
             </div>
             <div v-if="errors.students" class="alert alert-danger my-1">
                 {{ errors.students[0] }}
+            </div>
+            <div v-if="errors.error" class="alert alert-danger my-1">
+                {{ errors.error }}
             </div>
 
             <div class="form-group my-2">

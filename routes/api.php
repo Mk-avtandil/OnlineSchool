@@ -44,7 +44,7 @@ Route::prefix('groups')
         });
 
         Route::middleware(['auth:sanctum', 'role:super_admin||admin'])->group(function () {
-            Route::put('/{group}', [GroupController::class, 'update'])->name('update');
+            Route::patch('/{group}', [GroupController::class, 'update'])->name('update');
             Route::post('/{course}', [GroupController::class, 'store'])->name('store');
             Route::delete('/{group}', [GroupController::class, 'destroy'])->name('destroy');
             Route::get('/', [GroupController::class, 'getAllGroups'])->name('getAllGroups');

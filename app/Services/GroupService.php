@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Group;
-use App\Models\Student;
-use App\Models\Teacher;
 
 class GroupService
 {
@@ -18,7 +16,7 @@ class GroupService
                 ->exists();
 
             if ($exists) {
-                throw new \Exception("Student with ID {$studentId} is already in a group of this course.");
+                throw new \Exception("Student is already in a group of this course.");
             }
         }
     }
@@ -26,11 +24,12 @@ class GroupService
     public function syncRelations(Group $group, ?array $students, ?array $teachers): void
     {
         if ($students && count($students) > 0) {
-            $group->students()->sync(Student::find($students));
+            $group->students()->sync($students);
         }
 
         if ($teachers && count($teachers) > 0) {
-            $group->teachers()->sync(Teacher::find($teachers));
+            $group->teachers()->sync($teachers);
         }
     }
+
 }

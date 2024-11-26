@@ -59,11 +59,11 @@ const updateGroup = async (url = `/api/groups/${route.params.id}`) => {
         errors.value = {};
         successMessage.value = '';
 
-        const response = await axios.put(url, {
+        await axios.patch(url, {
             title: data.value.title,
             description: data.value.description,
-            students: [data.value.students, selectedStudents.value],
-            teachers: [data.value.teachers, selectedTeachers.value],
+            students: [...data.value.students, ...selectedStudents.value],
+            teachers: [...data.value.teachers, ...selectedTeachers.value],
         });
 
         successMessage.value = 'Group updated successfully!';
@@ -82,7 +82,7 @@ const updateGroup = async (url = `/api/groups/${route.params.id}`) => {
 
 const removeStudent = async (studentId) => {
     try {
-        const response = await axios.put(`/api/groups/${route.params.id}/remove-student`, {
+        await axios.put(`/api/groups/${route.params.id}/remove-student`, {
             student_id: studentId,
         });
 
@@ -99,7 +99,7 @@ const removeStudent = async (studentId) => {
 
 const removeTeacher = async (teacherId) => {
     try {
-        const response = await axios.put(`/api/groups/${route.params.id}/remove-teacher`, {
+        await axios.put(`/api/groups/${route.params.id}/remove-teacher`, {
             teacher_id: teacherId,
         });
 
