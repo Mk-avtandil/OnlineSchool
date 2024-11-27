@@ -21,7 +21,7 @@ const login = async () => {
             password: data.value.password
         });
 
-        store.dispatch('setToken', response.data.access_token);
+        localStorage.setItem('access_token', response.data.access_token)
         store.dispatch('fetchUser');
         store.dispatch('setRole', response.data.role)
         router.push({name: 'courses_page_url'});

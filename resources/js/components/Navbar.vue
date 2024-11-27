@@ -2,23 +2,24 @@
 import { useStore } from "vuex";
 import {computed, onMounted} from "vue";
 import {useRouter} from "vue-router";
+import axios from "axios";
 
 const store = useStore();
 const router = useRouter();
-const token = computed(() => store.getters.token);
 const user = computed(() => store.getters.user);
 const role = computed(() => store.getters.role);
 const isAuthenticated = computed(() => store.getters.isAuthenticated);
 
 const logout = async () => {
     try {
-        await store.dispatch('logout');
+        await axios.post('/api/logout');
 
-        localStorage.removeItem('auth_token');
+        store.dispatch('logout');
+
         axios.defaults.headers.Authorization = null;
 
-        await axios.post('/api/logout');
         await axios.get('/sanctum/csrf-cookie');
+
         router.push({name: 'login_page_url'});
     } catch (error) {
         console.error("Logout failed: ", error);

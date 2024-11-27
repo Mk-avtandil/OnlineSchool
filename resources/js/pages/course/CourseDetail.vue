@@ -71,14 +71,21 @@ const processCourseData = (course) => {
                 </thead>
                 <tbody>
                 <template v-for="group in tableGroups" :key="group.groupTitle">
-                    <tr>
+                    <tr v-if="group.students.length > 0">
                         <td :rowspan="group.students.length + 1">{{ group.groupTitle }}</td>
                     </tr>
                     <tr v-for="student in group.students" :key="student.name">
                         <td>{{ student.name }}</td>
                         <td v-for="lesson in lessonTitles" :key="lesson">
                             <span>Grade: {{ student.scores[lesson]?.grade }}</span>
-                            <br />
+                        </td>
+                    </tr>
+
+                    <tr v-if="group.students.length === 0">
+                        <td :rowspan="group.students.length + 1">{{group.groupTitle}}</td>
+                        <td></td>
+                        <td v-for="lesson in lessonTitles" :key="lesson">
+                            <span></span>
                         </td>
                     </tr>
                 </template>
