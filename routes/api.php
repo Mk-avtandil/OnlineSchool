@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\GradeController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\HomeworkController;
 use App\Http\Controllers\Api\LessonController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\SolutionController;
 use App\Http\Controllers\Api\StudentController;
@@ -73,7 +74,7 @@ Route::prefix('students')
     ->group(function () {
         Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/', [StudentController::class, 'index'])->name('index');
-            Route::get('/{student}', [StudentController::class, 'show'])->name('show');
+            Route::get('/{studentId}', [StudentController::class, 'show'])->name('show');
         });
 
         Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
@@ -143,4 +144,11 @@ Route::prefix('grades')
         });
     });
 
+Route::prefix('payments')
+    ->name('payment.')
+    ->group(function () {
+        Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
+            Route::post('/{courseId}', [PaymentController::class, 'store'])->name('store');
+        });
+    });
 

@@ -53,11 +53,7 @@ const deleteTeacher = async (teacherId) => {
             </thead>
             <tbody>
             <tr v-for="teacher in teachers?.data" class="align-middle">
-                <th>
-                    <router-link :to="{name: 'teacher_detail_page_url', params: {id: teacher.id}}" class="text-decoration-none">
-                        {{teacher.first_name}} {{teacher.last_name}}
-                    </router-link>
-                </th>
+                <th>{{teacher.first_name}} {{teacher.last_name}}</th>
                 <td>{{teacher.birthday}}</td>
                 <td>{{teacher.phone}}</td>
                 <td v-if="role==='super_admin'">

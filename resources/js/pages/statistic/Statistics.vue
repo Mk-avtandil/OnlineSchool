@@ -42,10 +42,6 @@ const getCourses = async () => {
             </tr>
             </tbody>
         </table>
-        <div class="download-block text-end">
-            <button class="btn btn-primary">Download table</button>
-        </div>
-
     </div>
     <div class="container my-3" v-else>
         <h3>У вас недостаточно прав для просмотра!</h3>

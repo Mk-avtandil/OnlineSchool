@@ -8,7 +8,6 @@ const store = useStore();
 const router = useRouter();
 const user = computed(() => store.getters.user);
 const role = computed(() => store.getters.role);
-const isAuthenticated = computed(() => store.getters.isAuthenticated);
 
 const logout = async () => {
     try {
@@ -27,7 +26,7 @@ const logout = async () => {
 }
 
 onMounted(() => {
-    if (isAuthenticated.value && !user.value) {
+    if (!user.value) {
         store.dispatch('fetchUser');
     }
 });
@@ -41,7 +40,7 @@ onMounted(() => {
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-if="isAuthenticated">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" v-if="user">
                     <li class="nav-item">
                         <router-link :to="{name: 'courses_page_url'}" class="nav-link active" aria-current="page">Home</router-link>
                     </li>
@@ -58,13 +57,24 @@ onMounted(() => {
                         <router-link :to="{name: 'statistics_page_url'}" class="nav-link active" aria-current="page">Statistics</router-link>
                     </li>
                 </ul>
-                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="!isAuthenticated">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="!user">
                     <li class="nav-item">
                         <router-link :to="{name: 'login_page_url'}" class="nav-link active" aria-current="page">Login</router-link>
                     </li>
                 </ul>
-                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="isAuthenticated">
-                    <li class="nav-item">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="user">
+                    <li class="nav-item" v-if="role === 'student'">
+                        {{user?.student}}
+                        <router-link :to="{name: 'student_detail_page_url', params: {id: user.id}}" class="nav-link active">
+                            {{user.email}}
+                        </router-link>
+                    </li>
+                    <li class="nav-item" v-if="role === 'teacher'">
+                        <router-link :to="{name: 'teacher_detail_page_url', params: {id: user.id}}" class="nav-link active">
+                            {{user.email}}
+                        </router-link>
+                    </li>
+                    <li class="nav-item" v-if="['admin', 'super_admin'].includes(role)">
                         <button type="button"  class="nav-link active">{{user.email}}</button>
                     </li>
                     <li class="nav-item" >

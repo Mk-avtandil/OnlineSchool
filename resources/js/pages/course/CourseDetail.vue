@@ -31,31 +31,51 @@ const processCourseData = (course) => {
             students: group.students.map(student => {
                 const scores = {};
 
+                const allGrades = [];
+                let totalLessons = 0;
+
                 course.lessons.forEach(lesson => {
                     const homework = lesson.homeworks?.find(hw =>
                         hw.solutions.some(solution => solution.student_id === student.id)
                     );
 
+                    let grade = null;
+
                     if (homework) {
                         const solution = homework.solutions.find(
                             sol => sol.student_id === student.id
                         );
-
-                        scores[lesson.title] = {
-                            grade: solution?.grade?.grade,
-                        };
+                        grade = solution?.grade?.grade;
                     }
+
+                    if (grade !== undefined) {
+                        scores[lesson.title] = { grade };
+                        allGrades.push(grade);
+                    } else {
+                        scores[lesson.title] = { grade: 0 };
+                    }
+
+                    totalLessons++;
                 });
+
+                let averageGrade = 'N/A';
+                if (allGrades.length > 0) {
+                    const total = allGrades.reduce((acc, grade) => acc + grade, 0);
+                    averageGrade = (total / totalLessons).toFixed(2);  // Средняя оценка по всем урокам
+                }
 
                 return {
                     name: `${student.first_name} ${student.last_name}`,
                     scores,
+                    averageGrade,
                 };
             }),
         };
     });
+
     return { groups, lessons };
 };
+
 </script>
 
 <template>
@@ -67,6 +87,7 @@ const processCourseData = (course) => {
                     <th>Group</th>
                     <th>Student</th>
                     <th v-for="lesson in lessonTitles" :key="lesson">{{ lesson }}</th>
+                    <th>Average grade</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -79,6 +100,7 @@ const processCourseData = (course) => {
                         <td v-for="lesson in lessonTitles" :key="lesson">
                             <span>Grade: {{ student.scores[lesson]?.grade }}</span>
                         </td>
+                        <td>{{ student.averageGrade }}</td>
                     </tr>
 
                     <tr v-if="group.students.length === 0">
@@ -87,6 +109,7 @@ const processCourseData = (course) => {
                         <td v-for="lesson in lessonTitles" :key="lesson">
                             <span></span>
                         </td>
+                        <td></td>
                     </tr>
                 </template>
                 </tbody>
@@ -94,9 +117,6 @@ const processCourseData = (course) => {
         </div>
     </div>
 </template>
-
-
-
 <style scoped>
 
 </style>

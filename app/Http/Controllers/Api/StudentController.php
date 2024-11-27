@@ -21,8 +21,9 @@ class StudentController extends Controller
         return new StudentCollection($students);
     }
 
-    public function show(Student $student): StudentResource|JsonResponse
+    public function show($studentId): StudentResource
     {
+        $student = Student::where('user_id', $studentId)->firstOrFail();
         return new StudentResource($student);
     }
 

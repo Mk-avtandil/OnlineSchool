@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Student extends Model
 {
@@ -32,5 +33,10 @@ class Student extends Model
     public function solutions(): HasMany
     {
         return $this->hasMany(Solution::class);
+    }
+
+    public function creditCard(): HasOne
+    {
+        return $this->hasOne(CreditCard::class);
     }
 }

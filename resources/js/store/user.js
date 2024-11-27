@@ -2,21 +2,19 @@ import axios from "axios";
 
 const state = {
     user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
-    role: localStorage.getItem('role') || null
+    role: localStorage.getItem('role') || null,
+    isAuthenticated: false,
 };
 
 const mutations = {
     SET_USER(state, user) {
         state.user = user;
+        state.isAuthenticated = true;
         localStorage.setItem('user', JSON.stringify(user));
     },
     SET_ROLE(state, role) {
         state.role = role;
         localStorage.setItem('role', role);
-    },
-    REMOVE_TOKEN(state) {
-        state.token = '';
-        localStorage.removeItem('authToken');
     },
     REMOVE_ROLE(state) {
         state.role = null;
@@ -24,6 +22,7 @@ const mutations = {
     },
     CLEAR_USER(state) {
         state.user = null;
+        state.isAuthenticated = false;
         localStorage.removeItem('user');
     }
 };
