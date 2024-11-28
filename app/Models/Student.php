@@ -39,4 +39,9 @@ class Student extends Model
     {
         return $this->hasOne(CreditCard::class);
     }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

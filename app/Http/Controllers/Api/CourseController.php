@@ -9,7 +9,6 @@ use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use App\Policies\CoursePolicy;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CourseController extends Controller
@@ -92,43 +91,6 @@ class CourseController extends Controller
             'groups.teachers',
             'lessons.homeworks.solutions.grade',
         ])->findOrFail($courseId);
-
-//        $statistics = [
-//            'course' => $course->title,
-//            'groups' => [],
-//        ];
-//
-//        foreach ($course->groups as $group) {
-//            $groupData = [
-//                'group_title' => $group->title,
-//                'students' => [],
-//                'teachers' => $group->teachers,
-//            ];
-//
-//            foreach ($group->students as $student) {
-//                $studentData = [
-//                    'student' => $student->first_name . ' ' . $student->last_name,
-//                    'lessons' => [],
-//                ];
-//
-//                foreach ($course->lessons as $lesson) {
-//                    $homework = $lesson->homeworks->firstWhere('lesson_id', $lesson->id);
-//                    if ($homework) {
-//                        $solution = $homework->solutions->firstWhere('student_id', $student->id);
-//                        $grade = $solution ? $solution->grade : null;
-//                        $studentData['lessons'][] = [
-//                            'lesson_name' => $lesson->title,
-//                            'homework' => $homework->title,
-//                            'grade' => $grade ? $grade->value : 'Не оценено',
-//                        ];
-//                    }
-//                }
-//
-//                $groupData['students'][] = $studentData;
-//            }
-//
-//            $statistics['groups'][] = $groupData;
-//        }
 
         return response()->json(['data' => $course]);
     }

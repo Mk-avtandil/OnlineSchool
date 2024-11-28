@@ -33,8 +33,8 @@ const saveCourse = async () => {
         }
     }
 };
-
 </script>
+
 <template>
     <div class="container my-3">
         <span class="fs-6">

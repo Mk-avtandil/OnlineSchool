@@ -2,12 +2,19 @@
 import axios from "axios";
 import {onMounted, ref} from "vue";
 import { useRoute } from 'vue-router';
+import PaymentForCourse from '../../components/PaymentForCourse.vue';
 
 const route = useRoute();
 const errors = ref({});
 const student = ref();
 const studentCourses = ref();
 const successMessage = ref('');
+const data = ref({
+    'card_number': '',
+    'card_type': '',
+    'cvv': '',
+    'sum': '',
+});
 
 onMounted(async () => {
     await getStudent();
@@ -33,22 +40,28 @@ const getStudentCourses = async (url = '/api/courses') => {
     }
 }
 
-const savePayment = async (url = `/api/payments/${route.params.id}`) => {
+const saveCreditCard = async (url = '/api/cards/store') => {
     try {
         errors.value = {};
         successMessage.value = '';
 
-        await axios.post(url);
-        successMessage.value = 'Payment created successfully!';
+        await axios.post(url, data.value);
+        await getStudent();
+        successMessage.value = 'Credit Card created successfully!';
+
+        setTimeout(() => {
+            data.value = {
+                card_number: '',
+                card_type: '',
+                cvv: '',
+                sum: '',
+            };
+        }, 1000);
     } catch (error) {
-        if (error.response && error.response.data) {
-            if (error.response.data.errors) {
-                errors.value = error.response.data.errors;
-            } else if (error.response.data.error) {
-                errors.value = {error: error.response.data.error};
-            }
+        if (error.response && error.response.data && error.response.data.errors) {
+            errors.value = error.response.data.errors;
         } else {
-            console.error('Failed to create payment');
+            console.error('Failed to create credit card');
         }
     }
 }
@@ -90,29 +103,12 @@ const savePayment = async (url = `/api/payments/${route.params.id}`) => {
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active my-3" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab" tabindex="0">
-                        <div v-for="course in studentCourses">
-                            <div class="card my-1">
-                                <div class="row p-2">
-                                    <div class="card-body col-9">
-                                        <h5 class="card-title">{{course?.title}}</h5>
-                                        <p class="card-text">{{course?.description}}</p>
-                                        <p class="card-text">Price: {{course?.price}}</p>
-                                    </div>
-                                    <div class="card-body col-3">
-                                        <h5 class="card-title">Pay for course</h5>
-                                        <div v-if="successMessage" class="alert alert-success">
-                                            {{ successMessage }}
-                                        </div>
-                                        <div v-if="errors.error" class="alert alert-danger my-1">
-                                            {{ errors.error }}
-                                        </div>
-                                        <button @click.prevent="savePayment()" type="button" class="btn btn-primary w-100" v-if="student?.creditCard">
-                                            Оплатить
-                                        </button>
-                                        <button class="btn btn-primary w-100" v-else>Добавить карту</button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div v-for="course in studentCourses" :key="course.id">
+                            <PaymentForCourse
+                                :course="course"
+                                :student="student"
+                                :errors="errors"
+                                @payment-created="handlePaymentCreated" />
                         </div>
                     </div>
                     <div class="tab-pane fade my-3" id="nav-groups" role="tabpanel" aria-labelledby="nav-groups-tab" tabindex="1">
@@ -139,13 +135,80 @@ const savePayment = async (url = `/api/payments/${route.params.id}`) => {
                                             <p class="card-text">CVV: {{student?.creditCard.cvv}}</p>
                                             <p class="card-text">CASH: {{student?.creditCard.sum}}</p>
                                         </div>
-                                        <button v-else> Добавить карту</button>
+                                        <button v-else type="submit" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#staticBackdropStudent">
+                                            Add Credit Card
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="3">...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="staticBackdropStudent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Credit Card</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form row">
+                            <div class="form-group col-md-12 mb-2">
+                                <label for="card_number" class="my-1">Card number</label>
+                                <input v-model="data.card_number" type="text" class="form-control" id="card_number" placeholder="Credit number">
+                            </div>
+                            <div v-if="errors.card_number" class="alert alert-danger my-1">
+                                {{ errors.card_number[0] }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="my-1">Card type</label>
+                            <div class="form-group col-md-12 mb-1">
+                                <input v-model="data.card_type" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="visa">
+                                <label class="form-check-label mx-1" for="inlineRadio1">visa</label>
+                            </div>
+                            <div class="form-group col-md-12 mb-2">
+                                <input v-model="data.card_type" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="mastercard">
+                                <label class="form-check-label mx-1" for="inlineRadio2">mastercard</label>
+                            </div>
+                            <div v-if="errors.card_type" class="alert alert-danger my-1">
+                                {{ errors.card_type[0] }}
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-12 mb-2">
+                            <label for="card_cvv" class="my-1">CVV</label>
+                            <input v-model="data.cvv" type="text" class="form-control" id="card_cvv" placeholder="CVV">
+                        </div>
+                        <div v-if="errors.cvv" class="alert alert-danger my-1">
+                            {{ errors.cvv[0] }}
+                        </div>
+
+                        <div class="form-group col-md-12 mb-2">
+                            <label for="card_sum" class="my-1">SUM</label>
+                            <input v-model="data.sum" type="text" class="form-control" id="card_sum" placeholder="SUM">
+                        </div>
+                        <div v-if="errors.sum" class="alert alert-danger my-1">
+                            {{ errors.sum[0] }}
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div v-if="successMessage" class="alert alert-success mt-2 w-100">
+                        {{ successMessage }}
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <div class="form-group my-3">
+                        <button type="submit" class="btn btn-primary" @click="saveCreditCard()">Add</button>
+                    </div>
                 </div>
             </div>
         </div>

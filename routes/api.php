@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CardController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\GradeController;
 use App\Http\Controllers\Api\GroupController;
@@ -152,3 +153,10 @@ Route::prefix('payments')
         });
     });
 
+Route::prefix('cards')
+    ->name('card.')
+    ->group(function () {
+        Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
+            Route::post('/store', [CardController::class, 'store'])->name('store');
+        });
+    });
