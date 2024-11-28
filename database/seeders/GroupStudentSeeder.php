@@ -9,19 +9,11 @@ class GroupStudentSeeder extends Seeder
 {
     public function run(): void
     {
-        GroupStudent::create([
-            'group_id' => 1,
-            'student_id' => 1,
-        ]);
-
-        GroupStudent::create([
-            'group_id' => 1,
-            'student_id' => 2,
-        ]);
-
-        GroupStudent::create([
-            'group_id' => 2,
-            'student_id' => 3,
-        ]);
+        for ($i = 1; $i <= 10; $i++) {
+            GroupStudent::create([
+                'group_id' => $i,
+                'student_id' => $i,
+            ]);
+        }
     }
 }

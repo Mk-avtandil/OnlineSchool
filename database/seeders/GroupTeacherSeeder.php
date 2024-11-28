@@ -9,9 +9,11 @@ class GroupTeacherSeeder extends Seeder
 {
     public function run(): void
     {
-        GroupTeacher::create([
-            'group_id' => 1,
-            'teacher_id' => 1,
-        ]);
+        for ($i = 1; $i <= 5; $i++) {
+            GroupTeacher::create([
+                'group_id' => $i,
+                'teacher_id' => $i,
+            ]);
+        }
     }
 }

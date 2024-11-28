@@ -23,10 +23,6 @@ class TeacherController extends Controller
 
     public function show(Teacher $teacher): TeacherResource|JsonResponse
     {
-        if (!$teacher) {
-            return response()->json(['message' => 'Teacher not found'], 404);
-        }
-
         return new TeacherResource($teacher);
     }
 

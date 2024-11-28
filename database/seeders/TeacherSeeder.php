@@ -10,32 +10,28 @@ class TeacherSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = User::create([
-            'email' => 'maksat@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
+        $people = array(
+            array("first_name" => "David", "last_name" => "Taylor"),
+            array("first_name" => "Emily", "last_name" => "White"),
+            array("first_name" => "Robert", "last_name" => "Clark"),
+            array("first_name" => "Sophia", "last_name" => "Lewis"),
+            array("first_name" => "James", "last_name" => "Martinez")
+        );
 
-        $user->teacher()->create([
-            'first_name' => 'Maksat',
-            'last_name' => 'Maksatov',
-            'birthday' => date('Y-m-d', strtotime('12.04.1997')),
-            'phone' => '0702320433',
-        ]);
+        foreach ($people as $person) {
+            $user = User::create([
+                'email' => $person['first_name'] . '@gmail.com',
+                'password' => Hash::make('12345678'),
+            ]);
 
-        $user->assignRole('teacher');
+            $user->teacher()->create([
+                'first_name' => $person['first_name'],
+                'last_name' => $person['last_name'],
+                'birthday' => date('Y-m-d', strtotime('21.11.1997')),
+                'phone' => '0704323433',
+            ]);
 
-        $user = User::create([
-            'email' => 'vlad@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
-
-        $user->teacher()->create([
-            'first_name' => 'Vlad',
-            'last_name' => 'Vladov',
-            'birthday' => date('Y-m-d', strtotime('12.04.1997')),
-            'phone' => '0702322433',
-        ]);
-
-        $user->assignRole('teacher');
+            $user->assignRole('teacher');
+        }
     }
 }

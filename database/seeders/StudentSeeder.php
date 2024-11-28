@@ -10,46 +10,34 @@ class StudentSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = User::create([
-            'email' => 'avtandil@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
+        $people = array(
+            array("first_name" => "John", "last_name" => "Smith"),
+            array("first_name" => "Maria", "last_name" => "Johnson"),
+            array("first_name" => "Alexey", "last_name" => "Petrov"),
+            array("first_name" => "Svetlana", "last_name" => "Ivanova"),
+            array("first_name" => "Dmitry", "last_name" => "Sokolov"),
+            array("first_name" => "Olga", "last_name" => "Mikhailova"),
+            array("first_name" => "Konstantin", "last_name" => "Volkov"),
+            array("first_name" => "Catherine", "last_name" => "Brown"),
+            array("first_name" => "Maxim", "last_name" => "Davis"),
+            array("first_name" => "Anna", "last_name" => "Wilson")
+        );
 
-        $user->student()->create([
-            'first_name' => 'Avtandil',
-            'last_name' => 'Kurbanov',
-            'birthday' => date('Y-m-d', strtotime('12.04.1997')),
-            'phone' => '0704323433',
-        ]);
 
-        $user->assignRole('student');
+        foreach ($people as $person) {
+            $user = User::create([
+                'email' => $person['first_name'] . '@gmail.com',
+                'password' => Hash::make('12345678'),
+            ]);
 
-        $user = User::create([
-            'email' => 'dastan@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
+            $user->student()->create([
+                'first_name' => $person['first_name'],
+                'last_name' => $person['last_name'],
+                'birthday' => date('Y-m-d', strtotime('21.11.1997')),
+                'phone' => '0704323433',
+            ]);
 
-        $user->student()->create([
-            'first_name' => 'Dastan',
-            'last_name' => 'Dastanov',
-            'birthday' => date('Y-m-d', strtotime('12.12.1992')),
-            'phone' => '0704319033',
-        ]);
-
-        $user->assignRole('student');
-
-        $user = User::create([
-            'email' => 'baitur@gmail.com',
-            'password' => Hash::make('12345678'),
-        ]);
-
-        $user->student()->create([
-            'first_name' => 'Baitur',
-            'last_name' => 'Baiturov',
-            'birthday' => date('Y-m-d', strtotime('12.12.1992')),
-            'phone' => '0704319000',
-        ]);
-
-        $user->assignRole('student');
+            $user->assignRole('student');
+        }
     }
 }

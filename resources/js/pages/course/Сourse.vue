@@ -75,13 +75,13 @@ const deleteCourse = async (courseId) => {
                             </div>
                             <div class="col-4 text-end align-top" v-if="['admin', 'super_admin'].includes(role)">
                                 <div class="btn-group">
-                                    <router-link data-bs-toggle="dropdown" >
+                                    <button data-bs-toggle="dropdown" class="p-2">
                                         <div id="nav-icon">
                                             <span></span>
                                             <span></span>
                                             <span></span>
                                         </div>
-                                    </router-link>
+                                    </button>
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-sm-end">
                                         <li>
                                             <router-link :to="{name: 'courses_edit_page_url', params: {id: course.id}}" class="dropdown-item">Edit</router-link>
