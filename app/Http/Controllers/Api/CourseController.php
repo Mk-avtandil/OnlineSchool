@@ -23,7 +23,7 @@ class CourseController extends Controller
             $coursesQuery->where('title', 'like', '%' . $request->input('search') . '%');
         }
 
-        $result = $coursesQuery->with(['groups.students', 'groups.teachers', 'lessons'])->paginate(6);
+        $result = $coursesQuery->with(['groups.students.payments', 'groups.teachers', 'lessons'])->paginate(6);
 
         return new CourseCollection($result);
     }

@@ -16,6 +16,7 @@ class CourseResource extends JsonResource
             'price' => $this->price,
             'groups' => $this->groups,
             'lessons' => $this->lessons,
+            'payments' => $this->payments,
         ];
     }
 }
