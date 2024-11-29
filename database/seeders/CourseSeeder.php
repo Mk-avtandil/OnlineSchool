@@ -37,9 +37,15 @@ class CourseSeeder extends Seeder
             }
 
             for ($j = 1; $j < 6; $j++) {
-                $course->lessons()->create([
+                $lesson = $course->lessons()->create([
                     'title' => 'Lesson ' . $j,
                     'Description' => 'Lesson ' . $j . ' description',
+                ]);
+
+                $homework = $lesson->homeworks()->create([
+                    'title' => 'Homework ' . $j,
+                    'description' => 'Homework ' . $j . ' description',
+                    'deadline' => now()->addDays(rand(1, 30)),
                 ]);
             }
         }
