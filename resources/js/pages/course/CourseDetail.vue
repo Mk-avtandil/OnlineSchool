@@ -61,7 +61,7 @@ const processCourseData = (course) => {
                 let averageGrade = 'N/A';
                 if (allGrades.length > 0) {
                     const total = allGrades.reduce((acc, grade) => acc + grade, 0);
-                    averageGrade = (total / totalLessons).toFixed(2);  // Средняя оценка по всем урокам
+                    averageGrade = (total / totalLessons).toFixed(2);
                 }
 
                 return {

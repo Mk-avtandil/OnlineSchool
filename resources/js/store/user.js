@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const state = {
-    user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
+    user: {},
     role: localStorage.getItem('role') || null,
     isAuthenticated: false,
 };
@@ -41,7 +41,6 @@ const actions = {
                         Authorization: `Bearer ${token}`
                     }
                 });
-
                 commit('SET_USER', response.data);
             } catch (error) {
                 console.error('Failed to fetch user data: ', error);

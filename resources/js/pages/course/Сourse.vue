@@ -8,6 +8,7 @@ const store = useStore();
 const courses = ref();
 const searchQuery = ref('');
 const router = useRouter();
+const user = computed( () => store.getters.user);
 const role = computed(() => store.getters.role);
 
 onMounted(async () => {

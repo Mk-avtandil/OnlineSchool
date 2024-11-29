@@ -74,7 +74,7 @@ Route::prefix('students')
     ->name('student.')
     ->group(function () {
         Route::middleware(['auth:sanctum'])->group(function () {
-            Route::get('/{studentId}', [StudentController::class, 'show'])->name('show');
+            Route::get('/{student}', [StudentController::class, 'show'])->name('show');
         });
 
         Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
@@ -83,13 +83,17 @@ Route::prefix('students')
             Route::put('/{student}', [StudentController::class, 'update'])->name('update');
             Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
         });
+
+        Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
+            Route::get('/{student}/detail', [StudentController::class, 'detail'])->name('detail');
+        });
     });
 
 Route::prefix('teachers')
     ->name('teacher.')
     ->group(function () {
         Route::middleware(['auth:sanctum'])->group(function () {
-            Route::get('/{teacherId}', [TeacherController::class, 'show'])->name('show');
+            Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
         });
 
         Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
@@ -97,6 +101,10 @@ Route::prefix('teachers')
             Route::post('/', [TeacherController::class, 'store'])->name('store');
             Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update');
             Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
+            Route::get('/{teacher}/detail', [TeacherController::class, 'detail'])->name('detail');
         });
     });
 

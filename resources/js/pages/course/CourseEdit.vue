@@ -79,7 +79,6 @@ const updateCourse = async (url = `/api/courses/${route.params.id}`) => {
             </div>
         </form>
     </div>
-
 </template>
 
 <style scoped>

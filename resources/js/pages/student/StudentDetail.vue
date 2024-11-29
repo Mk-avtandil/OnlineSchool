@@ -1,9 +1,12 @@
 <script setup>
 import axios from "axios";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import { useRoute } from 'vue-router';
 import PaymentForCourse from '../../components/PaymentForCourse.vue';
+import { useStore } from "vuex";
 
+const store = useStore();
+const role = computed(() => store.getters.role);
 const route = useRoute();
 const errors = ref({});
 const student = ref();
@@ -21,7 +24,7 @@ onMounted(async () => {
     await getStudentCourses();
 });
 
-const getStudent = async (url = `/api/students/${route.params.id}`) => {
+const getStudent = async (url = `/api/students/${route.params.id}/detail`) => {
     try {
         const response = await axios.get(url);
         student.value = response.data.data;
@@ -68,7 +71,7 @@ const saveCreditCard = async (url = '/api/cards/store') => {
 </script>
 
 <template>
-    <div class="container my-4">
+    <div class="container my-4" v-if="student">
         <div class="row">
             <div class="col-12 mb-4">
                 <h3 class="mb-2">Student</h3>
@@ -149,7 +152,7 @@ const saveCreditCard = async (url = '/api/cards/store') => {
         </div>
     </div>
 
-    <div class="modal fade" id="staticBackdropStudent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdropStudent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" v-if="student">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -212,6 +215,10 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container my-3" v-else>
+        <h3>У вас недостаточно прав для просмотра!</h3>
     </div>
 </template>
 

@@ -21,9 +21,17 @@ class StudentController extends Controller
         return new StudentCollection($students);
     }
 
-    public function show($studentId): StudentResource
+    public function detail($studentId): StudentResource
     {
         $student = Student::where('user_id', $studentId)->firstOrFail();
+
+        $this->authorize('view', $student);
+
+        return new StudentResource($student);
+    }
+
+    public function show(Student $student): StudentResource
+    {
         return new StudentResource($student);
     }
 

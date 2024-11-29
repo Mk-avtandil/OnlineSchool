@@ -14,7 +14,7 @@ onMounted(async () => {
     await getTeacherCourses();
 });
 
-const getTeacher = async (url = `/api/teachers/${route.params.id}`) => {
+const getTeacher = async (url = `/api/teachers/${route.params.id}/detail`) => {
     try {
         const response = await axios.get(url);
         teacher.value = response.data.data;
