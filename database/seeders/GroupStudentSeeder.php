@@ -9,15 +9,18 @@ class GroupStudentSeeder extends Seeder
 {
     public function run(): void
     {
-        $j = 1;
+        $groupCount = 4;
+        $studentCount = 1;
 
-        while ($j <= 20) {
-            GroupStudent::create([
-                'group_id' => $j,
-                'student_id' => (($j - 1) % 10) + 1,
-            ]);
+        for ($groupId = 1; $groupId <= $groupCount; $groupId++) {
+            for ($i = 0; $i < 5; $i++) {
+                GroupStudent::create([
+                    'group_id' => $groupId,
+                    'student_id' => $studentCount,
+                ]);
 
-            $j++;
+                $studentCount++;
+            }
         }
     }
 }

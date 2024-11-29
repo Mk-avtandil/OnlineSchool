@@ -12,7 +12,6 @@ class TeacherSeeder extends Seeder
     {
         $people = array(
             array("first_name" => "David", "last_name" => "Taylor"),
-            array("first_name" => "Emily", "last_name" => "White"),
             array("first_name" => "Robert", "last_name" => "Clark"),
             array("first_name" => "Sophia", "last_name" => "Lewis"),
             array("first_name" => "James", "last_name" => "Martinez")

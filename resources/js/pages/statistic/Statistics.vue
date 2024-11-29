@@ -83,13 +83,17 @@ const applyFilter = () => {
                     students: group.students.map(student => {
                         return {
                             ...student,
-                            filteredPayments: filterPayments(student.payments)  // Фильтруем платежи
+                            filteredPayments: filterPayments(student.payments)
                         };
                     })
                 };
             })
         };
     });
+};
+
+const totalGroupRows = (groups) => {
+    return groups.reduce((total, group) => total + group.students.length, 0);
 };
 
 watch([selectedYear, selectedMonth], () => {
@@ -112,9 +116,8 @@ watch([selectedYear, selectedMonth], () => {
             <tbody>
             <tr v-for="course in courses" :key="course.id">
                 <td>
-                    <router-link :to="{ name: 'course_detail_page_url', params: { id: course.id } }">{{
-                            course.title
-                        }}
+                    <router-link :to="{ name: 'course_detail_page_url', params: { id: course.id } }">
+                        {{ course.title }}
                     </router-link>
                 </td>
                 <td>{{ course.price }}</td>
@@ -129,18 +132,17 @@ watch([selectedYear, selectedMonth], () => {
         <h3>У вас недостаточно прав для просмотра!</h3>
     </div>
 
-    <!-- Фильтрация по году и месяцу -->
     <div class="container my-3" v-if="role === 'super_admin'">
         <h3>Payments</h3>
 
-        <div class="filters">
+        <div class="filters mb-3">
             <label for="year">Year:</label>
-            <select v-model="selectedYear" id="year">
+            <select v-model="selectedYear" id="year" class="mx-2">
                 <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
             </select>
 
             <label for="month">Month:</label>
-            <select v-model="selectedMonth" id="month">
+            <select v-model="selectedMonth" id="month" class="mx-2">
                 <option :value="null">All months</option>
                 <option v-for="month in months" :key="month.id" :value="month.id">{{ month.name }}</option>
             </select>
@@ -157,13 +159,19 @@ watch([selectedYear, selectedMonth], () => {
             </thead>
             <tbody>
             <template v-for="course in filteredCourses" :key="course.id">
-                <template v-for="group in course.groups" :key="group.id">
-                    <tr v-for="student in group.students" :key="student.id">
-                        <td>{{ course.title }}</td>
-                        <td>{{ group.title }}</td>
-                        <td>{{ student.first_name }} {{ student.last_name }}</td>
-                        <td>{{ calculateTotalPaymentStudent(student.filteredPayments) }}</td>
-                    </tr>
+                <template v-for="(group, groupIndex) in course.groups" :key="group.id">
+                    <template v-for="(student, studentIndex) in group.students" :key="student.id">
+                        <tr>
+                            <td v-if="groupIndex === 0 && studentIndex === 0" :rowspan="totalGroupRows(course.groups)">
+                                {{ course.title }}
+                            </td>
+                            <td v-if="studentIndex === 0" :rowspan="group.students.length">
+                                {{ group.title }}
+                            </td>
+                            <td>{{ student.first_name }} {{ student.last_name }}</td>
+                            <td>{{ calculateTotalPaymentStudent(student.filteredPayments) }}</td>
+                        </tr>
+                    </template>
                 </template>
             </template>
             </tbody>
@@ -176,15 +184,4 @@ watch([selectedYear, selectedMonth], () => {
 </template>
 
 <style scoped>
-.filters {
-    margin-bottom: 15px;
-}
-
-.filters label {
-    margin-right: 10px;
-}
-
-.filters select {
-    margin-right: 20px;
-}
 </style>

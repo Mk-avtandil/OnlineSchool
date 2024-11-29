@@ -26,11 +26,6 @@ const getCourses = async (url = '/api/courses') => {
             }
         });
         courses.value = response.data;
-
-        pagination.value = {
-            prev_page_url: response.data.links.prev,
-            next_page_url: response.data.links.next
-        };
     } catch (error) {
         console.error('Error fetching courses:', error);
     }

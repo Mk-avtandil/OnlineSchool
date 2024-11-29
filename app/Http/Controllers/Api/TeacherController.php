@@ -21,8 +21,9 @@ class TeacherController extends Controller
         return new TeacherCollection($teacher);
     }
 
-    public function show(Teacher $teacher): TeacherResource|JsonResponse
+    public function show($teacherId): TeacherResource
     {
+        $teacher = Teacher::where('user_id', $teacherId)->firstOrFail();
         return new TeacherResource($teacher);
     }
 

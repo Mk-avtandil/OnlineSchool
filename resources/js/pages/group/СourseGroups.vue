@@ -55,13 +55,13 @@ const deleteGroup = async (groupId) => {
                         </div>
                         <div class="col-4 text-end align-top" v-if="['admin', 'super_admin'].includes(role)">
                             <div class="btn-group">
-                                <router-link data-bs-toggle="dropdown" >
+                                <button data-bs-toggle="dropdown" class="p-2">
                                     <div id="nav-icon">
                                         <span></span>
                                         <span></span>
                                         <span></span>
                                     </div>
-                                </router-link>
+                                </button>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-sm-end">
                                     <li>
                                         <router-link :to="{name: 'group_edit_page_url', params: {id: group.id}}" class="dropdown-item">Edit</router-link>
@@ -75,14 +75,14 @@ const deleteGroup = async (groupId) => {
                     </div>
                     <p class="card-text">{{group.description}}</p>
 
-                    <h5 class="mb-0 mt-2">Менторы группы:</h5>
+                    <h5 class="mb-0 mt-2">Mentors:</h5>
                     <span>
                         <a v-for="teacher in group.teachers" type="button" class="btn btn-warning my-1" style="margin-right: 3px;">
                             {{teacher.first_name}} {{teacher.last_name}}
                         </a>
                     </span>
 
-                    <h5 class="mb-0 mt-2">Студенты группы:</h5>
+                    <h5 class="mb-0 mt-2">Students:</h5>
                     <span v-for="student in group.students">
                         <router-link :to="{name: 'student_detail_page_url', params: {id: student.id}}"
                              class="btn btn-warning my-1" style="margin-right: 3px;">

@@ -90,7 +90,7 @@ Route::prefix('teachers')
     ->group(function () {
         Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/', [TeacherController::class, 'index'])->name('index');
-            Route::get('/{teacher}', [TeacherController::class, 'show'])->name('show');
+            Route::get('/{teacherId}', [TeacherController::class, 'show'])->name('show');
         });
 
         Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {

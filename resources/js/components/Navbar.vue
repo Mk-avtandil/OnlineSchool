@@ -64,13 +64,12 @@ onMounted(() => {
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0 ms-auto" v-if="user">
                     <li class="nav-item" v-if="role === 'student'">
-                        {{user?.student}}
-                        <router-link :to="{name: 'student_detail_page_url', params: {id: user.id}}" class="nav-link active">
+                        <router-link :to="{name: 'student_detail_page_url', params: {id: user.id}}" class="nav-link text-primary">
                             {{user.email}}
                         </router-link>
                     </li>
                     <li class="nav-item" v-if="role === 'teacher'">
-                        <router-link :to="{name: 'teacher_detail_page_url', params: {id: user.id}}" class="nav-link active">
+                        <router-link :to="{name: 'teacher_detail_page_url', params: {id: user.id}}" class="nav-link text-primary">
                             {{user.email}}
                         </router-link>
                     </li>
