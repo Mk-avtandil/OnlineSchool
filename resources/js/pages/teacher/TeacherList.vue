@@ -32,7 +32,7 @@ const deleteTeacher = async (teacherId) => {
 </script>
 
 <template>
-    <div class="container my-3">
+    <div class="container my-3" v-if="['admin', 'super_admin'].includes(role)">
         <div class="row">
             <div class="col-8">
                 <span class="fs-3">Teachers</span>
@@ -64,6 +64,9 @@ const deleteTeacher = async (teacherId) => {
             </tr>
             </tbody>
         </table>
+    </div>
+    <div class="container my-3" v-else>
+        <h3>У вас недостаточно прав для просмотра!</h3>
     </div>
 </template>
 

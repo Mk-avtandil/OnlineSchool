@@ -44,10 +44,10 @@ onMounted(() => {
                     <li class="nav-item">
                         <router-link :to="{name: 'courses_page_url'}" class="nav-link active" aria-current="page">Home</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="['admin', 'super_admin'].includes(role)">
                         <router-link :to="{name: 'student_list_page_url'}" class="nav-link active" aria-current="page">Students</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="['admin', 'super_admin'].includes(role)">
                         <router-link :to="{name: 'teacher_list_page_url'}" class="nav-link active" aria-current="page">Teachers</router-link>
                     </li>
                     <li class="nav-item">
