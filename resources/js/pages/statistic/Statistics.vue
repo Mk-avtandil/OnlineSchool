@@ -4,7 +4,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
-const role = computed(() => store.getters.role);
+const user = computed(() => store.getters.user);
 const courses = ref([]);
 const selectedYear = ref(new Date().getFullYear());
 const selectedMonth = ref(null);
@@ -34,7 +34,7 @@ onMounted(async () => {
 
 const getCourses = async () => {
     try {
-        const response = await axios.get('/api/courses');
+        const response = await axios.get('/api/courses/all');
         courses.value = response.data.data;
         applyFilter();
     } catch (error) {
@@ -102,84 +102,86 @@ watch([selectedYear, selectedMonth], () => {
 </script>
 
 <template>
-    <div class="container my-3" v-if="role === 'super_admin'">
-        <h3>Courses</h3>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>Course</th>
-                <th>Price</th>
-                <th>Number of group</th>
-                <th>Number of lesson</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="course in courses" :key="course.id">
-                <td>
-                    <router-link :to="{ name: 'course_detail_page_url', params: { id: course.id } }">
-                        {{ course.title }}
-                    </router-link>
-                </td>
-                <td>{{ course.price }}</td>
-                <td>{{ course.groups ? course.groups.length : 0 }}</td>
-                <td>{{ course.lessons ? course.lessons.length : 0 }}</td>
-            </tr>
-            </tbody>
-        </table>
+    <div v-if="user?.data.role.includes('super_admin')">
+        <div class="container my-3">
+            <h3>Courses</h3>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Price</th>
+                    <th>Number of group</th>
+                    <th>Number of lesson</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="course in courses" :key="course.id">
+                    <td>
+                        <router-link :to="{ name: 'course_detail_page_url', params: { id: course.id } }">
+                            {{ course.title }}
+                        </router-link>
+                    </td>
+                    <td>{{ course.price }}</td>
+                    <td>{{ course.groups ? course.groups.length : 0 }}</td>
+                    <td>{{ course.lessons ? course.lessons.length : 0 }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container my-3">
+            <h3>Payments</h3>
+
+            <div class="filters mb-3">
+                <label for="year">Year:</label>
+                <select v-model="selectedYear" id="year" class="mx-2">
+                    <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
+                </select>
+
+                <label for="month">Month:</label>
+                <select v-model="selectedMonth" id="month" class="mx-2">
+                    <option :value="null">All months</option>
+                    <option v-for="month in months" :key="month.id" :value="month.id">{{ month.name }}</option>
+                </select>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Group</th>
+                    <th>Student</th>
+                    <th>Payment</th>
+                </tr>
+                </thead>
+                <tbody>
+                <template v-for="course in filteredCourses" :key="course.id">
+                    <template v-for="(group, groupIndex) in course.groups" :key="group.id">
+                        <template v-for="(student, studentIndex) in group.students" :key="student.id">
+                            <tr>
+                                <td v-if="groupIndex === 0 && studentIndex === 0" :rowspan="totalGroupRows(course.groups)">
+                                    {{ course.title }}
+                                </td>
+                                <td v-if="studentIndex === 0" :rowspan="group.students.length">
+                                    {{ group.title }}
+                                </td>
+                                <td>{{ student.first_name }} {{ student.last_name }}</td>
+                                <td>{{ calculateTotalPaymentStudent(student.filteredPayments) }}</td>
+                            </tr>
+                        </template>
+                    </template>
+                </template>
+                </tbody>
+            </table>
+
+            <div class="total-sum text-end">
+                <strong>Total Payment: {{ calculateTotalPayment(filteredCourses) }}</strong>
+            </div>
+        </div>
     </div>
 
     <div class="container my-3" v-else>
         <h3>У вас недостаточно прав для просмотра!</h3>
-    </div>
-
-    <div class="container my-3" v-if="role === 'super_admin'">
-        <h3>Payments</h3>
-
-        <div class="filters mb-3">
-            <label for="year">Year:</label>
-            <select v-model="selectedYear" id="year" class="mx-2">
-                <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
-            </select>
-
-            <label for="month">Month:</label>
-            <select v-model="selectedMonth" id="month" class="mx-2">
-                <option :value="null">All months</option>
-                <option v-for="month in months" :key="month.id" :value="month.id">{{ month.name }}</option>
-            </select>
-        </div>
-
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>Course</th>
-                <th>Group</th>
-                <th>Student</th>
-                <th>Payment</th>
-            </tr>
-            </thead>
-            <tbody>
-            <template v-for="course in filteredCourses" :key="course.id">
-                <template v-for="(group, groupIndex) in course.groups" :key="group.id">
-                    <template v-for="(student, studentIndex) in group.students" :key="student.id">
-                        <tr>
-                            <td v-if="groupIndex === 0 && studentIndex === 0" :rowspan="totalGroupRows(course.groups)">
-                                {{ course.title }}
-                            </td>
-                            <td v-if="studentIndex === 0" :rowspan="group.students.length">
-                                {{ group.title }}
-                            </td>
-                            <td>{{ student.first_name }} {{ student.last_name }}</td>
-                            <td>{{ calculateTotalPaymentStudent(student.filteredPayments) }}</td>
-                        </tr>
-                    </template>
-                </template>
-            </template>
-            </tbody>
-        </table>
-
-        <div class="total-sum text-end">
-            <strong>Total Payment: {{ calculateTotalPayment(filteredCourses) }}</strong>
-        </div>
     </div>
 </template>
 

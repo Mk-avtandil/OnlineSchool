@@ -8,8 +8,8 @@ const store = useStore();
 const courses = ref();
 const searchQuery = ref('');
 const router = useRouter();
+const pagination = ref({});
 const user = computed( () => store.getters.user);
-const role = computed(() => store.getters.role);
 
 onMounted(async () => {
     await getCourses();
@@ -27,6 +27,11 @@ const getCourses = async (url = '/api/courses') => {
             }
         });
         courses.value = response.data;
+
+        pagination.value = {
+            prev_page_url: response.data.links.prev,
+            next_page_url: response.data.links.next
+        };
     } catch (error) {
         console.error('Error fetching courses:', error);
     }
@@ -49,7 +54,7 @@ const deleteCourse = async (courseId) => {
             <div class="col-8">
                 <span class="fs-3">Courses</span>
             </div>
-            <div class="col-4 text-end  align-content-center" v-if="['admin', 'super_admin'].includes(role)">
+            <div class="col-4 text-end  align-content-center" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
                 <router-link :to="{name: 'course_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Course</router-link>
             </div>
         </div>
@@ -68,7 +73,7 @@ const deleteCourse = async (courseId) => {
                             <div class="col-8">
                                 <h5 class="card-title text-dark">{{course.title}}</h5>
                             </div>
-                            <div class="col-4 text-end align-top" v-if="['admin', 'super_admin'].includes(role)">
+                            <div class="col-4 text-end align-top" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
                                 <div class="btn-group">
                                     <button data-bs-toggle="dropdown" class="p-2">
                                         <div id="nav-icon">
@@ -100,6 +105,10 @@ const deleteCourse = async (courseId) => {
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="pagination my-2" v-if="pagination.prev_page_url || pagination.next_page_url">
+            <button class="btn btn-success text-light" @click.prevent="getCourses(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Prev</button>
+            <button class="btn btn-success mx-2" @click.prevent="getCourses(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
         </div>
     </div>
 </template>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,7 +33,6 @@ class AuthenticatedSessionController extends Controller
             'access_token' => $token,
             'token_type' => 'Bearer',
             'user' => $user,
-            'role' => $user->roles->first()->name ?? null,
         ]);
     }
 
@@ -56,5 +56,11 @@ class AuthenticatedSessionController extends Controller
         $request->session()->remove('_token');
 
         return response()->noContent();
+    }
+
+    public function user(Request $request)
+    {
+        $user = $request->user();
+        return new UserResource($user);
     }
 }

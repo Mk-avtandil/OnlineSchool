@@ -1,7 +1,7 @@
 <script setup>
 import axios from "axios";
 import {ref} from "vue";
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 import {useStore} from "vuex";
 
 const router = useRouter();
@@ -22,9 +22,8 @@ const login = async () => {
         });
 
         localStorage.setItem('access_token', response.data.access_token)
-        store.dispatch('fetchUser');
-        store.dispatch('setRole', response.data.role)
-        router.push({name: 'courses_page_url'});
+        await store.dispatch('fetchUser');
+        await router.push({name: 'courses_page_url'});
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
             errors.value = error.response.data.errors;

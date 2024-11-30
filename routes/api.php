@@ -12,20 +12,18 @@ use App\Http\Controllers\Api\SolutionController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TeacherController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/user', [AuthenticatedSessionController::class, 'user'])->name('user')->middleware(['auth:sanctum']);
 
 Route::prefix('courses')
     ->name('course.')
     ->group(function () {
         Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/', [CourseController::class, 'index'])->name('index');
+            Route::get('/all', [CourseController::class, 'getAllCourses'])->name('getAllCourses');
             Route::get('/{course}', [CourseController::class, 'show'])->name('show');
         });
 
@@ -78,10 +76,13 @@ Route::prefix('students')
         });
 
         Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
-            Route::get('/', [StudentController::class, 'index'])->name('index');
             Route::post('/', [StudentController::class, 'store'])->name('store');
             Route::put('/{student}', [StudentController::class, 'update'])->name('update');
             Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::middleware(['auth:sanctum', 'role:super_admin||admin'])->group(function () {
+            Route::get('/', [StudentController::class, 'index'])->name('index');
         });
 
         Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
@@ -97,10 +98,13 @@ Route::prefix('teachers')
         });
 
         Route::middleware(['auth:sanctum', 'role:super_admin'])->group(function () {
-            Route::get('/', [TeacherController::class, 'index'])->name('index');
             Route::post('/', [TeacherController::class, 'store'])->name('store');
             Route::put('/{teacher}', [TeacherController::class, 'update'])->name('update');
             Route::delete('/{teacher}', [TeacherController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::middleware(['auth:sanctum', 'role:super_admin||admin'])->group(function () {
+            Route::get('/', [TeacherController::class, 'index'])->name('index');
         });
 
         Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {

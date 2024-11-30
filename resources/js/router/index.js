@@ -169,7 +169,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const store = useStore();
-    const isAuthenticated = store.getters.isAuthenticated;
+    const isAuthenticated = store.getters.user !== null;
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
     if (requiresAuth && !isAuthenticated) {

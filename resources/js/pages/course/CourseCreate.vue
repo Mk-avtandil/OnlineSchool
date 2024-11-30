@@ -75,7 +75,6 @@ const saveCourse = async () => {
             </div>
         </form>
     </div>
-
 </template>
 
 <style scoped>

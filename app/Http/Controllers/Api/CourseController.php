@@ -23,7 +23,7 @@ class CourseController extends Controller
             $coursesQuery->where('title', 'like', '%' . $request->input('search') . '%');
         }
 
-        $result = $coursesQuery->with(['groups.students.payments', 'groups.teachers', 'lessons'])->get();
+        $result = $coursesQuery->with(['groups.students.payments', 'groups.teachers', 'lessons'])->paginate(6);
 
         return new CourseCollection($result);
     }
@@ -93,6 +93,17 @@ class CourseController extends Controller
         ])->findOrFail($courseId);
 
         return response()->json(['data' => $course]);
+    }
+
+    public function getAllCourses(): CourseCollection
+    {
+        $user = auth()->user();
+
+        $coursesQuery = app(CoursePolicy::class)->viewAny($user);
+
+        $result = $coursesQuery->with(['groups.students.payments', 'groups.teachers', 'lessons'])->get();
+
+        return new CourseCollection($result);
     }
 }
 

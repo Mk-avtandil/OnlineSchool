@@ -39,7 +39,6 @@ const saveStudent = async () => {
         }
     }
 };
-
 </script>
 
 <template>

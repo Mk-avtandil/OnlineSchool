@@ -1,7 +1,7 @@
 <script setup>
 import axios from "axios";
-import { ref } from "vue";
-import { useRoute } from "vue-router";
+import {ref} from "vue";
+import {useRoute} from "vue-router";
 
 const errors = ref({});
 const successMessage = ref('');

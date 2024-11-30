@@ -65,8 +65,8 @@ const saveGroup = async () => {
         }
     }
 };
-
 </script>
+
 <template>
     <div class="container my-3">
         <h3 class="mb-3">Create Group</h3>
@@ -122,7 +122,6 @@ const saveGroup = async () => {
             </div>
         </form>
     </div>
-
 </template>
 
 <style scoped>

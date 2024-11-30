@@ -6,7 +6,7 @@ import { useRoute } from 'vue-router';
 import { useStore } from "vuex";
 
 const store = useStore();
-const role = computed(() => store.getters.role);
+const user = computed( () => store.getters.user);
 const homework = ref();
 const solutions = ref();
 const route = useRoute();
@@ -106,7 +106,7 @@ const saveSolution = async (url = `/api/solutions/${route.params.id}`) => {
             </div>
         </div>
 
-        <div class="col-12" v-if="role === 'student'">
+        <div class="col-12" v-if="user?.data.role.includes('student')">
             <h3>Create solution</h3>
             <div v-if="successMessage" class="alert alert-success">
                 {{ successMessage }}
@@ -135,7 +135,7 @@ const saveSolution = async (url = `/api/solutions/${route.params.id}`) => {
             </form>
         </div>
 
-        <div class="col-12 my-2" v-if="role === 'teacher'">
+        <div class="col-12 my-2" v-if="user?.data.role.includes('teacher')">
             <h3>Students solution</h3>
             <div v-for="solution in solutions" :key="solution.id" class="card my-3">
                 <div class="card-header">

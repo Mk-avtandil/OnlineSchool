@@ -1,11 +1,11 @@
 <script setup>
 import axios from "axios";
 import {computed, onMounted, ref} from "vue";
-import { useRoute } from 'vue-router';
-import { useStore } from "vuex";
+import {useRoute} from 'vue-router';
+import {useStore} from "vuex";
 
 const store = useStore();
-const role = computed(() => store.getters.role);
+const user = computed( () => store.getters.user);
 const lessons = ref({});
 const route = useRoute();
 
@@ -42,7 +42,10 @@ const deleteLesson = async (lessonId) => {
                 </span>
                 <span class="fs-3 mx-2 align-middle">Course lessons</span>
             </div>
-            <div class="col-4 text-end" v-if="['admin', 'super_admin', 'teacher'].includes(role)">
+            <div class="col-4 text-end"
+                 v-if="user?.data.role.includes('admin') ||
+                 user?.data.role.includes('super_admin') ||
+                 user?.data.role.includes('teacher')">
                 <router-link :to="{name: 'lesson_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Lesson</router-link>
             </div>
         </div>
@@ -53,7 +56,10 @@ const deleteLesson = async (lessonId) => {
                         <div class="col-8">
                             <h5 class="card-title text-dark">{{lesson.title}}</h5>
                         </div>
-                        <div class="col-4 text-end align-top"  v-if="['admin', 'super_admin', 'teacher'].includes(role)">
+                        <div class="col-4 text-end align-top"
+                             v-if="user?.data.role.includes('admin') ||
+                             user?.data.role.includes('super_admin') ||
+                             user?.data.role.includes('teacher')">
                             <div class="btn-group">
                                 <router-link data-bs-toggle="dropdown" to="">
                                     <div id="nav-icon">
@@ -102,11 +108,11 @@ const deleteLesson = async (lessonId) => {
                                 </ul>
                             </div>
                             <p v-else>
-                                No homeworks found <span v-if="role === 'teacher'">-></span>
+                                No homeworks found <span v-if="user?.data.role.includes('teacher')">-></span>
                                 <router-link
                                     :to="{name: 'homework_create_page_url', params: {id: lesson.id}}"
                                     class="btn btn-link p-0 text-decoration-none"
-                                    v-if="role === 'teacher'">
+                                    v-if="user?.data.role.includes('teacher')">
                                     Add homework
                                 </router-link>
                             </p>

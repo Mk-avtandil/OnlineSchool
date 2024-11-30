@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router';
 import { useStore } from "vuex";
 
 const store = useStore();
-const role = computed(() => store.getters.role);
+const user = computed( () => store.getters.user);
 const groups = ref({});
 const route = useRoute();
 
@@ -42,7 +42,7 @@ const deleteGroup = async (groupId) => {
                 </span>
                 <span class="fs-3 mx-2 align-middle">Course groups</span>
             </div>
-            <div class="col-4 text-end" v-if="['admin', 'super_admin'].includes(role)">
+            <div class="col-4 text-end" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
                 <router-link :to="{name: 'group_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Group</router-link>
             </div>
         </div>
@@ -53,7 +53,7 @@ const deleteGroup = async (groupId) => {
                         <div class="col-8">
                             <h5 class="card-title text-dark">{{group.title}}</h5>
                         </div>
-                        <div class="col-4 text-end align-top" v-if="['admin', 'super_admin'].includes(role)">
+                        <div class="col-4 text-end align-top" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
                             <div class="btn-group">
                                 <button data-bs-toggle="dropdown" class="p-2">
                                     <div id="nav-icon">

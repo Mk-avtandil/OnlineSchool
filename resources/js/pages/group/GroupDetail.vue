@@ -31,9 +31,8 @@ const getLessons = async (courseId) => {
         console.error('Error fetching lessons:', error);
     }
 }
-
-
 </script>
+
 <template>
     <div class="container my-3">
         <h3>Group</h3>

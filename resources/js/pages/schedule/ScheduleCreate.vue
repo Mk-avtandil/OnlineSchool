@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { ref, onMounted, watch } from "vue";
+import {ref, onMounted, watch} from "vue";
 
 const errors = ref({});
 const successMessage = ref("");
