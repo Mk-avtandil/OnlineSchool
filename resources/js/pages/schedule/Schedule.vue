@@ -40,7 +40,7 @@ const deleteSchedule = async (schedule) => {
             <div class="col-8">
                 <span class="fs-3">Schedule</span>
             </div>
-            <div class="col-4 text-end align-content-center" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
+            <div class="col-4 text-end align-content-center" v-if="user?.role.includes('admin') || user?.role.includes('super_admin')">
                 <router-link :to="{name: 'schedule_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Create Schedule</router-link>
             </div>
         </div>
@@ -53,7 +53,7 @@ const deleteSchedule = async (schedule) => {
                     <th scope="col">Teacher</th>
                     <th scope="col">Start time</th>
                     <th scope="col">End time</th>
-                    <th scope="col" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')"></th>
+                    <th scope="col" v-if="user?.role.includes('admin') || user?.role.includes('super_admin')"></th>
                 </tr>
             </thead>
             <tbody>
@@ -63,7 +63,7 @@ const deleteSchedule = async (schedule) => {
                     <td>{{schedule.teacher}}</td>
                     <td>{{schedule.start_time}}</td>
                     <td>{{schedule.end_time}}</td>
-                    <td v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
+                    <td v-if="user?.role.includes('admin') || user?.role.includes('super_admin')">
                         <button @click.prevent="deleteSchedule(schedule.id)" class="btn btn-danger w-100" type="submit">Delete</button>
                     </td>
                 </tr>

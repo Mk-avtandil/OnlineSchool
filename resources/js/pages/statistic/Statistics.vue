@@ -102,7 +102,7 @@ watch([selectedYear, selectedMonth], () => {
 </script>
 
 <template>
-    <div v-if="user?.data.role.includes('super_admin')">
+    <div v-if="user?.role.includes('super_admin')">
         <div class="container my-3">
             <h3>Courses</h3>
             <table class="table table-bordered">

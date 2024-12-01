@@ -43,9 +43,9 @@ const deleteLesson = async (lessonId) => {
                 <span class="fs-3 mx-2 align-middle">Course lessons</span>
             </div>
             <div class="col-4 text-end"
-                 v-if="user?.data.role.includes('admin') ||
-                 user?.data.role.includes('super_admin') ||
-                 user?.data.role.includes('teacher')">
+                 v-if="user?.role.includes('admin') ||
+                 user?.role.includes('super_admin') ||
+                 user?.role.includes('teacher')">
                 <router-link :to="{name: 'lesson_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Lesson</router-link>
             </div>
         </div>
@@ -57,9 +57,9 @@ const deleteLesson = async (lessonId) => {
                             <h5 class="card-title text-dark">{{lesson.title}}</h5>
                         </div>
                         <div class="col-4 text-end align-top"
-                             v-if="user?.data.role.includes('admin') ||
-                             user?.data.role.includes('super_admin') ||
-                             user?.data.role.includes('teacher')">
+                             v-if="user?.role.includes('admin') ||
+                             user?.role.includes('super_admin') ||
+                             user?.role.includes('teacher')">
                             <div class="btn-group">
                                 <router-link data-bs-toggle="dropdown" to="">
                                     <div id="nav-icon">
@@ -108,11 +108,11 @@ const deleteLesson = async (lessonId) => {
                                 </ul>
                             </div>
                             <p v-else>
-                                No homeworks found <span v-if="user?.data.role.includes('teacher')">-></span>
+                                No homeworks found <span v-if="user?.role.includes('teacher')">-></span>
                                 <router-link
                                     :to="{name: 'homework_create_page_url', params: {id: lesson.id}}"
                                     class="btn btn-link p-0 text-decoration-none"
-                                    v-if="user?.data.role.includes('teacher')">
+                                    v-if="user?.role.includes('teacher')">
                                     Add homework
                                 </router-link>
                             </p>

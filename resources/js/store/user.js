@@ -24,7 +24,7 @@ const actions = {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                commit('SET_USER', response.data);
+                commit('SET_USER', response.data.data);
             } catch (error) {
                 console.error('Failed to fetch user data: ', error);
                 commit('CLEAR_USER');

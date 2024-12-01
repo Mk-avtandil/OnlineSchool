@@ -34,12 +34,12 @@ const deleteStudent = async (studentId) => {
 </script>
 
 <template>
-    <div class="container my-3" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
+    <div class="container my-3" v-if="user?.role.includes('admin') || user?.role.includes('super_admin')">
         <div class="row">
             <div class="col-8">
                 <span class="fs-3">Students</span>
             </div>
-            <div class="col-4 text-end align-content-center"  v-if="user?.data.role.includes('super_admin')">
+            <div class="col-4 text-end align-content-center"  v-if="user?.role.includes('super_admin')">
                 <router-link :to="{name: 'student_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Student</router-link>
             </div>
         </div>
@@ -58,7 +58,7 @@ const deleteStudent = async (studentId) => {
                 <th>{{student.first_name}} {{student.last_name}}</th>
                 <td>{{student.birthday}}</td>
                 <td>{{student.phone}}</td>
-                <td v-if="user?.data.role.includes('super_admin')">
+                <td v-if="user?.role.includes('super_admin')">
                     <router-link :to="{name: 'student_edit_page_url', params: {id: student.id}}" class="btn btn-warning">Edit</router-link>
                     <button @click.prevent="deleteStudent(student.id)" class="btn btn-danger m-1" type="submit">Delete</button>
                 </td>

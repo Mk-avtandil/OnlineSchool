@@ -10,7 +10,6 @@ const user = computed(() => store.getters.user);
 const route = useRoute();
 const errors = ref({});
 const student = ref();
-const studentCourses = ref();
 const successMessage = ref('');
 const data = ref({
     'card_number': '',
@@ -21,7 +20,6 @@ const data = ref({
 
 onMounted(async () => {
     await getStudent();
-    await getStudentCourses();
 });
 
 const getStudent = async (url = `/api/students/${route.params.id}/detail`) => {
@@ -33,15 +31,6 @@ const getStudent = async (url = `/api/students/${route.params.id}/detail`) => {
         console.error('Error fetching student:', error);
     }
 };
-
-const getStudentCourses = async (url = '/api/courses') => {
-    try {
-        const response = await axios.get(url);
-        studentCourses.value = response.data.data
-    } catch (error) {
-        console.error('Error fetching courses', error.response || error);
-    }
-}
 
 const saveCreditCard = async (url = '/api/cards/store') => {
     try {
@@ -71,7 +60,7 @@ const saveCreditCard = async (url = '/api/cards/store') => {
 </script>
 
 <template>
-    <div v-if="user?.data.role.includes('student')">
+    <div v-if="user?.role.includes('student')">
         <div class="container my-4">
             <div class="row">
                 <div class="col-12 mb-4">
@@ -101,20 +90,18 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <button class="nav-link active" id="nav-course-tab" data-bs-toggle="tab" data-bs-target="#nav-course" type="button" role="tab" aria-controls="nav-course" aria-selected="true">Student courses</button>
                             <button class="nav-link" id="nav-groups-tab" data-bs-toggle="tab" data-bs-target="#nav-groups" type="button" role="tab" aria-controls="nav-groups" aria-selected="false">Student groups</button>
-                            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Grades</button>
+                            <button class="nav-link" id="nav-lessons-tab" data-bs-toggle="tab" data-bs-target="#nav-lessons" type="button" role="tab" aria-controls="nav-lessons" aria-selected="false">Lessons</button>
                             <button class="nav-link" id="nav-card-tab" data-bs-toggle="tab" data-bs-target="#nav-card" type="button" role="tab" aria-controls="nav-card" aria-selected="false">Credit card</button>
                         </div>
                     </nav>
+
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active my-3" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab" tabindex="0">
-                            <div v-for="course in studentCourses" :key="course.id">
-                                <PaymentForCourse
-                                    :course="course"
-                                    :student="student"
-                                    :errors="errors"
-                                    @payment-created="handlePaymentCreated" />
+                            <div v-for="course in student?.courses" :key="course.id">
+                                <PaymentForCourse :course="course" :student="student" :errors="errors" @payment-created="handlePaymentCreated" />
                             </div>
                         </div>
+
                         <div class="tab-pane fade my-3" id="nav-groups" role="tabpanel" aria-labelledby="nav-groups-tab" tabindex="1">
                             <div class="row">
                                 <div class="col-12 my-2" v-for="group in student?.groups">
@@ -127,7 +114,26 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="nav-card" role="tabpanel" aria-labelledby="nav-card-tab" tabindex="2">
+
+                        <div class="tab-pane fade" id="nav-lessons" role="tabpanel" aria-labelledby="nav-lessons-tab" tabindex="2">
+                            <div v-for="course in student?.courses">
+                                <div class="card p-2 my-3" v-for="lesson in course?.lessons">
+                                    <h4>{{lesson.title}}</h4>
+                                    <p>{{lesson.description}}</p>
+                                    <hr>
+                                    <h6 class="bg-warning-subtle">Homeworks</h6>
+                                    <div v-for="homework in lesson.homeworks">
+                                        <p class="my-0">Title: {{homework.title}}</p>
+                                        <p>Description: {{homework.description}}</p>
+                                        <hr>
+                                        <h6 class="bg-success text-light">Solution</h6>
+                                            {{ homework.solutions}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-card" role="tabpanel" aria-labelledby="nav-card-tab" tabindex="3">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="col-12 my-2">
@@ -147,7 +153,6 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="3">...</div>
                     </div>
                 </div>
             </div>

@@ -15,9 +15,15 @@ class StudentResource extends JsonResource
             'last_name' => $this->last_name,
             'birthday' => $this->birthday,
             'phone' => $this->phone,
+            'courses' => $this->groups->map(function ($group) {
+                return $group->course->load([
+                    'lessons.homeworks.solutions.grade',
+                ]);
+            }),
             'groups' => $this->groups,
             'creditCard' => $this->creditCard,
             'payments' => $this->payments,
+            'solutions' => $this->solutions,
         ];
     }
 }

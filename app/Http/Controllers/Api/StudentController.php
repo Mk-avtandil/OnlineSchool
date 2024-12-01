@@ -23,7 +23,9 @@ class StudentController extends Controller
 
     public function detail($studentId): StudentResource
     {
-        $student = Student::where('user_id', $studentId)->firstOrFail();
+        $student = Student::with(['solutions', 'groups', 'groups.course', 'payments', 'creditCard'])
+            ->where('user_id', $studentId)
+            ->firstOrFail();
 
         $this->authorize('view', $student);
 

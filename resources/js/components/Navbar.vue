@@ -35,32 +35,32 @@ const logout = async () => {
                     <li class="nav-item">
                         <router-link :to="{name: 'courses_page_url'}" class="nav-link active" aria-current="page">Home</router-link>
                     </li>
-                    <li class="nav-item" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
+                    <li class="nav-item" v-if="user?.role.includes('admin') || user?.role.includes('super_admin')">
                         <router-link :to="{name: 'student_list_page_url'}" class="nav-link active" aria-current="page">Students</router-link>
                     </li>
-                    <li class="nav-item" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
+                    <li class="nav-item" v-if="user?.role.includes('admin') || user?.role.includes('super_admin')">
                         <router-link :to="{name: 'teacher_list_page_url'}" class="nav-link active" aria-current="page">Teachers</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link :to="{name: 'schedule_page_url'}" class="nav-link active" aria-current="page">Schedule</router-link>
                     </li>
-                    <li class="nav-item" v-if="user?.data.role.includes('super_admin')">
+                    <li class="nav-item" v-if="user?.role.includes('super_admin')">
                         <router-link :to="{name: 'statistics_page_url'}" class="nav-link active" aria-current="page">Statistics</router-link>
                     </li>
                 </ul>
                 <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
-                    <li class="nav-item" v-if="user?.data.role.includes('student')">
-                        <router-link :to="{name: 'student_detail_page_url', params: {id: user?.data.id}}" class="nav-link text-primary">
-                            {{user?.data.email}}
+                    <li class="nav-item" v-if="user?.role.includes('student')">
+                        <router-link :to="{name: 'student_detail_page_url', params: {id: user?.id}}" class="nav-link text-primary">
+                            {{user?.email}}
                         </router-link>
                     </li>
-                    <li class="nav-item"  v-if="user?.data.role.includes('teacher')">
-                        <router-link :to="{name: 'teacher_detail_page_url', params: {id: user?.data.id}}" class="nav-link text-primary">
-                            {{user?.data.email}}
+                    <li class="nav-item"  v-if="user?.role.includes('teacher')">
+                        <router-link :to="{name: 'teacher_detail_page_url', params: {id: user?.id}}" class="nav-link text-primary">
+                            {{user?.email}}
                         </router-link>
                     </li>
-                    <li class="nav-item" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
-                        <button type="button"  class="nav-link active">{{user?.data.email}}</button>
+                    <li class="nav-item" v-if="user?.role.includes('admin') || user?.role.includes('super_admin')">
+                        <button type="button"  class="nav-link active">{{user?.email}}</button>
                     </li>
                     <li class="nav-item" v-if="!user">
                         <router-link :to="{name: 'login_page_url'}" class="nav-link active" aria-current="page">Login</router-link>

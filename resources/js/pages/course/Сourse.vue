@@ -54,7 +54,7 @@ const deleteCourse = async (courseId) => {
             <div class="col-8">
                 <span class="fs-3">Courses</span>
             </div>
-            <div class="col-4 text-end  align-content-center" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
+            <div class="col-4 text-end  align-content-center" v-if="user?.role.includes('admin') || user?.role.includes('super_admin')">
                 <router-link :to="{name: 'course_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Course</router-link>
             </div>
         </div>
@@ -73,7 +73,7 @@ const deleteCourse = async (courseId) => {
                             <div class="col-8">
                                 <h5 class="card-title text-dark">{{course.title}}</h5>
                             </div>
-                            <div class="col-4 text-end align-top" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
+                            <div class="col-4 text-end align-top" v-if="user?.role.includes('admin') || user?.role.includes('super_admin')">
                                 <div class="btn-group">
                                     <button data-bs-toggle="dropdown" class="p-2">
                                         <div id="nav-icon">

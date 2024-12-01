@@ -32,12 +32,12 @@ const deleteTeacher = async (teacherId) => {
 </script>
 
 <template>
-    <div class="container my-3" v-if="user?.data.role.includes('admin') || user?.data.role.includes('super_admin')">
+    <div class="container my-3" v-if="user?.role.includes('admin') || user?.role.includes('super_admin')">
         <div class="row">
             <div class="col-8">
                 <span class="fs-3">Teachers</span>
             </div>
-            <div class="col-4 text-end align-content-center" v-if="user?.data.role.includes('super_admin')">
+            <div class="col-4 text-end align-content-center" v-if="user?.role.includes('super_admin')">
                 <router-link :to="{name: 'teacher_create_page_url'}" class="btn bg-body-tertiary px-2 py-1 border-dark">Add New Teacher</router-link>
             </div>
         </div>
@@ -56,7 +56,7 @@ const deleteTeacher = async (teacherId) => {
                 <th>{{teacher.first_name}} {{teacher.last_name}}</th>
                 <td>{{teacher.birthday}}</td>
                 <td>{{teacher.phone}}</td>
-                <td v-if="user?.data.role.includes('super_admin')">
+                <td v-if="user?.role.includes('super_admin')">
                     <router-link :to="{name: 'teacher_edit_page_url', params: {id: teacher.id}}" class="btn btn-warning">Edit</router-link>
                     <button @click.prevent="deleteTeacher(teacher.id)" class="btn btn-danger m-1" type="submit">Delete</button>
                 </td>

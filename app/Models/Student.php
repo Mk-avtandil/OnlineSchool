@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Student extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'user_id',
         'first_name',
