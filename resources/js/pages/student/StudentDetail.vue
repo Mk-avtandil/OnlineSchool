@@ -20,6 +20,7 @@ const data = ref({
 
 onMounted(async () => {
     await getStudent();
+    await getStudentCourses();
 });
 
 const getStudent = async (url = `/api/students/${route.params.id}/detail`) => {
@@ -89,8 +90,6 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <button class="nav-link active" id="nav-course-tab" data-bs-toggle="tab" data-bs-target="#nav-course" type="button" role="tab" aria-controls="nav-course" aria-selected="true">Student courses</button>
-                            <button class="nav-link" id="nav-groups-tab" data-bs-toggle="tab" data-bs-target="#nav-groups" type="button" role="tab" aria-controls="nav-groups" aria-selected="false">Student groups</button>
-                            <button class="nav-link" id="nav-lessons-tab" data-bs-toggle="tab" data-bs-target="#nav-lessons" type="button" role="tab" aria-controls="nav-lessons" aria-selected="false">Lessons</button>
                             <button class="nav-link" id="nav-card-tab" data-bs-toggle="tab" data-bs-target="#nav-card" type="button" role="tab" aria-controls="nav-card" aria-selected="false">Credit card</button>
                             <button class="nav-link" id="nav-history-tab" data-bs-toggle="tab" data-bs-target="#nav-history" type="button" role="tab" aria-controls="nav-history" aria-selected="false">History</button>
                         </div>
@@ -98,54 +97,8 @@ const saveCreditCard = async (url = '/api/cards/store') => {
 
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active my-3" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab" tabindex="0">
-                            <div v-for="course in student?.courses" :key="course.id">
+                            <div v-for="course in student?.groups" :key="course.id">
                                 <PaymentForCourse :course="course" :student="student" :errors="errors" @payment-created="handlePaymentCreated" />
-                            </div>
-                        </div>
-
-                        <div class="tab-pane fade my-3" id="nav-groups" role="tabpanel" aria-labelledby="nav-groups-tab" tabindex="1">
-                            <div class="row">
-                                <div class="col-12 my-2" v-for="group in student?.groups">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h4 class="card-title">{{group?.title}}</h4>
-                                            <p class="card-text">{{group?.description}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane fade" id="nav-lessons" role="tabpanel" aria-labelledby="nav-lessons-tab" tabindex="2">
-                            <div class="accordion accordion-flush" id="accordionFlushExample">
-                                <div class="accordion-item" v-for="(course, index) in student?.courses" :key="course.id">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse"
-                                                :data-bs-target="'#flush-collapse-' + index"
-                                                aria-expanded="false"
-                                                :aria-controls="'flush-collapse-' + index">
-                                            {{course.title}}
-                                        </button>
-                                    </h2>
-                                    <div :id="'flush-collapse-' + index" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body">
-                                            <div class="card p-2 my-3" v-for="lesson in course?.lessons">
-                                                <h4>{{lesson.title}}</h4>
-                                                <p>{{lesson.description}}</p>
-                                                <hr>
-                                                <h6 class="bg-warning-subtle">Homeworks</h6>
-                                                <div v-for="homework in lesson.homeworks">
-                                                    <p class="my-0">Title: {{homework.title}}</p>
-                                                    <p>Description: {{homework.description}}</p>
-                                                    <hr>
-                                                    <h6 class="bg-success text-light">Solution</h6>
-                                                    {{ homework.solutions}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -171,9 +124,10 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                         </div>
 
                         <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab" tabindex="4">
-                            <div class="card my-2 p-3" v-for="payment in student?.payments">
-                                <h5>Course id: {{payment?.course_id}}</h5>
+                            <div class="card p-2 my-3" v-for="payment in student?.payments">
+                                <p>For course: {{payment.course.title}}</p>
                                 <p>Sum: {{payment.sum}}</p>
+                                <p>Created at: {{payment.created_at}}</p>
                             </div>
                         </div>
                     </div>

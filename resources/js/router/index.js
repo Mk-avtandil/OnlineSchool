@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import {useStore} from "vuex";
+import {computed} from "vue";
 
 const routes = [
     // Courses
@@ -169,9 +170,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const store = useStore();
-    const isAuthenticated = store.getters.user !== null;
+    const isAuthenticated = computed(() => store.getters.user);
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
     if (requiresAuth && !isAuthenticated) {
         next('/login');
     } else {

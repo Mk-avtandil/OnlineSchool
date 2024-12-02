@@ -41,9 +41,9 @@ const savePayment = async (courseId) => {
     <div class="card my-1">
         <div class="row p-2">
             <div class="card-body col-9">
-                <h5 class="card-title">{{course?.title}}</h5>
-                <p class="card-text">{{course?.description}}</p>
-                <p class="card-text">Price: {{course?.price}}</p>
+                <h5 class="card-title">{{course?.course.title}}</h5>
+                <p class="card-text">{{course?.course.description}}</p>
+                <p class="card-text">Price: {{course?.course.price}}</p>
             </div>
             <div class="card-body col-3">
                 <h5 class="card-title">Pay for course</h5>
@@ -56,7 +56,7 @@ const savePayment = async (courseId) => {
                     {{ localErrors.error }}
                 </div>
 
-                <button @click.prevent="savePayment(course.id)" type="button" class="btn btn-primary w-100" v-if="student?.creditCard">
+                <button @click.prevent="savePayment(course.course.id)" type="button" class="btn btn-primary w-100" v-if="student?.creditCard">
                     Оплатить
                 </button>
                 <button v-else type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#staticBackdropStudent">

@@ -20,6 +20,12 @@ class PaymentController extends Controller
             return response()->json(['error' => 'Insufficient funds on the credit card.'], 400);
         }
 
+        $existingPayment = Payment::where('course_id', $courseId)->where('student_id', $student->id)->first();
+
+        if ($existingPayment) {
+            return response()->json(['error' => 'You have already paid for this course.'], 409);
+        }
+
         $creditCard->sum -= $course->price;
 
         $creditCard->save();
