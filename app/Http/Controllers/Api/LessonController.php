@@ -34,6 +34,10 @@ class LessonController extends Controller
 
     public function store(LessonCreateRequest $request, $courseId): JsonResponse
     {
+        $course = Course::findOrFail($courseId);
+
+        $this->authorize('create', [Lesson::class, $course]);
+
         $lesson = Lesson::create([
             'title' => $request->title,
             'description' => $request->description,

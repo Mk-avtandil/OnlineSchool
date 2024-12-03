@@ -53,4 +53,21 @@ class LessonPolicy
 
         return Lesson::query()->whereRaw('0 = 1');
     }
+
+    public function create(User $user, Course $course)
+    {
+        if ($user->hasRole(['admin', 'super_admin'])) {
+            return true;
+        }
+
+        if ($user->hasRole('teacher')) {
+            $isTeacherInCourse = $course->groups()->whereHas('teachers', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->exists();
+
+            return $isTeacherInCourse;
+        }
+
+        return false;
+    }
 }
