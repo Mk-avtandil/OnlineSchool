@@ -101,7 +101,7 @@ class CourseController extends Controller
 
         $coursesQuery = app(CoursePolicy::class)->viewAny($user);
 
-        $result = $coursesQuery->with(['groups.students.payments', 'groups.teachers', 'lessons'])->get();
+        $result = $coursesQuery->with(['groups.students.payments', 'lessons'])->get();
 
         return new CourseCollection($result);
     }

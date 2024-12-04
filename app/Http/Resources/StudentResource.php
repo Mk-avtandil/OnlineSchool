@@ -18,6 +18,7 @@ class StudentResource extends JsonResource
             'groups' => $this->groups,
             'creditCard' => $this->creditCard,
             'payments' => $this->payments,
+            'solutions' => $this->solutions
         ];
     }
 }

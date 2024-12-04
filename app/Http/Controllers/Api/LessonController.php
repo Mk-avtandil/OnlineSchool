@@ -20,7 +20,7 @@ class LessonController extends Controller
 
         $lessonsQuery = app(LessonPolicy::class)->viewAny($user, $course);
 
-        $lessons = $lessonsQuery->with('course.groups', 'course')->get();
+        $lessons = $lessonsQuery->with('course.groups', 'course', 'homeworks')->get();
 
         return new LessonCollection($lessons);
     }

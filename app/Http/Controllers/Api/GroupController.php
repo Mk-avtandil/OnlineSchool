@@ -60,22 +60,11 @@ class GroupController extends Controller
 
     public function update(Group $group, GroupUpdateRequest $request): JsonResponse
     {
-        $this->groupService->validateStudents($request->get('students'), $group->course);
-
-        $fields = ['title', 'description'];
         try {
-            foreach ($fields as $field) {
-                $newValue = $request->get($field);
-
-                if ($newValue !== null && $group->$field !== $newValue) {
-                    $group->$field = $newValue;
-                }
-            }
-            $group->save();
-
-            if ($request->has('students') || $request->has('teachers')) {
-                $this->groupService->syncRelations($group, $request->get('students'), $request->get('teachers'));
-            }
+            $group->update([
+                'title' => $request->get('title'),
+                'description' => $request->get('description'),
+            ]);
 
             return response()->json(['message' => 'Group updated successfully'], 200);
         } catch (\Exception $e) {
@@ -120,5 +109,33 @@ class GroupController extends Controller
         $group->teachers()->detach($teacherId);
 
         return response()->json(['message' => 'Teacher removed successfully!']);
+    }
+
+    public function addStudents(GroupUpdateRequest $request, Group $group): JsonResponse
+    {
+        try {
+            $studentIds = $request->input('student_ids');
+
+            $this->groupService->validateStudents($studentIds, $group->course);
+
+            $group->students()->syncWithoutDetaching($studentIds);
+
+            return response()->json(['message' => 'Students added successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to add students', 'error' => $e->getMessage()], 400);
+        }
+    }
+
+    public function addTeachers(GroupUpdateRequest $request, Group $group): JsonResponse
+    {
+        try {
+            $teacherIds = $request->input('teacher_ids');
+
+            $group->teachers()->syncWithoutDetaching($teacherIds);
+
+            return response()->json(['message' => 'Teachers added successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to add teachers', 'error' => $e->getMessage()], 400);
+        }
     }
 }

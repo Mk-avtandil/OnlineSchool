@@ -12,6 +12,8 @@ const logout = async () => {
     try {
         await axios.post('/api/logout');
 
+        await axios.get('/sanctum/csrf-cookie');
+
         await store.dispatch('logout');
 
         axios.defaults.headers.Authorization = null;

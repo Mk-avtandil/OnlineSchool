@@ -62,8 +62,6 @@ const updateGroup = async (url = `/api/groups/${route.params.id}`) => {
         await axios.patch(url, {
             title: data.value.title,
             description: data.value.description,
-            students: [...data.value.students, ...selectedStudents.value],
-            teachers: [...data.value.teachers, ...selectedTeachers.value],
         });
 
         successMessage.value = 'Group updated successfully!';
@@ -76,6 +74,46 @@ const updateGroup = async (url = `/api/groups/${route.params.id}`) => {
         console.error('Failed to update group:', error);
         if (error.response && error.response.data && error.response.data.errors) {
             errors.value = error.response.data.errors;
+        }
+    }
+};
+
+const addStudents = async (url = `/api/groups/${route.params.id}/add-students`) => {
+    try {
+        await axios.post(url,{
+            student_ids: selectedStudents.value,
+        });
+
+        successMessage.value = 'Students added successfully!';
+        selectedStudents.value = [];
+        await getGroup();
+        await getStudents();
+    } catch (error) {
+        console.error('Failed to add students:', error);
+        if (error.response && error.response.data && error.response.data.error) {
+            errors.value = error.response.data.error;
+        } else {
+            errors.value = { message: 'An unknown error occurred' };
+        }
+    }
+};
+
+const addTeachers = async (url = `/api/groups/${route.params.id}/add-teachers`) => {
+    try {
+        await axios.post(url,{
+            teacher_ids: selectedTeachers.value,
+        });
+
+        successMessage.value = 'Teachers added successfully!';
+        selectedTeachers.value = [];
+        await getGroup();
+        await getTeachers();
+    } catch (error) {
+        console.error('Failed to add teachers:', error);
+        if (error.response && error.response.data && error.response.data.error) {
+            errors.value = error.response.data.error;
+        } else {
+            errors.value = { message: 'An unknown error occurred' };
         }
     }
 };
@@ -173,10 +211,13 @@ const removeTeacher = async (teacherId) => {
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Students</h1>
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Select Students</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+                                <div v-if="errors" class="alert alert-danger my-1">
+                                    {{ errors }}
+                                </div>
                                 <ul class="scrollable-list list-group">
                                     <li class="list-group-item" v-for="student in availableStudents" :key="student.id">
                                         <input class="form-check-input me-1" type="checkbox" :id="'checkbox-' + student.id"
@@ -189,9 +230,7 @@ const removeTeacher = async (teacherId) => {
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <div class="form-group my-3">
-                                    <button type="submit" class="btn btn-primary">Add</button>
-                                </div>
+                                <button type="button" class="btn btn-primary" @click="addStudents()">Add</button>
                             </div>
                         </div>
                     </div>
@@ -219,9 +258,7 @@ const removeTeacher = async (teacherId) => {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <div class="form-group my-3">
-                                <button type="submit" class="btn btn-primary">Add</button>
-                            </div>
+                            <button type="button" class="btn btn-primary" @click="addTeachers()">Add</button>
                         </div>
                     </div>
                 </div>

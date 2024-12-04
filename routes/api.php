@@ -50,6 +50,8 @@ Route::prefix('groups')
             Route::get('/', [GroupController::class, 'getAllGroups'])->name('getAllGroups');
             Route::put('/{group}/remove-student', [GroupController::class, 'removeStudent'])->name('removeStudent');
             Route::put('/{group}/remove-teacher', [GroupController::class, 'removeTeacher'])->name('removeTeacher');
+            Route::post('/{group}/add-students', [GroupController::class, 'addStudents'])->name('addStudents');
+            Route::post('/{group}/add-teachers', [GroupController::class, 'addTeachers'])->name('addTeachers');
         });
     });
 

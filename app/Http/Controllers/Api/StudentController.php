@@ -16,14 +16,20 @@ class StudentController extends Controller
 {
     public function index(): StudentCollection
     {
-        $students = Student::with("groups")->get();
+        $students = Student::with(["groups", 'solutions', 'payments', 'creditCard'])->get();
 
         return new StudentCollection($students);
     }
 
     public function detail($studentId): StudentResource
     {
-        $student = Student::with(['creditCard', 'payments.course', 'groups.course'])->where('user_id', $studentId)->firstOrFail();
+        $student = Student::with([
+            'creditCard',
+            'payments.course',
+            'groups.course',
+            'solutions.grade',
+            'solutions.homework',
+        ])->where('user_id', $studentId)->firstOrFail();
 
         $this->authorize('view', $student);
 

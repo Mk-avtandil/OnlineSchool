@@ -20,7 +20,6 @@ const data = ref({
 
 onMounted(async () => {
     await getStudent();
-    await getStudentCourses();
 });
 
 const getStudent = async (url = `/api/students/${route.params.id}/detail`) => {
@@ -91,6 +90,7 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <button class="nav-link active" id="nav-course-tab" data-bs-toggle="tab" data-bs-target="#nav-course" type="button" role="tab" aria-controls="nav-course" aria-selected="true">Student courses</button>
                             <button class="nav-link" id="nav-card-tab" data-bs-toggle="tab" data-bs-target="#nav-card" type="button" role="tab" aria-controls="nav-card" aria-selected="false">Credit card</button>
+                            <button class="nav-link" id="nav-solutions-tab" data-bs-toggle="tab" data-bs-target="#nav-solutions" type="button" role="tab" aria-controls="nav-solutions" aria-selected="false">Solutions</button>
                             <button class="nav-link" id="nav-history-tab" data-bs-toggle="tab" data-bs-target="#nav-history" type="button" role="tab" aria-controls="nav-history" aria-selected="false">History</button>
                         </div>
                     </nav>
@@ -102,7 +102,25 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="nav-card" role="tabpanel" aria-labelledby="nav-card-tab" tabindex="3">
+                        <div class="tab-pane fade show active my-3" id="nav-solutions" role="tabpanel" aria-labelledby="nav-solutions-tab" tabindex="1">
+                            <div v-for="solution in student?.solutions" class="card mb-2 p-1">
+                                <h5><span class="fw-light">Homework: </span><span class="text-warning">{{solution?.homework.title}}</span></h5>
+                                <p>Description: {{solution?.homework.description}}</p>
+                                <hr class="my-1">
+                                <div class="bg-primary-subtle p-1">
+                                    <h5>My solution</h5>
+                                    <h6><span class="fw-light">Answer: </span>{{solution?.answer}}</h6>
+                                </div>
+                                <hr class="my-1">
+                                <div class="bg-success-subtle p-1">
+                                    <h5>Grade</h5>
+                                    <h6><span class="fw-light">Answer: </span>{{solution?.grade?.grade}}</h6>
+                                    <p>Feedback: {{solution?.grade?.feedback}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-card" role="tabpanel" aria-labelledby="nav-card-tab" tabindex="2">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="col-12 my-2">
@@ -123,7 +141,7 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab" tabindex="4">
+                        <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab" tabindex="3">
                             <div class="card p-2 my-3" v-for="payment in student?.payments">
                                 <p>For course: {{payment.course.title}}</p>
                                 <p>Sum: {{payment.sum}}</p>
