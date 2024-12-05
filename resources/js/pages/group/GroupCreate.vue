@@ -1,11 +1,13 @@
 <script setup>
 import axios from "axios";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, computed} from "vue";
 import {useRoute} from "vue-router";
+import {useStore} from "vuex";
 
+const store = useStore();
 const errors = ref({});
-const students = ref([]);
-const teachers = ref([]);
+const students = computed(() => store.getters.students);
+const teachers = computed(() => store.getters.teachers);
 const successMessage = ref('');
 const route = useRoute();
 const data = ref({
@@ -16,27 +18,9 @@ const data = ref({
 });
 
 onMounted(async () => {
-    await fetchStudents();
-    await fetchTeachers();
+    await store.dispatch('fetchStudents');
+    await store.dispatch('fetchTeachers');
 });
-
-const fetchStudents = async () => {
-    try {
-        const response = await axios.get('/api/students');
-        students.value = response.data;
-    } catch (error) {
-        console.error('Failed to fetch students', error);
-    }
-};
-
-const fetchTeachers = async () => {
-    try {
-        const response = await axios.get('/api/teachers');
-        teachers.value = response.data;
-    } catch (error) {
-        console.error('Failed to fetch teachers', error);
-    }
-};
 
 const saveGroup = async () => {
     try {

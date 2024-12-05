@@ -1,13 +1,15 @@
 <script setup>
 import axios from "axios";
-import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import {ref, onMounted, computed} from "vue";
+import {useRoute} from "vue-router";
+import {useStore} from "vuex";
 
+const store = useStore();
 const errors = ref({});
 const successMessage = ref('');
-const availableStudents = ref([]);
+const students = computed(() => store.getters.students);
+const teachers = computed(() => store.getters.teachers);
 const selectedStudents = ref([]);
-const availableTeachers = ref([]);
 const selectedTeachers = ref([]);
 const route = useRoute();
 const data = ref({
@@ -19,8 +21,8 @@ const data = ref({
 
 onMounted(async () => {
     await getGroup();
-    await getTeachers();
-    await getStudents();
+    await store.dispatch('fetchTeachers');
+    await store.dispatch('fetchStudents');
 });
 
 const getGroup = async (url = `/api/groups/${route.params.id}/detail`) => {
@@ -31,28 +33,6 @@ const getGroup = async (url = `/api/groups/${route.params.id}/detail`) => {
         console.error("Failed to get groups: ", error);
     }
 };
-
-const getStudents = async (url = '/api/students') => {
-    try {
-        const response = await axios.get(url);
-        availableStudents.value = response.data.data.filter(student =>
-            !data.value.students.some(groupStudent => groupStudent.id === student.id)
-        );
-    } catch (error) {
-        console.error("Failed to get students: ", error);
-    }
-};
-
-const getTeachers = async (url = '/api/teachers') => {
-    try {
-        const response = await axios.get(url);
-        availableTeachers.value = response.data.data.filter(teacher =>
-            !data.value.teachers.some(groupTeacher => groupTeacher.id === teacher.id)
-        );
-    } catch (error) {
-        console.error("Failed to get teachers: ", error);
-    }
-}
 
 const updateGroup = async (url = `/api/groups/${route.params.id}`) => {
     try {
@@ -67,8 +47,8 @@ const updateGroup = async (url = `/api/groups/${route.params.id}`) => {
         successMessage.value = 'Group updated successfully!';
 
         await getGroup();
-        await getStudents();
-        await getTeachers();
+        await store.dispatch('fetchStudents');
+        await store.dispatch('fetchTeachers');
 
     } catch (error) {
         console.error('Failed to update group:', error);
@@ -87,7 +67,7 @@ const addStudents = async (url = `/api/groups/${route.params.id}/add-students`) 
         successMessage.value = 'Students added successfully!';
         selectedStudents.value = [];
         await getGroup();
-        await getStudents();
+        await store.dispatch('fetchStudents');
     } catch (error) {
         console.error('Failed to add students:', error);
         if (error.response && error.response.data && error.response.data.error) {
@@ -107,7 +87,7 @@ const addTeachers = async (url = `/api/groups/${route.params.id}/add-teachers`) 
         successMessage.value = 'Teachers added successfully!';
         selectedTeachers.value = [];
         await getGroup();
-        await getTeachers();
+        await store.dispatch('fetchTeachers');
     } catch (error) {
         console.error('Failed to add teachers:', error);
         if (error.response && error.response.data && error.response.data.error) {
@@ -126,7 +106,7 @@ const removeStudent = async (studentId) => {
 
         successMessage.value = 'Student removed successfully!';
         await getGroup();
-        await getStudents();
+        await store.dispatch('fetchStudents');
     } catch (error) {
         console.error('Failed to remove student:', error);
         if (error.response && error.response.data && error.response.data.errors) {
@@ -143,7 +123,7 @@ const removeTeacher = async (teacherId) => {
 
         successMessage.value = 'Teacher removed successfully!';
         await getGroup();
-        await getTeachers();
+        await store.dispatch('fetchTeachers');
     } catch (error) {
         console.error('Failed to remove teacher:', error);
         if (error.response && error.response.data && error.response.data.errors) {
@@ -219,7 +199,7 @@ const removeTeacher = async (teacherId) => {
                                     {{ errors }}
                                 </div>
                                 <ul class="scrollable-list list-group">
-                                    <li class="list-group-item" v-for="student in availableStudents" :key="student.id">
+                                    <li class="list-group-item" v-for="student in students.data" :key="student.id">
                                         <input class="form-check-input me-1" type="checkbox" :id="'checkbox-' + student.id"
                                                :value="student.id" v-model="selectedStudents">
                                         <label class="form-check-label" :for="'checkbox-' + student.id">
@@ -247,7 +227,7 @@ const removeTeacher = async (teacherId) => {
                         </div>
                         <div class="modal-body">
                             <ul class="scrollable-list list-group">
-                                <li class="list-group-item" v-for="teacher in availableTeachers" :key="teacher.id">
+                                <li class="list-group-item" v-for="teacher in teachers.data" :key="teacher.id">
                                     <input class="form-check-input me-1" type="checkbox" :id="'checkbox - ' + teacher.id"
                                            :value="teacher.id" v-model="selectedTeachers">
                                     <label class="form-check-label" :for="'checkbox - ' + teacher.id">

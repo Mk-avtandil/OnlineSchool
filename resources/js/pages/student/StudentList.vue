@@ -6,26 +6,17 @@ import { useStore } from "vuex";
 
 const store = useStore();
 const user = computed(() => store.getters.user);
-const students = ref();
+const students = computed( () => store.getters.students);
 const router = useRouter();
 
 onMounted(async () => {
-    await getStudents();
+    await store.dispatch('fetchStudents');
 });
-
-const getStudents = async () => {
-    try {
-        const response = await axios.get('/api/students');
-        students.value = response.data;
-    } catch (error) {
-        console.error('Error fetching students:', error);
-    }
-};
 
 const deleteStudent = async (studentId) => {
     try {
         await axios.delete(`/api/students/${studentId}`);
-        await getStudents();
+        await store.dispatch('fetchStudents');
         successMessage.value = 'Student deleted successfully!';
     } catch (error) {
         console.error('Failed to delete student:', error);
