@@ -215,7 +215,7 @@ const removeTeacher = async (teacherId) => {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div v-if="errors" class="alert alert-danger my-1">
+                                <div v-if="errors && errors.length > 0" class="alert alert-danger my-1">
                                     {{ errors }}
                                 </div>
                                 <ul class="scrollable-list list-group">
