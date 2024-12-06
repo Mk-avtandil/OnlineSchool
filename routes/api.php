@@ -73,6 +73,8 @@ Route::prefix('lessons')
 Route::prefix('students')
     ->name('student.')
     ->group(function () {
+        Route::get('/payments', [StudentController::class, 'getAllStudentsWithPayments'])->name('getAllStudentsWithPayments');
+
         Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/{student}', [StudentController::class, 'show'])->name('show');
         });
@@ -81,6 +83,7 @@ Route::prefix('students')
             Route::post('/', [StudentController::class, 'store'])->name('store');
             Route::put('/{student}', [StudentController::class, 'update'])->name('update');
             Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
+
         });
 
         Route::middleware(['auth:sanctum', 'role:super_admin||admin'])->group(function () {

@@ -16,12 +16,12 @@ class StudentController extends Controller
 {
     public function index(): StudentCollection
     {
-        $students = Student::with(["groups", 'solutions', 'payments', 'creditCard'])->get();
+        $students = Student::all();
 
         return new StudentCollection($students);
     }
 
-    public function detail($studentId): StudentResource
+    public function detail($studentId)
     {
         $student = Student::with([
             'creditCard',
@@ -33,7 +33,7 @@ class StudentController extends Controller
 
         $this->authorize('view', $student);
 
-        return new StudentResource($student);
+        return response()->json([$student]);
     }
 
     public function show(Student $student): StudentResource
@@ -97,5 +97,15 @@ class StudentController extends Controller
                 "error" => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function getAllStudentsWithPayments(): JsonResponse
+    {
+        $students = Student::with('payments.course')->get();
+        $students->each(function ($student) {
+            $student->totalSum = $student->payments->sum('sum');
+        });
+
+        return response()->json($students);
     }
 }

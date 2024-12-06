@@ -1,15 +1,15 @@
 <script setup>
 import axios from "axios";
 import {computed, onMounted, ref} from "vue";
-import { useRoute } from 'vue-router';
+import {useRoute} from 'vue-router';
+import {useStore} from "vuex";
 import PaymentForCourse from '../../components/PaymentForCourse.vue';
-import { useStore } from "vuex";
 
 const store = useStore();
 const user = computed(() => store.getters.user);
 const route = useRoute();
 const errors = ref({});
-const student = ref();
+const studentInfo = ref();
 const successMessage = ref('');
 const data = ref({
     'card_number': '',
@@ -25,7 +25,7 @@ onMounted(async () => {
 const getStudent = async (url = `/api/students/${route.params.id}/detail`) => {
     try {
         const response = await axios.get(url);
-        student.value = response.data.data;
+        studentInfo.value = response.data;
 
     } catch (error) {
         console.error('Error fetching student:', error);
@@ -62,7 +62,7 @@ const saveCreditCard = async (url = '/api/cards/store') => {
 <template>
     <div v-if="user?.role.includes('student')">
         <div class="container my-4">
-            <div class="row">
+            <div class="row" v-for="student in studentInfo">
                 <div class="col-12 mb-4">
                     <h3 class="mb-2">Student</h3>
                     <table class="table table-bordered fw-medium">
@@ -102,7 +102,7 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                             </div>
                         </div>
 
-                        <div class="tab-pane fade show active my-3" id="nav-solutions" role="tabpanel" aria-labelledby="nav-solutions-tab" tabindex="1">
+                        <div class="tab-pane fade my-3" id="nav-solutions" role="tabpanel" aria-labelledby="nav-solutions-tab" tabindex="1">
                             <div v-for="solution in student?.solutions" class="card mb-2 p-1">
                                 <h5><span class="fw-light">Homework: </span><span class="text-warning">{{solution?.homework.title}}</span></h5>
                                 <p>Description: {{solution?.homework.description}}</p>
@@ -125,12 +125,12 @@ const saveCreditCard = async (url = '/api/cards/store') => {
                                 <div class="col-12">
                                     <div class="col-12 my-2">
                                         <div class="card">
-                                            <div class="card-body" v-if="student?.creditCard">
+                                            <div class="card-body" v-if="student.credit_card">
                                                 <h3 class="card-title">Card</h3>
-                                                <p class="card-text">Card number: {{student?.creditCard.card_number}}</p>
-                                                <p class="card-text">Card type: {{student?.creditCard.card_type}}</p>
-                                                <p class="card-text">CVV: {{student?.creditCard.cvv}}</p>
-                                                <p class="card-text">CASH: {{student?.creditCard.sum}}</p>
+                                                <p class="card-text">Card number: {{student?.credit_card.card_number}}</p>
+                                                <p class="card-text">Card type: {{student?.credit_card.card_type}}</p>
+                                                <p class="card-text">CVV: {{student?.credit_card.cvv}}</p>
+                                                <p class="card-text">CASH: {{student?.credit_card.sum}}</p>
                                             </div>
                                             <button v-else type="submit" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#staticBackdropStudent">
                                                 Add Credit Card
