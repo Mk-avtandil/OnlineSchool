@@ -24,6 +24,7 @@ const login = async () => {
         localStorage.setItem('access_token', response.data.access_token)
         await store.dispatch('fetchUser');
         await router.push({name: 'courses_page_url'});
+        errors.value = '';
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
             errors.value = error.response.data.errors;
@@ -38,13 +39,14 @@ const login = async () => {
     <div class="container">
         <div class="login_page w-50 my-5 mx-auto">
             <h2 class=" text-center">Login</h2>
+            <div v-if="errors.length > 0" class="alert alert-danger my-1">
+                {{errors}}
+            </div>
+
             <form @submit.prevent="login">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
                     <input v-model="data.email" class="form-control" type="email" id="email" required/>
-                </div>
-                <div v-if="errors.email" class="alert alert-danger my-1">
-                    {{ errors.email[0] }}
                 </div>
 
                 <label for="password" class="form-label">Password:</label><br>
@@ -56,9 +58,6 @@ const login = async () => {
                             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
                         </svg>
                     </button>
-                </div>
-                <div v-if="errors.password" class="alert alert-danger my-1">
-                    {{ errors.password[0] }}
                 </div>
                 <button class="btn btn-primary" type="submit">Login</button>
             </form>

@@ -103,7 +103,7 @@ class StudentController extends Controller
     {
         $students = Student::with('payments.course')->get();
         $students->each(function ($student) {
-            $student->totalSum = $student->payments->sum('sum');
+            $student->totalSumStudent = $student->payments->sum('sum');
         });
 
         return response()->json($students);

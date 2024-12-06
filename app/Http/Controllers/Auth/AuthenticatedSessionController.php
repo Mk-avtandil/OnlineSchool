@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Handle an incoming authentication request.
-     */
     public function store(LoginRequest $request): JsonResponse
     {
         $request->validate([
@@ -23,7 +20,7 @@ class AuthenticatedSessionController extends Controller
         ]);
 
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid login details'], 401);
+            return response()->json(['errors' => 'Invalid login details'], 401);
         }
 
         $user = Auth::user();

@@ -72,7 +72,7 @@ const selectedStudent = async (student) => {
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Full name</th>
+                        <th>Students</th>
                         <th>Amount of payment</th>
                         <th>Sum</th>
                     </tr>
@@ -85,7 +85,7 @@ const selectedStudent = async (student) => {
                             </a>
                         </td>
                         <td>{{student.payments.length}}</td>
-                        <td>{{student.totalSum}}</td>
+                        <td>{{student.totalSumStudent}}</td>
                     </tr>
                 </tbody>
             </table>

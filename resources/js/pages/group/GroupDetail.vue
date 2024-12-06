@@ -40,6 +40,7 @@ const getLessons = async (courseId) => {
             <tr>
                 <th scope="col" class="table-header">Course</th>
                 <td>{{group?.course.title}}</td>
+
             </tr>
             <tr>
                 <th scope="col" class="table-header">Group</th>
